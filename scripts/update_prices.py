@@ -565,11 +565,23 @@ def main():
             # lettura fallita in questo giro: mostra l'ultimo dato valido
             row["en"], row["jp"] = old.get("en"), old.get("jp")
             row["stale"] = True
-        prices_ct = [o["price"] for o in (row["en"], row["jp"]) if o]
-        best = min(prices_ct) if prices_ct else None
+        # Offerta da evidenziare: EN se sotto il prezzo medio CM, altrimenti JP se sotto,
+        # senza prezzo CM la piu' economica
+        en_p = row["en"] and row["en"]["price"]
+        jp_p = row["jp"] and row["jp"]["price"]
+        pick = None
+        if en_p is not None and cm is not None and en_p < cm:
+            pick = "en"
+        elif jp_p is not None and cm is not None and jp_p < cm:
+            pick = "jp"
+        elif cm is None and (en_p is not None or jp_p is not None):
+            pick = "en" if (en_p is not None and (jp_p is None or en_p <= jp_p)) else "jp"
+        prices_ct = [p for p in (en_p, jp_p) if p is not None]
+        best = row[pick]["price"] if pick else (min(prices_ct) if prices_ct else None)
+        row["pick"] = pick
         row["ct_best"] = best
         row["saving"] = round(cm - best, 2) if (cm is not None and best is not None) else None
-        row["deal"] = bool(row["saving"] is not None and row["saving"] > 0)
+        row["deal"] = bool(pick and row["saving"] is not None and row["saving"] > 0)
 
         if row["deal"]:
             row["deal_since"] = old.get("deal_since") if old.get("deal") else started.isoformat()

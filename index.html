@@ -177,7 +177,9 @@ function lsGet(k){ try { return localStorage.getItem(k); } catch(e){ return null
 function lsSet(k,v){ try { if (v == null) localStorage.removeItem(k); else localStorage.setItem(k,v); } catch(e){} }
 
 var DATA = null, HIST = {}, filter = 'all', sortBy = 'saving', query = '';
-try { var ui = JSON.parse(lsGet(UI_KEY) || '{}'); filter = ui.f || 'all'; sortBy = ui.s || 'saving'; } catch(e){}
+try { var ui = JSON.parse(lsGet(UI_KEY) || '{}'); filter = ui.f || 'all'; } catch(e){}
+// Ordinamento: sempre dal più conveniente quando si apre la pagina o si cambia vista
+sortBy = 'saving';
 
 function $(id){ return document.getElementById(id); }
 function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
@@ -200,7 +202,7 @@ function fetchJSON(path){
 }
 function load(){
   return Promise.all([fetchJSON('data/prices.json'), fetchJSON('data/history.json').catch(function(){ return {}; })])
-    .then(function(res){ DATA = res[0]; HIST = res[1] || {}; render(); })
+    .then(function(res){ DATA = res[0]; HIST = res[1] || {}; DATA.cards.forEach(applyRule); DATA.deals = DATA.cards.filter(function(c){ return c.deal; }).length; render(); })
     .catch(function(e){ $('status').innerHTML = '<span class="pill err">Dati non ancora disponibili</span>'; $('list').innerHTML = '<div class="empty">Il primo aggiornamento non è ancora terminato. Riprova tra qualche minuto.</div>'; });
 }
 
@@ -239,6 +241,20 @@ function sparkline(key){
 function fmtVar(v){
   if (v == null || Math.abs(v) < 0.005) return '<span>=</span>';
   return '<span class="' + (v > 0 ? 'up' : 'down') + '">' + (v > 0 ? '▲ +' : '▼ −') + '€' + Math.abs(v).toFixed(2) + '</span>';
+}
+
+// ---------- Offerta da evidenziare ----------
+// EN se costa meno del prezzo medio Cardmarket; altrimenti JP se costa meno; senza prezzo CM la più economica.
+function applyRule(c){
+  var cm = c.cm, en = c.en && c.en.price, jp = c.jp && c.jp.price, pick = null;
+  if (en != null && cm != null && en < cm) pick = 'en';
+  else if (jp != null && cm != null && jp < cm) pick = 'jp';
+  else if (cm == null && (en != null || jp != null)) pick = (en != null && (jp == null || en <= jp)) ? 'en' : 'jp';
+  c.pick = pick;
+  var ref = pick ? c[pick].price : (en != null || jp != null ? Math.min(en != null ? en : Infinity, jp != null ? jp : Infinity) : null);
+  c.ct_best = ref;
+  c.saving = (cm != null && ref != null) ? Math.round((cm - ref) * 100) / 100 : null;
+  c.deal = !!(pick && cm != null && c.saving > 0);
 }
 
 // ---------- Render ----------
@@ -305,8 +321,8 @@ function cardHTML(c){
     '</div></div>' +
     '<div class="prices">' +
       '<div class="pbox"><div class="lbl">Cardmarket</div><div class="val">' + eur(c.cm) + '</div><div class="det">trend' + (c.foil ? ' foil' : '') + '</div></div>' +
-      offerBox(c.en, 'CT Zero EN', c.en && best != null && c.en.price === best) +
-      offerBox(c.jp, 'CT Zero JP', c.jp && best != null && c.jp.price === best && !(c.en && c.en.price === best)) +
+      offerBox(c.en, 'CT Zero EN', c.pick === 'en') +
+      offerBox(c.jp, 'CT Zero JP', c.pick === 'jp') +
     '</div>' +
     '<div class="foot">' + saveTxt + varTxt + '</div>' +
     (links ? '<div class="links">' + links + '</div>' : '') +
@@ -338,17 +354,18 @@ function render(){
 }
 
 // ---------- Filtri ----------
-function saveUI(){ lsSet(UI_KEY, JSON.stringify({ f: filter, s: sortBy })); }
+function saveUI(){ lsSet(UI_KEY, JSON.stringify({ f: filter })); }
 Array.prototype.forEach.call(document.querySelectorAll('#filters button.chip'), function(b){
   b.classList.toggle('on', b.getAttribute('data-f') === filter);
   b.addEventListener('click', function(){
     filter = b.getAttribute('data-f');
+    sortBy = 'saving'; $('sort').value = sortBy;
     Array.prototype.forEach.call(document.querySelectorAll('#filters button.chip'), function(x){ x.classList.toggle('on', x === b); });
     saveUI(); render();
   });
 });
 $('sort').value = sortBy;
-$('sort').addEventListener('change', function(){ sortBy = this.value; saveUI(); render(); });
+$('sort').addEventListener('change', function(){ sortBy = this.value; render(); });
 var qT; $('q').addEventListener('input', function(){ var v = this.value; clearTimeout(qT); qT = setTimeout(function(){ query = v; render(); }, 150); });
 
 // ---------- Modali ----------

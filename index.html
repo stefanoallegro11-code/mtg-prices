@@ -266,7 +266,10 @@ function needsCheck(c){ return c.bp && (c.match_score == null || c.match_score <
 
 function renderStatus(){
   var s = [];
-  s.push('<span class="pill">Aggiornato <b>' + ago(DATA.updated) + '</b></span>');
+  var up = new Date(DATA.updated);
+  var hhmm = up.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
+  var sameDay = up.toDateString() === new Date().toDateString();
+  s.push('<span class="pill">Ultimo aggiornamento <b>' + (sameDay ? 'oggi' : up.toLocaleDateString('it-IT', { day: 'numeric', month: 'short' })) + ' alle ' + hhmm + '</b> (' + ago(DATA.updated) + ')</span>');
   s.push('<span class="pill"><b>' + DATA.count + '</b> carte</span>');
   s.push('<span class="pill"><b style="color:var(--green)">' + DATA.deals + '</b> occasioni</span>');
   if (runState) s.push('<span class="pill run">⟳ ' + runState + '</span>');

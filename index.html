@@ -73,7 +73,12 @@ select.chip{appearance:none;-webkit-appearance:none;padding-right:11px}
 .foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:10px;flex-wrap:wrap}
 .save{font-weight:700;font-size:14px}
 .save.pos{color:var(--green)} .save.neg{color:var(--red)}
-.var{font-size:11px;color:var(--muted);display:flex;gap:10px;align-items:center}
+.hist{font-size:12px;color:var(--muted);margin-top:8px;background:#120f1b;border:1px solid var(--line);border-radius:9px;padding:8px 10px;line-height:1.55}
+.hist .htitle{font-size:10px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
+.hist b{color:var(--text);font-weight:600}
+.hist b.up{color:var(--red)} .hist b.down{color:var(--green)}
+.hgraph{display:flex;align-items:center;gap:10px;margin-top:4px;font-size:10px}
+.hgraph i{display:inline-block;width:10px;height:3px;border-radius:2px;margin:0 4px 2px 6px;vertical-align:middle}
 .up{color:var(--red)} .down{color:var(--green)}
 .links{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
 .links a{font-size:12px;font-weight:600;background:#1f1a2d;border:1px solid var(--line);border-radius:8px;padding:6px 9px}
@@ -207,7 +212,9 @@ function load(){
 }
 
 // ---------- Storico / variazioni ----------
-function ctMin(e){ var a = [e.en, e.jp].filter(function(x){ return x != null; }); return a.length ? Math.min.apply(null, a) : null; }
+// Prezzo CardTrader di riferimento: inglese; giapponese solo se l'inglese non c'è
+function ctMin(e){ return e.en != null ? e.en : (e.jp != null ? e.jp : null); }
+function ctLang(e){ return e.en != null ? 'EN' : (e.jp != null ? 'JP' : ''); }
 function variation(key){
   var h = HIST[key] || [];
   if (h.length < 2) return null;
@@ -218,9 +225,12 @@ function variation(key){
   var last = h[h.length-1];
   if (base === last) return null;
   var c0 = ctMin(base), c1 = ctMin(last);
+  var sameLang = ctLang(base) === ctLang(last);
   return {
     cm: (base.cm != null && last.cm != null) ? last.cm - base.cm : null,
-    ct: (c0 != null && c1 != null) ? c1 - c0 : null,
+    cm0: base.cm, cm1: last.cm,
+    ct: (c0 != null && c1 != null && sameLang) ? c1 - c0 : null,
+    ct0: c0, ct1: c1, ctLang: ctLang(last),
     days: Math.round((new Date(last.d) - new Date(base.d)) / 86400000)
   };
 }
@@ -237,6 +247,16 @@ function sparkline(key){
     return pts.length > 1 ? '<polyline fill="none" stroke="' + color + '" stroke-width="1.6" points="' + pts.join(' ') + '"/>' : '';
   }
   return '<svg class="spark" width="100" height="24" viewBox="0 0 100 24">' + line(function(e){ return e.cm; }, '#8a83a0') + line(ctMin, '#34d399') + '</svg>';
+}
+function trendLine(label, diff, from, to){
+  if (from == null || to == null) return '';
+  var txt;
+  if (diff == null || Math.abs(diff) < 0.005) txt = '<b>stabile</b> a €' + to.toFixed(2);
+  else {
+    var pct = from ? Math.round(Math.abs(diff) / from * 100) : 0;
+    txt = '<b class="' + (diff > 0 ? 'up' : 'down') + '">' + (diff > 0 ? '▲ salito' : '▼ sceso') + ' di €' + Math.abs(diff).toFixed(2) + ' (' + pct + '%)</b> · da €' + from.toFixed(2) + ' a €' + to.toFixed(2);
+  }
+  return '<div>' + label + ': ' + txt + '</div>';
 }
 function fmtVar(v){
   if (v == null || Math.abs(v) < 0.005) return '<span>=</span>';
@@ -312,7 +332,12 @@ function cardHTML(c){
   } else if (c.error) {
     saveTxt = '<span class="muted" style="font-size:12px">' + esc(c.error) + '</span>';
   }
-  var varTxt = v ? '<span class="var">' + v.days + 'gg · CM ' + fmtVar(v.cm) + ' · CT ' + fmtVar(v.ct) + sparkline(c.key) + '</span>' : '';
+  var varTxt = v
+    ? '<div class="hist"><div class="htitle">Andamento negli ultimi ' + v.days + ' giorni</div>' +
+        trendLine('Cardmarket', v.cm, v.cm0, v.cm1) +
+        trendLine('CardTrader ' + v.ctLang, v.ct, v.ct0, v.ct1) +
+        '<div class="hgraph">' + sparkline(c.key) + '<span><i style="background:#8a83a0"></i>Cardmarket <i style="background:#34d399"></i>CardTrader</span></div></div>'
+    : '<div class="hist muted">Andamento prezzi: disponibile dopo almeno 2 giorni di storico.</div>';
 
   var links = '';
   if (c.bp) links += '<a href="https://www.cardtrader.com/it/cards/' + c.bp + '" target="_blank" rel="noopener">CardTrader →</a>';
@@ -335,7 +360,7 @@ function cardHTML(c){
       offerBox(c.en, 'CT Zero EN', c.pick === 'en') +
       offerBox(c.jp, 'CT Zero JP', c.pick === 'jp') +
     '</div>' +
-    '<div class="foot">' + saveTxt + varTxt + '</div>' +
+    '<div class="foot">' + saveTxt + '</div>' + varTxt +
     (links ? '<div class="links">' + links + '</div>' : '') +
   '</div>';
 }

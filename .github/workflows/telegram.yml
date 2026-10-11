@@ -4,6 +4,11 @@ on:
   schedule:
     - cron: "41 */4 * * *"   # ogni 4 ore (in Italia: 2:41, 6:41, 10:41, 14:41, 18:41, 22:41 con l'ora legale)
   workflow_dispatch: {}       # "Run workflow" per mandare il messaggio subito
+  push:
+    branches: [main]
+    paths:                    # messaggio di prova quando cambia il bot
+      - scripts/telegram_digest.py
+      - .github/workflows/telegram.yml
 
 permissions:
   contents: read

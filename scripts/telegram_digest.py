@@ -52,7 +52,7 @@ def deals(cards):
 def main():
     if not (TG_TOKEN and TG_CHAT):
         print("Mancano i secret TELEGRAM_TOKEN e/o TELEGRAM_CHAT_ID: nessun messaggio inviato.")
-        return
+        sys.exit(1)
     with open(PRICES_FILE, encoding="utf-8") as f:
         data = json.load(f)
     rome = ZoneInfo("Europe/Rome")

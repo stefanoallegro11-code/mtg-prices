@@ -23,14 +23,18 @@ import update_prices as up  # noqa: E402
 
 MIN_CM = float(os.environ.get("DISCOVER_MIN_CM", "15"))
 MAX_CM = float(os.environ.get("DISCOVER_MAX_CM", "80"))   # prezzo Cardmarket massimo considerato
-MIN_SAVING = float(os.environ.get("DISCOVER_MIN_SAVING", "10"))  # sconto minimo in euro rispetto a Cardmarket
+MIN_SAVING = float(os.environ.get("DISCOVER_MIN_SAVING", "7"))  # sconto minimo in euro rispetto a Cardmarket
 SUSPICIOUS_PCT = 70  # sconto oltre il 70%: probabile prezzo Cardmarket poco affidabile
 OUT_FILE = os.path.join(up.DATA_DIR, "discoveries.json")
 
+SPECIAL_SETS = ("sta", "mul", "brr", "wot", "otp", "big", "soa")
 SF_QUERY = ("game:paper is:foil ("
             "set:sld or set:slc or set:slu or set:slp or set:psld or set:spg "
             "or is:fullart or border:borderless or frame:showcase or frame:extendedart "
+            "or is:boosterfun or is:textless or is:alternate or (frame:1997 date>=2018) "
+            "or " + " or ".join("set:" + x for x in SPECIAL_SETS) + " "
             "or date<=fut)")
+LANGS = ("en",)  # scoperte: solo offerte in inglese
 
 log = up.log
 SF_STATS = {"incomplete": False}
@@ -96,7 +100,11 @@ def category(d):
         return "Extended art"
     if d.get("full_art"):
         return "Full art"
-    return "Foil vintage"
+    if d.get("released_at", "9999") <= "2007-05-04":
+        return "Foil vintage"
+    if d.get("frame") == "1997":
+        return "Retro frame"
+    return "Special art"
 
 
 def pick_blueprint(d, idx):
@@ -167,7 +175,7 @@ def main():
     found, failed_exp = [], 0
     for n, (eid, items) in enumerate(sorted(by_exp.items(), key=lambda x: -len(x[1])), 1):
         offers = {}
-        for lang in up.LANGS:
+        for lang in LANGS:
             g = expansion_products(eid, lang)
             if g is None:
                 failed_exp += 1
@@ -178,8 +186,8 @@ def main():
                     offers.setdefault(bp["id"], {})[lang] = o
         for d, bp, sc in items:
             o = offers.get(bp["id"], {})
-            en, jp = o.get("en"), o.get("jp")
-            ref, lang = (en, "en") if en else ((jp, "jp") if jp else (None, None))
+            en, jp = o.get("en"), None
+            ref, lang = (en, "en") if en else (None, None)
             if not ref:
                 continue
             cm = round(float(d["prices"]["eur_foil"]), 2)

@@ -192,7 +192,7 @@ var VIEW = location.hash === '#scoperte' ? 'disc' : 'list';
 var FILTERS = {
   list: [['all','Tutte'],['deal','Occasioni'],['new','Nuove'],['nomatch','Senza CardTrader'],['check','Da verificare']],
   disc: [['dall','Tutte'],['dnew','Nuove'],['cat:Secret Lair','Secret Lair'],['cat:Special Guests','Special Guests'],
-         ['cat:Borderless','Borderless'],['cat:Showcase','Showcase'],['cat:Extended art','Extended art'],['cat:Full art','Full art'],['cat:Foil vintage','Foil vintage ≤ FUT']]
+         ['cat:Borderless','Borderless'],['cat:Showcase','Showcase'],['cat:Extended art','Extended art'],['cat:Full art','Full art'],['cat:Special art','Special art'],['cat:Retro frame','Retro frame'],['cat:Foil vintage','Foil vintage ≤ FUT']]
 };
 var lastFilter = { list: 'all', disc: 'dall' };
 try { var ui = JSON.parse(lsGet(UI_KEY) || '{}'); if (ui.f) lastFilter.list = ui.f; if (ui.fd && ui.fd !== 'd5') lastFilter.disc = ui.fd; } catch(e){}
@@ -437,7 +437,7 @@ function setView(v, first){
   Array.prototype.forEach.call(document.querySelectorAll('#tabs .tab'), function(t){ t.classList.toggle('on', t.getAttribute('data-v') === v); });
   $('btnList').style.display = v === 'disc' ? 'none' : '';
   $('intro').textContent = v === 'disc'
-    ? 'Carte fuori dalla tua lista (Secret Lair, Special Guests, borderless, showcase, extended art, full art, foil fino a Visione Futura) con Cardmarket tra €' + ((DISC && DISC.min_cm) || 15) + ' e €' + ((DISC && DISC.max_cm) || 80) + ' e offerta CardTrader Zero almeno €' + ((DISC && DISC.min_saving) || 10) + ' più bassa.'
+    ? 'Carte fuori dalla tua lista (Secret Lair, Special Guests, borderless, showcase, extended art, full art, special art, retro frame, foil fino a Visione Futura) con Cardmarket tra €' + ((DISC && DISC.min_cm) || 15) + ' e €' + ((DISC && DISC.max_cm) || 80) + ' e offerta CardTrader Zero in inglese almeno €' + ((DISC && DISC.min_saving) || 10) + ' più bassa.'
     : '';
   try { history.replaceState(null, '', v === 'disc' ? '#scoperte' : location.pathname + location.search); } catch(e){}
   DATA = v === 'disc' ? DISC : LIST;

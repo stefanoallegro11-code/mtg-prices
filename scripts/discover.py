@@ -32,6 +32,7 @@ SF_QUERY = ("game:paper is:foil ("
             "or date<=fut)")
 
 log = up.log
+SF_STATS = {"incomplete": False}
 
 
 def scryfall_candidates():
@@ -39,9 +40,15 @@ def scryfall_candidates():
         {"q": SF_QUERY, "unique": "prints", "order": "eur"})
     out, pages, total = [], 0, None
     while url:
-        res = up.http_json(url)
+        res = None
+        for attempt in range(6):  # Scryfall a volte rallenta: riprovo con pause crescenti
+            res = up.http_json(url)
+            if res:
+                break
+            time.sleep(5 * (attempt + 1))
         if not res:
-            log("  ! Scryfall: pagina non letta, mi fermo a", len(out))
+            log("  ! Scryfall: pagina non letta dopo 6 tentativi, mi fermo a", len(out))
+            SF_STATS["incomplete"] = True
             break
         total = res.get("total_cards", total)
         for d in res.get("data", []):
@@ -54,6 +61,7 @@ def scryfall_candidates():
         pages += 1
         url = res.get("next_page") if res.get("has_more") else None
         time.sleep(0.12)
+    SF_STATS.update({"total": total, "pages": pages, "priced": len(out)})
     log("Scryfall: %s stampe foil nei criteri, %d con Cardmarket foil >= €%g (%d pagine)" % (
         total, len(out), MIN_CM, pages))
     return out
@@ -210,6 +218,7 @@ def main():
         "updated": datetime.now(timezone.utc).isoformat(),
         "duration_s": int((datetime.now(timezone.utc) - started).total_seconds()),
         "min_cm": MIN_CM,
+        "scryfall": SF_STATS,
         "candidates": len(cands), "matched": matched, "expansions": len(by_exp),
         "failed_requests": failed_exp,
         "count": len(found),

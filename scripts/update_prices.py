@@ -408,15 +408,10 @@ def match_blueprint(card, sf, alt, idx):
 # --------------------------------------------------------------------------
 # Offerte CardTrader Zero
 # --------------------------------------------------------------------------
-def best_offer(bp_id, foil, lang):
-    q = urllib.parse.urlencode({"blueprint_id": bp_id, "language": lang, "foil": "true" if foil else "false"})
-    raw = ct_get("/marketplace/products?" + q)
-    time.sleep(0.35)
-    if raw is None:
-        return None, False
-    prods = raw if isinstance(raw, list) else (raw.get(str(bp_id)) or [])
+def pick_offer(prods, foil, lang):
+    """Offerta CardTrader Zero piu' economica tra i prodotti, lingua e foil richiesti, condizione >= SP."""
     pool = []
-    for p in prods:
+    for p in prods or []:
         ph = p.get("properties_hash") or {}
         user = p.get("user") or {}
         if user.get("can_sell_via_hub") is not True or p.get("on_vacation"):
@@ -432,7 +427,7 @@ def best_offer(bp_id, foil, lang):
             continue
         pool.append((cents, p))
     if not pool:
-        return None, True
+        return None
     pool.sort(key=lambda x: x[0])
     cents, p = pool[0]
     ph = p.get("properties_hash") or {}
@@ -444,7 +439,17 @@ def best_offer(bp_id, foil, lang):
         "country": (p.get("user") or {}).get("country_code"),
         "qty": p.get("quantity"),
         "offers": len(pool),
-    }, True
+    }
+
+
+def best_offer(bp_id, foil, lang):
+    q = urllib.parse.urlencode({"blueprint_id": bp_id, "language": lang, "foil": "true" if foil else "false"})
+    raw = ct_get("/marketplace/products?" + q)
+    time.sleep(0.35)
+    if raw is None:
+        return None, False
+    prods = raw if isinstance(raw, list) else (raw.get(str(bp_id)) or [])
+    return pick_offer(prods, foil, lang), True
 
 
 # --------------------------------------------------------------------------

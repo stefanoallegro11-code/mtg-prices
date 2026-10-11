@@ -99,6 +99,11 @@ select.chip{appearance:none;-webkit-appearance:none;padding-right:11px}
 .zoom img{max-width:44vw;max-height:70vh;border-radius:12px}
 .zoom figcaption{color:var(--muted);font-size:12px;margin-top:6px}
 .spark{display:block}
+.tabs{display:flex;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px;margin:4px auto 10px;max-width:420px}
+.tab{flex:1;background:none;border:0;color:var(--muted);font-weight:600;font-size:14px;padding:9px 6px;border-radius:9px}
+.tab.on{background:linear-gradient(180deg,#e2c25a,#b8922a);color:#1a1405}
+.tag.cat{background:#1e2a44;color:#bfdbfe}
+.intro{font-size:12px;color:var(--muted);text-align:center;margin:-2px 0 8px}
 </style>
 </head>
 <body>
@@ -113,16 +118,17 @@ select.chip{appearance:none;-webkit-appearance:none;padding-right:11px}
       <button class="btn" id="btnSettings">⚙ Impostazioni</button>
     </div>
   </header>
+  <div class="tabs" id="tabs">
+    <button class="tab" data-v="list">La mia lista</button>
+    <button class="tab" data-v="disc">💎 Scoperte</button>
+  </div>
+  <div class="intro" id="intro"></div>
   <div id="banners"></div>
 
   <div class="toolbar">
     <input class="search" id="q" type="search" placeholder="Cerca carta o set…" autocomplete="off">
     <div class="chips" id="filters">
-      <button class="chip on" data-f="all">Tutte</button>
-      <button class="chip" data-f="deal">Occasioni</button>
-      <button class="chip" data-f="new">Nuove</button>
-      <button class="chip" data-f="nomatch">Senza CardTrader</button>
-      <button class="chip" data-f="check">Da verificare</button>
+      <span id="chipBox" style="display:contents"></span>
       <select class="chip" id="sort">
         <option value="saving">↓ Risparmio € (EN)</option>
         <option value="pct">↓ Risparmio % (EN)</option>
@@ -181,8 +187,16 @@ var TOK_KEY = 'mtg_gh_pat_v1', UI_KEY = 'mtg_ui_v1';
 function lsGet(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
 function lsSet(k,v){ try { if (v == null) localStorage.removeItem(k); else localStorage.setItem(k,v); } catch(e){} }
 
-var DATA = null, HIST = {}, filter = 'all', sortBy = 'saving', query = '';
-try { var ui = JSON.parse(lsGet(UI_KEY) || '{}'); filter = ui.f || 'all'; } catch(e){}
+var DATA = null, LIST = null, DISC = null, HIST = {}, filter = 'all', sortBy = 'saving', query = '';
+var VIEW = location.hash === '#scoperte' ? 'disc' : 'list';
+var FILTERS = {
+  list: [['all','Tutte'],['deal','Occasioni'],['new','Nuove'],['nomatch','Senza CardTrader'],['check','Da verificare']],
+  disc: [['dall','Tutte'],['dnew','Nuove'],['cat:Secret Lair','Secret Lair'],['cat:Special Guests','Special Guests'],
+         ['cat:Borderless','Borderless'],['cat:Showcase','Showcase'],['cat:Extended art','Extended art'],['cat:Full art','Full art'],['cat:Foil vintage','Foil vintage ≤ FUT']]
+};
+var lastFilter = { list: 'all', disc: 'dall' };
+try { var ui = JSON.parse(lsGet(UI_KEY) || '{}'); if (ui.f) lastFilter.list = ui.f; if (ui.fd && ui.fd !== 'd5') lastFilter.disc = ui.fd; } catch(e){}
+filter = lastFilter[VIEW];
 // Ordinamento: sempre dal più conveniente quando si apre la pagina o si cambia vista
 sortBy = 'saving';
 
@@ -206,8 +220,13 @@ function fetchJSON(path){
     .catch(function(){ return fetch(path + bust, { cache: 'no-store' }).then(function(r){ if (!r.ok) throw new Error(r.status); return r.json(); }); });
 }
 function load(){
-  return Promise.all([fetchJSON('data/prices.json'), fetchJSON('data/history.json').catch(function(){ return {}; })])
-    .then(function(res){ DATA = res[0]; HIST = res[1] || {}; DATA.cards.forEach(applyRule); DATA.deals = DATA.cards.filter(function(c){ return c.deal; }).length; render(); })
+  return Promise.all([fetchJSON('data/prices.json'), fetchJSON('data/history.json').catch(function(){ return {}; }), fetchJSON('data/discoveries.json').catch(function(){ return null; })])
+    .then(function(res){
+      LIST = res[0]; HIST = res[1] || {}; DISC = res[2];
+      LIST.cards.forEach(applyRule); LIST.deals = LIST.cards.filter(function(c){ return c.deal; }).length;
+      if (DISC) { DISC.cards.forEach(function(c){ c.disc = true; applyRule(c); }); DISC.deals = DISC.cards.filter(function(c){ return c.deal; }).length; }
+      setView(VIEW, true);
+    })
     .catch(function(e){ $('status').innerHTML = '<span class="pill err">Dati non ancora disponibili</span>'; $('list').innerHTML = '<div class="empty">Il primo aggiornamento non è ancora terminato. Riprova tra qualche minuto.</div>'; });
 }
 
@@ -281,7 +300,7 @@ function applyRule(c){
 }
 
 // ---------- Render ----------
-function isNew(c){ return c.deal && c.deal_since && (Date.now() - new Date(c.deal_since).getTime()) < 36*3600000; }
+function isNew(c){ if (c.disc) return !!c.new; return c.deal && c.deal_since && (Date.now() - new Date(c.deal_since).getTime()) < 36*3600000; }
 function needsCheck(c){ return c.bp && (c.match_score == null || c.match_score < 8); }
 
 function renderStatus(){
@@ -290,8 +309,13 @@ function renderStatus(){
   var hhmm = up.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
   var sameDay = up.toDateString() === new Date().toDateString();
   s.push('<span class="pill">Ultimo aggiornamento <b>' + (sameDay ? 'oggi' : up.toLocaleDateString('it-IT', { day: 'numeric', month: 'short' })) + ' alle ' + hhmm + '</b> (' + ago(DATA.updated) + ')</span>');
-  s.push('<span class="pill"><b>' + DATA.count + '</b> carte</span>');
-  s.push('<span class="pill"><b style="color:var(--green)">' + DATA.deals + '</b> occasioni</span>');
+  if (VIEW === 'disc') {
+    s.push('<span class="pill"><b style="color:var(--green)">' + DATA.count + '</b> scoperte</span>');
+    s.push('<span class="pill">sconto ≥ <b>€' + (DATA.min_saving || 10) + '</b></span>');
+  } else {
+    s.push('<span class="pill"><b>' + DATA.count + '</b> carte</span>');
+    s.push('<span class="pill"><b style="color:var(--green)">' + DATA.deals + '</b> occasioni</span>');
+  }
   if (runState) s.push('<span class="pill run">⟳ ' + runState + '</span>');
   $('status').innerHTML = s.join('');
   var b = '';
@@ -312,7 +336,9 @@ function cardHTML(c){
   var tags = '<span class="tag">' + esc(c.set.toUpperCase()) + ' #' + esc(c.collector) + '</span>';
   if (c.foil) tags += '<span class="tag foil">FOIL</span>';
   if (c.qty > 1) tags += '<span class="tag qty">×' + c.qty + '</span>';
+  if (c.category) tags += '<span class="tag cat">' + esc(c.category) + '</span>';
   if (c.variant) tags += '<span class="tag">' + esc(c.variant) + '</span>';
+  if (c.suspicious) tags += '<span class="tag warn" title="Sconto molto alto: il prezzo Cardmarket potrebbe essere poco affidabile">⚠ sconto sospetto</span>';
   if (isNew(c)) tags += '<span class="tag new">NUOVA</span>';
   if (c.bp) tags += needsCheck(c) ? '<span class="tag warn" title="' + esc(c.match) + '">⚠ verifica versione</span>' : '<span class="tag ok" title="' + esc(c.match) + '">✓ versione</span>';
   if (c.stale) tags += '<span class="tag warn">dato precedente</span>';
@@ -332,7 +358,7 @@ function cardHTML(c){
   } else if (c.error) {
     saveTxt = '<span class="muted" style="font-size:12px">' + esc(c.error) + '</span>';
   }
-  var varTxt = v
+  var varTxt = c.disc ? '' : v
     ? '<div class="hist"><div class="htitle">Andamento negli ultimi ' + v.days + ' giorni</div>' +
         trendLine('Cardmarket', v.cm, v.cm0, v.cm1) +
         trendLine('CardTrader ' + v.ctLang, v.ct, v.ct0, v.ct1) +
@@ -348,7 +374,7 @@ function cardHTML(c){
 
   return '<div class="item' + (c.deal ? ' deal' : '') + '">' +
     '<div class="top"><div class="imgs">' +
-      '<div class="imgbox">' + sfImg + '<span>Manabox</span></div>' +
+      '<div class="imgbox">' + sfImg + '<span>' + (c.disc ? 'Scryfall' : 'Manabox') + '</span></div>' +
       '<div class="imgbox">' + ctImg + '<span>CardTrader</span></div>' +
     '</div><div class="info">' +
       '<div class="name">' + esc(c.name) + '</div>' +
@@ -376,6 +402,8 @@ function render(){
     if (filter === 'new') return isNew(c);
     if (filter === 'nomatch') return !c.bp || (!c.en && !c.jp);
     if (filter === 'check') return needsCheck(c);
+    if (filter === 'dnew') return !!c.new;
+    if (filter.indexOf('cat:') === 0) return c.category === filter.slice(4);
     return true;
   });
   var key = {
@@ -390,16 +418,43 @@ function render(){
 }
 
 // ---------- Filtri ----------
-function saveUI(){ lsSet(UI_KEY, JSON.stringify({ f: filter })); }
-Array.prototype.forEach.call(document.querySelectorAll('#filters button.chip'), function(b){
-  b.classList.toggle('on', b.getAttribute('data-f') === filter);
-  b.addEventListener('click', function(){
-    filter = b.getAttribute('data-f');
-    sortBy = 'saving'; $('sort').value = sortBy;
-    Array.prototype.forEach.call(document.querySelectorAll('#filters button.chip'), function(x){ x.classList.toggle('on', x === b); });
-    saveUI(); render();
-  });
+function saveUI(){ lastFilter[VIEW] = filter; lsSet(UI_KEY, JSON.stringify({ f: lastFilter.list, fd: lastFilter.disc })); }
+function drawChips(){
+  $('chipBox').innerHTML = FILTERS[VIEW].map(function(f){
+    return '<button class="chip' + (f[0] === filter ? ' on' : '') + '" data-f="' + esc(f[0]) + '">' + esc(f[1]) + '</button>';
+  }).join('');
+}
+$('chipBox').addEventListener('click', function(e){
+  var b = e.target.closest('button.chip'); if (!b) return;
+  filter = b.getAttribute('data-f');
+  sortBy = 'saving'; $('sort').value = sortBy;
+  saveUI(); drawChips(); render();
 });
+function setView(v, first){
+  VIEW = v;
+  filter = lastFilter[v];
+  sortBy = 'saving'; $('sort').value = sortBy;
+  Array.prototype.forEach.call(document.querySelectorAll('#tabs .tab'), function(t){ t.classList.toggle('on', t.getAttribute('data-v') === v); });
+  $('btnList').style.display = v === 'disc' ? 'none' : '';
+  $('intro').textContent = v === 'disc'
+    ? 'Carte fuori dalla tua lista (Secret Lair, Special Guests, borderless, showcase, extended art, full art, foil fino a Visione Futura) con Cardmarket ≥ €' + ((DISC && DISC.min_cm) || 15) + ' e offerta CardTrader Zero almeno €' + ((DISC && DISC.min_saving) || 10) + ' più bassa.'
+    : '';
+  try { history.replaceState(null, '', v === 'disc' ? '#scoperte' : location.pathname + location.search); } catch(e){}
+  DATA = v === 'disc' ? DISC : LIST;
+  drawChips();
+  if (!DATA) {
+    if (LIST) { DATA = LIST; renderStatus(); DATA = null; }
+    $('list').innerHTML = '<div class="empty">Le scoperte non sono ancora pronte: la prima ricerca è in corso. Riprova tra una mezz\'ora.</div>';
+    return;
+  }
+  if (!first) window.scrollTo(0, 0);
+  render();
+}
+window.addEventListener('hashchange', function(){ var v = location.hash === '#scoperte' ? 'disc' : 'list'; if (v !== VIEW && LIST) setView(v); });
+Array.prototype.forEach.call(document.querySelectorAll('#tabs .tab'), function(t){
+  t.addEventListener('click', function(){ if (t.getAttribute('data-v') !== VIEW) setView(t.getAttribute('data-v')); });
+});
+drawChips();
 $('sort').value = sortBy;
 $('sort').addEventListener('change', function(){ sortBy = this.value; render(); });
 var qT; $('q').addEventListener('input', function(){ var v = this.value; clearTimeout(qT); qT = setTimeout(function(){ query = v; render(); }, 150); });
@@ -516,7 +571,7 @@ var runState = '', runFailed = false, watchT = null;
 $('btnRefresh').addEventListener('click', function(){
   if (needTok()) return;
   var btn = this; btn.disabled = true;
-  gh('/actions/workflows/update.yml/dispatches', { method: 'POST', body: { ref: BRANCH } })
+  gh('/actions/workflows/' + (VIEW === 'disc' ? 'discover.yml' : 'update.yml') + '/dispatches', { method: 'POST', body: { ref: BRANCH } })
     .then(function(){ runState = 'Aggiornamento avviato'; if (DATA) renderStatus(); watchRun(true); })
     .catch(function(e){ alert('Non riesco ad avviare l\'aggiornamento: ' + e.message + (e.status === 403 ? '\nIl token deve avere il permesso "Actions: Read and write".' : '')); })
     .then(function(){ setTimeout(function(){ btn.disabled = false; }, 4000); });

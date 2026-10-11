@@ -8,13 +8,13 @@ on:
     branches: [main]
     paths:
       - cards.txt             # lista modificata -> aggiorna subito
-      - scripts/**
+      - scripts/update_prices.py
 
 permissions:
   contents: write
 
 concurrency:
-  group: update-prices
+  group: cardtrader-api        # mai in contemporanea con "Scoperte"
   cancel-in-progress: false
 
 jobs:

@@ -581,11 +581,14 @@ def main():
         row["pick"] = pick
         row["ct_best"] = best
         row["saving"] = round(cm - best, 2) if (cm is not None and best is not None) else None
-        row["deal"] = bool(pick and row["saving"] is not None and row["saving"] > 0)
+        # Occasione: offerta inglese sotto CM; la giapponese conta solo se non c'e' l'inglese
+        ref_p = en_p if en_p is not None else jp_p
+        row["deal_saving"] = round(cm - ref_p, 2) if (cm is not None and ref_p is not None) else None
+        row["deal"] = bool(row["deal_saving"] is not None and row["deal_saving"] > 0)
 
         if row["deal"]:
             row["deal_since"] = old.get("deal_since") if old.get("deal") else started.isoformat()
-            if not old.get("deal") and row["saving"] >= ALERT_MIN_SAVING:
+            if not old.get("deal") and row["deal_saving"] >= ALERT_MIN_SAVING:
                 alerts.append(row)
         else:
             row["deal_since"] = None
@@ -626,11 +629,11 @@ def main():
         sum(1 for r in out if r["en"] or r["jp"])))
 
     if alerts:
-        alerts.sort(key=lambda r: -r["saving"])
+        alerts.sort(key=lambda r: -r["deal_saving"])
         lines = ["<b>Nuove occasioni su CardTrader Zero</b>"]
         for r in alerts[:15]:
             lines.append("• %s (%s)%s: CM €%.2f → CT €%.2f (−€%.2f)\nhttps://www.cardtrader.com/it/cards/%s" % (
-                r["name"], r["set"].upper(), " foil" if r["foil"] else "", r["cm"], r["ct_best"], r["saving"], r["bp"]))
+                r["name"], r["set"].upper(), " foil" if r["foil"] else "", r["cm"], r["cm"] - r["deal_saving"], r["deal_saving"], r["bp"]))
         telegram("\n".join(lines))
 
     if ct_error:

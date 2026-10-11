@@ -254,10 +254,10 @@ function applyRule(c){
   var ref = pick ? c[pick].price : (en != null || jp != null ? Math.min(en != null ? en : Infinity, jp != null ? jp : Infinity) : null);
   c.ct_best = ref;
   c.saving = (cm != null && ref != null) ? Math.round((cm - ref) * 100) / 100 : null;
-  c.deal = !!(pick && cm != null && c.saving > 0);
-  // Ordinamento: risparmio dell'offerta inglese; se non c'è l'inglese, quello della giapponese
+  // Ordinamento e occasioni: conta l'offerta inglese; la giapponese solo se l'inglese non c'è
   c.sortLang = en != null ? 'en' : (jp != null ? 'jp' : null);
   c.sortSaving = (cm != null && c.sortLang) ? Math.round((cm - c[c.sortLang].price) * 100) / 100 : null;
+  c.deal = !!(c.sortSaving != null && c.sortSaving > 0);
 }
 
 // ---------- Render ----------

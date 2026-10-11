@@ -59,7 +59,8 @@ def main():
     upd = datetime.fromisoformat(data["updated"]).astimezone(rome)
     ds = deals(data.get("cards", []))
 
-    head = "🔥 <b>%d occasioni su CardTrader Zero</b>\nPrezzi delle %s" % (len(ds), upd.strftime("%H:%M del %d/%m"))
+    head = "🔥 <b>%d occasioni su CardTrader Zero</b>\nPrezzi delle %s\n🌐 <a href=\"%s\">Apri MTG Price Hunter</a>" % (
+        len(ds), upd.strftime("%H:%M del %d/%m"), PAGE_URL)
     if not ds:
         send(head + "\n\nNessuna carta sotto il prezzo Cardmarket in questo momento.\n\n" + PAGE_URL)
         return
@@ -73,7 +74,7 @@ def main():
         lines.append("%d. %s (%s)%s\n    CM €%.2f → %s €%.2f · <b>−€%.2f</b> (%d%%) · %s" % (
             i, title, c["set"].upper(), " ✨" if c.get("foil") else "",
             c["cm"], lang, o["price"], sv, pct, html.escape(o.get("cond") or "")))
-    foot = "\n📊 Tutte le carte: " + PAGE_URL
+    foot = "\n🌐 <a href=\"%s\">Apri MTG Price Hunter</a>" % PAGE_URL
 
     # Divide in piu' messaggi se troppo lungo
     msgs, cur = [], head + "\n"

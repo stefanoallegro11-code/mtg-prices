@@ -106,8 +106,13 @@ LINE_RE = re.compile(r"^(\d+)\s+(.+?)\s+\(([A-Za-z0-9]+)\)\s+(\S+)(.*)$")
 
 
 def clean_star(s):
-    # "58â˜…" (stella corrotta) -> "58★"
-    return s.replace("â˜…", "★").replace("â˜…", "★")
+    """Ripara i caratteri rovinati dall'export (es. "58â˜…" -> "58★", "PalantÃ­r" -> "Palantír")."""
+    if any(ch in s for ch in "ÃÂâ"):
+        try:
+            s = s.encode("cp1252").decode("utf-8")
+        except (UnicodeEncodeError, UnicodeDecodeError):
+            s = s.replace("\u00e2\u02dc\u2026", "\u2605")
+    return s
 
 
 def parse_cards(text):
@@ -120,15 +125,15 @@ def parse_cards(text):
         if not m:
             log("  ? riga non riconosciuta:", line)
             continue
-        rest = m.group(5)
-        foil = "*F*" in rest.upper() or "*E*" in rest.upper()
+        flags = {t.strip("*").upper() for t in m.group(5).split()}
+        foil = "F" in flags or "E" in flags
         card = {
             "qty": int(m.group(1)),
             "name": m.group(2).strip(),
             "set": m.group(3).lower(),
             "collector": m.group(4).strip(),
             "foil": foil,
-            "etched": "*E*" in rest.upper(),
+            "etched": "E" in flags,
         }
         card["key"] = "%s-%s-%s" % (card["set"], card["collector"].lower(), "f" if foil else "n")
         if card["key"] in seen:

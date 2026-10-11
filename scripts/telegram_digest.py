@@ -94,9 +94,9 @@ def main_discoveries(top=50):
         data = json.load(f)
     upd = datetime.fromisoformat(data["updated"]).astimezone(ZoneInfo("Europe/Rome"))
     cards = sorted([c for c in data.get("cards", []) if c.get("saving", 0) > 0], key=lambda c: -c["saving"])
-    head = ("💎 <b>Scoperte: le %d più scontate</b>\n%d carte fuori dalla tua lista con sconto ≥ €%g su Cardmarket\n"
+    head = ("💎 <b>Scoperte: le %d più scontate</b>\n%d carte fuori dalla tua lista (Cardmarket €%g–%g) con sconto ≥ €%g\n"
             "Prezzi delle %s\n🌐 <a href=\"%s\">Apri la sezione Scoperte</a>") % (
-        min(top, len(cards)), len(cards), data.get("min_saving", 10), upd.strftime("%H:%M del %d/%m"), PAGE_URL + "#scoperte")
+        min(top, len(cards)), len(cards), data.get("min_cm", 15), data.get("max_cm", 80), data.get("min_saving", 10), upd.strftime("%H:%M del %d/%m"), PAGE_URL + "#scoperte")
     lines = []
     for i, c in enumerate(cards[:top], 1):
         o = c.get(c.get("ref_lang") or "en") or {}

@@ -22,6 +22,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import update_prices as up  # noqa: E402
 
 MIN_CM = float(os.environ.get("DISCOVER_MIN_CM", "15"))
+MAX_CM = float(os.environ.get("DISCOVER_MAX_CM", "80"))   # prezzo Cardmarket massimo considerato
 MIN_SAVING = float(os.environ.get("DISCOVER_MIN_SAVING", "10"))  # sconto minimo in euro rispetto a Cardmarket
 SUSPICIOUS_PCT = 70  # sconto oltre il 70%: probabile prezzo Cardmarket poco affidabile
 OUT_FILE = os.path.join(up.DATA_DIR, "discoveries.json")
@@ -56,14 +57,14 @@ def scryfall_candidates():
                 eur = float((d.get("prices") or {}).get("eur_foil") or 0)
             except ValueError:
                 eur = 0
-            if eur >= MIN_CM:
+            if MIN_CM <= eur <= MAX_CM:
                 out.append(d)
         pages += 1
         url = res.get("next_page") if res.get("has_more") else None
         time.sleep(0.12)
     SF_STATS.update({"total": total, "pages": pages, "priced": len(out)})
-    log("Scryfall: %s stampe foil nei criteri, %d con Cardmarket foil >= €%g (%d pagine)" % (
-        total, len(out), MIN_CM, pages))
+    log("Scryfall: %s stampe foil nei criteri, %d con Cardmarket foil tra €%g e €%g (%d pagine)" % (
+        total, len(out), MIN_CM, MAX_CM, pages))
     return out
 
 
@@ -217,7 +218,7 @@ def main():
     result = {
         "updated": datetime.now(timezone.utc).isoformat(),
         "duration_s": int((datetime.now(timezone.utc) - started).total_seconds()),
-        "min_cm": MIN_CM,
+        "min_cm": MIN_CM, "max_cm": MAX_CM,
         "scryfall": SF_STATS,
         "candidates": len(cands), "matched": matched, "expansions": len(by_exp),
         "failed_requests": failed_exp,

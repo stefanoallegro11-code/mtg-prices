@@ -205,7 +205,7 @@ var FILTERS = {
   disc: [['dall','Tutte'],['dnew','Nuove'],['cat:Secret Lair','Secret Lair'],['cat:Special Guests','Special Guests'],
          ['cat:Borderless','Borderless'],['cat:Showcase','Showcase'],['cat:Extended art','Extended art'],['cat:Full art','Full art'],['cat:Special art','Special art'],['cat:Retro frame','Retro frame'],['cat:Foil vintage','Foil vintage ≤ FUT']]
 };
-FILTERS.coll = [['all','Tutte'],['cnoprice','Senza prezzo CT'],['cfoil','Solo foil'],['cnonfoil','Solo non foil'],['check','Da verificare']];
+FILTERS.coll = [['all','Tutte'],['canom','⚠ Prezzo anomalo'],['cnoprice','Senza prezzo CT'],['cfoil','Solo foil'],['cnonfoil','Solo non foil'],['check','Da verificare']];
 var lastFilter = { list: 'all', disc: 'dall', coll: 'all' };
 // Fasce di prezzo Cardmarket (solo Scoperte), combinabili con gli altri filtri
 var PRICE_BANDS = [['','Tutti i prezzi'],['15-25','€15–25'],['26-35','€26–35'],['36-50','€36–50'],['50+','> €50']];
@@ -250,7 +250,7 @@ function load(){
       LIST.cards.forEach(applyRule); LIST.deals = LIST.cards.filter(function(c){ return c.deal; }).length;
       if (DISC) { DISC.cards.forEach(function(c){ c.disc = true; applyRule(c); }); DISC.deals = DISC.cards.filter(function(c){ return c.deal; }).length; }
       COLL = res[3];
-      if (COLL) COLL.cards.forEach(function(c){ c.coll = true; applyRule(c); c.pick = c.ref_lang; });
+      if (COLL) prepColl(COLL);
       setView(VIEW, true);
     })
     .catch(function(e){ $('status').innerHTML = '<span class="pill err">Dati non ancora disponibili</span>'; $('list').innerHTML = '<div class="empty">Il primo aggiornamento non è ancora terminato. Riprova tra qualche minuto.</div>'; });
@@ -325,6 +325,35 @@ function applyRule(c){
   c.deal = !!(c.sortSaving != null && c.sortSaving > 0);
 }
 
+// ---------- Collezione: valori e totali ----------
+// Prezzo CardTrader Zero (EN, JP solo se manca EN); se non c'è, prezzo di mercato Cardmarket.
+// Totale prudente: per ogni carta il più basso tra CardTrader e Cardmarket.
+function prepColl(D){
+  var tCt = 0, tCm = 0, tSafe = 0, priced = 0, anom = 0, fromCm = 0;
+  D.cards.forEach(function(c){
+    c.coll = true; applyRule(c);
+    var ref = c.en || c.jp;
+    c.ref_lang = c.en ? 'en' : (c.jp ? 'jp' : null);
+    c.pick = c.ref_lang;
+    c.cm_value = c.cm != null ? Math.round(c.cm * c.qty * 100) / 100 : null;
+    if (ref) { c.unit = ref.price; c.source = 'ct'; }
+    else if (c.cm != null) { c.unit = c.cm; c.source = 'cm'; }
+    else { c.unit = null; c.source = null; }
+    c.value = c.unit != null ? Math.round(c.unit * c.qty * 100) / 100 : null;
+    c.anomalous = !!(ref && c.cm && ref.price > 2 * c.cm);
+    var cands = [ref ? ref.price : null, c.cm].filter(function(x){ return x != null; });
+    c.safe_unit = cands.length ? Math.min.apply(null, cands) : null;
+    c.safe_value = c.safe_unit != null ? Math.round(c.safe_unit * c.qty * 100) / 100 : null;
+    if (c.value != null) { tCt += c.value; priced += c.qty; }
+    if (c.cm_value != null) tCm += c.cm_value;
+    if (c.safe_value != null) tSafe += c.safe_value;
+    if (c.anomalous) anom++;
+    if (c.source === 'cm') fromCm += c.qty;
+  });
+  D.total_ct = tCt; D.total_cm = tCm; D.total_safe = tSafe; D.priced_copies = priced; D.anomalous = anom; D.from_cm = fromCm;
+}
+function euroBig(v){ return '€' + v.toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+
 // ---------- Render ----------
 function isNew(c){ if (c.disc) return !!c.new; return c.deal && c.deal_since && (Date.now() - new Date(c.deal_since).getTime()) < 36*3600000; }
 function needsCheck(c){ return c.bp && (c.match_score == null || c.match_score < 8); }
@@ -366,6 +395,7 @@ function cardHTML(c){
   if (c.qty > 1) tags += '<span class="tag qty">×' + c.qty + '</span>';
   if (c.category) tags += '<span class="tag cat">' + esc(c.category) + '</span>';
   if (c.variant) tags += '<span class="tag">' + esc(c.variant) + '</span>';
+  if (c.anomalous) tags += '<span class="tag warn" title="Offerta CardTrader più del doppio del prezzo Cardmarket">⚠ prezzo CT anomalo</span>';
   if (c.suspicious) tags += '<span class="tag warn" title="Sconto molto alto: il prezzo Cardmarket potrebbe essere poco affidabile">⚠ sconto sospetto</span>';
   if (isNew(c)) tags += '<span class="tag new">NUOVA</span>';
   if (c.bp) tags += needsCheck(c) ? '<span class="tag warn" title="' + esc(c.match) + '">⚠ verifica versione</span>' : '<span class="tag ok" title="' + esc(c.match) + '">✓ versione</span>';
@@ -388,7 +418,8 @@ function cardHTML(c){
   }
   if (c.coll) {
     saveTxt = c.value != null
-      ? '<span class="value">Valore: ' + (c.qty > 1 ? c.qty + ' × €' + c.unit.toFixed(2) + ' = ' : '') + '€' + c.value.toFixed(2) + ' <span class="muted" style="font-weight:500">(' + (c.ref_lang || '').toUpperCase() + ')</span></span>' +
+      ? '<span class="value">Valore: ' + (c.qty > 1 ? c.qty + ' × €' + c.unit.toFixed(2) + ' = ' : '') + '€' + c.value.toFixed(2) + ' <span class="muted" style="font-weight:500">(' + (c.source === 'cm' ? 'prezzo Cardmarket, non trovata su CT Zero' : 'CT ' + (c.ref_lang || '').toUpperCase()) + ')</span></span>' +
+        (c.anomalous ? ' <span class="muted" style="font-size:12px">Prudente: €' + c.safe_value.toFixed(2) + '</span>' : '') +
         (c.cm_value != null ? ' <span class="muted" style="font-size:12px">Cardmarket: €' + c.cm_value.toFixed(2) + '</span>' : '')
       : '<span class="muted" style="font-size:12px">' + esc(c.error || 'Nessun prezzo') + (c.cm_value != null ? ' · Cardmarket: €' + c.cm_value.toFixed(2) : '') + '</span>';
   }
@@ -438,7 +469,8 @@ function render(){
     if (filter === 'nomatch') return !c.bp || (!c.en && !c.jp);
     if (filter === 'check') return needsCheck(c);
     if (filter === 'dnew') return !!c.new;
-    if (filter === 'cnoprice') return c.value == null;
+    if (filter === 'cnoprice') return c.source !== 'ct';
+    if (filter === 'canom') return c.anomalous;
     if (filter === 'cfoil') return c.foil;
     if (filter === 'cnonfoil') return !c.foil;
     if (filter.indexOf('cat:') === 0) return c.category === filter.slice(4);
@@ -502,8 +534,9 @@ function setView(v, first){
   if (v === 'coll' && COLL) {
     $('totals').innerHTML =
       '<div class="totals">' +
-        '<div class="tot"><div class="lbl">Totale CardTrader Zero</div><div class="big">€' + COLL.total_ct.toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '</div><div class="det">' + COLL.priced_copies + ' carte su ' + COLL.copies + ' con prezzo</div></div>' +
-        '<div class="tot"><div class="lbl">Totale Cardmarket (trend)</div><div class="big">€' + COLL.total_cm.toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '</div><div class="det">prezzo di tendenza</div></div>' +
+        '<div class="tot wide"><div class="lbl">Valore prudente</div><div class="big">' + euroBig(COLL.total_safe) + '</div><div class="det">per ogni carta il prezzo più basso tra CardTrader Zero e Cardmarket</div></div>' +
+        '<div class="tot"><div class="lbl">Totale CardTrader Zero</div><div class="big">' + euroBig(COLL.total_ct) + '</div><div class="det">' + COLL.priced_copies + '/' + COLL.copies + ' carte con prezzo' + (COLL.from_cm ? ' · ' + COLL.from_cm + ' a prezzo Cardmarket' : '') + (COLL.anomalous ? ' · ' + COLL.anomalous + ' anomale' : '') + '</div></div>' +
+        '<div class="tot"><div class="lbl">Totale Cardmarket</div><div class="big">' + euroBig(COLL.total_cm) + '</div><div class="det">prezzo di tendenza</div></div>' +
       '</div>';
   }
   drawChips();

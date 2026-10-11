@@ -105,19 +105,36 @@ def main():
     for r in no_en:
         r["jp"], _ = up.best_offer(r["bp"], r["foil"], "jp")
 
-    tot_ct = tot_cm = 0.0
+    tot_ct = tot_cm = tot_safe = 0.0
     priced = 0
     for r in rows:
         ref = r["en"] or r["jp"]
         r["ref_lang"] = "en" if r["en"] else ("jp" if r["jp"] else None)
-        r["unit"] = ref["price"] if ref else None
-        r["value"] = round(ref["price"] * r["qty"], 2) if ref else None
         r["cm_value"] = round(r["cm"] * r["qty"], 2) if r["cm"] is not None else None
+        if ref:
+            r["unit"] = ref["price"]
+            r["source"] = "ct"
+        elif r["cm"] is not None:
+            # Non trovata su CardTrader Zero: uso il prezzo di mercato Cardmarket
+            r["unit"] = r["cm"]
+            r["source"] = "cm"
+        else:
+            r["unit"] = None
+            r["source"] = None
+        r["value"] = round(r["unit"] * r["qty"], 2) if r["unit"] is not None else None
+        # Prezzo CT anomalo: piu' del doppio di Cardmarket
+        r["anomalous"] = bool(ref and r["cm"] and ref["price"] > 2 * r["cm"])
+        # Valore prudente: il piu' basso tra CardTrader e Cardmarket
+        cands = [x for x in (ref and ref["price"], r["cm"]) if x is not None]
+        r["safe_unit"] = min(cands) if cands else None
+        r["safe_value"] = round(r["safe_unit"] * r["qty"], 2) if r["safe_unit"] is not None else None
         if r["value"] is not None:
             tot_ct += r["value"]
             priced += r["qty"]
         if r["cm_value"] is not None:
             tot_cm += r["cm_value"]
+        if r["safe_value"] is not None:
+            tot_safe += r["safe_value"]
         if r["bp"] and not ref and not r.get("error"):
             r["error"] = "Nessuna offerta CardTrader Zero (SP o meglio)"
 
@@ -130,6 +147,9 @@ def main():
         "priced_copies": priced,
         "total_ct": round(tot_ct, 2),
         "total_cm": round(tot_cm, 2),
+        "total_safe": round(tot_safe, 2),
+        "anomalous": sum(1 for r in rows if r["anomalous"]),
+        "from_cm": sum(r["qty"] for r in rows if r["source"] == "cm"),
         "failed_requests": failed,
         "cards": rows,
     }

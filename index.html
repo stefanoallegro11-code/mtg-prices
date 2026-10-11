@@ -119,8 +119,8 @@ select.chip{appearance:none;-webkit-appearance:none;padding-right:11px}
       <button class="chip" data-f="nomatch">Senza CardTrader</button>
       <button class="chip" data-f="check">Da verificare</button>
       <select class="chip" id="sort">
-        <option value="saving">↓ Risparmio €</option>
-        <option value="pct">↓ Risparmio %</option>
+        <option value="saving">↓ Risparmio € (EN)</option>
+        <option value="pct">↓ Risparmio % (EN)</option>
         <option value="cm">↓ Prezzo CM</option>
         <option value="trend">↓ Variazione 15gg</option>
         <option value="name">A→Z Nome</option>
@@ -255,6 +255,9 @@ function applyRule(c){
   c.ct_best = ref;
   c.saving = (cm != null && ref != null) ? Math.round((cm - ref) * 100) / 100 : null;
   c.deal = !!(pick && cm != null && c.saving > 0);
+  // Ordinamento: risparmio dell'offerta inglese; se non c'è l'inglese, quello della giapponese
+  c.sortLang = en != null ? 'en' : (jp != null ? 'jp' : null);
+  c.sortSaving = (cm != null && c.sortLang) ? Math.round((cm - c[c.sortLang].price) * 100) / 100 : null;
 }
 
 // ---------- Render ----------
@@ -295,9 +298,14 @@ function cardHTML(c){
   var ctImg = c.ct_img ? '<img loading="lazy" src="' + esc(c.ct_img) + '" alt="" data-zoom="1" onerror="this.outerHTML=\'<div class=noimg>no img</div>\'">' : '<div class="noimg">' + (c.bp ? 'no img' : 'non trovata') + '</div>';
 
   var saveTxt = '';
-  if (c.saving != null) {
-    var pct = c.cm ? Math.round(c.saving / c.cm * 100) : 0;
-    saveTxt = '<span class="save ' + (c.saving > 0 ? 'pos' : 'neg') + '">' + (c.saving > 0 ? 'Risparmi €' + c.saving.toFixed(2) + ' (' + pct + '%)' : '+€' + Math.abs(c.saving).toFixed(2) + ' vs CM') + '</span>';
+  function saveLine(lang, sv){
+    var pct = c.cm ? Math.round(sv / c.cm * 100) : 0;
+    return '<span class="save ' + (sv > 0 ? 'pos' : 'neg') + '">' + lang.toUpperCase() + ': ' +
+      (sv > 0 ? 'risparmi €' + sv.toFixed(2) + ' (' + pct + '%)' : '+€' + Math.abs(sv).toFixed(2) + ' vs CM') + '</span>';
+  }
+  if (c.sortSaving != null) {
+    saveTxt = saveLine(c.sortLang, c.sortSaving);
+    if (c.pick && c.pick !== c.sortLang && c.saving != null) saveTxt += ' ' + saveLine(c.pick, c.saving);
   } else if (c.error) {
     saveTxt = '<span class="muted" style="font-size:12px">' + esc(c.error) + '</span>';
   }
@@ -343,8 +351,8 @@ function render(){
     return true;
   });
   var key = {
-    saving: function(c){ return c.saving == null ? -1e9 : c.saving; },
-    pct: function(c){ return (c.saving == null || !c.cm) ? -1e9 : c.saving / c.cm; },
+    saving: function(c){ return c.sortSaving == null ? -1e9 : c.sortSaving; },
+    pct: function(c){ return (c.sortSaving == null || !c.cm) ? -1e9 : c.sortSaving / c.cm; },
     cm: function(c){ return c.cm == null ? -1e9 : c.cm; },
     trend: function(c){ var v = variation(c.key); return v && v.cm != null ? Math.abs(v.cm) : -1e9; }
   }[sortBy];

@@ -1,0 +1,198 @@
+1 Lignify (SLD) 2192 *F*
+1 Jaws, Relentless Predator (SLD) 2175 *F*
+1 Path to Exile (SLD) 2227 *F*
+1 Aloy, Savior of Meridian (SLD) 2221 *F*
+1 Bitterblossom (SLD) 1898 *F*
+1 Animate Dead (SLD) 2189 *F*
+1 Torment of Hailfire (SLD) 9992 *F*
+1 Counterspell (SLD) 1933 *F*
+1 Kaalia of the Vast (SLD) 1563 *F*
+1 Teferi's Protection (SLD) 1691 *F*
+1 Dark Confidant (SCH) 3 *F*
+1 Wrath of God (8ED) 58★ *F*
+1 Damnation (PLC) 85 *F*
+1 Michiko Konda, Truth Seeker (SLD) 259 *F*
+1 Phyrexian Tower (SLD) 208 *F*
+1 Ashnod's Altar (BRR) 67 *F*
+1 Phyrexian Altar (SLC) 16 *F*
+1 Deflecting Swat (CMM) 698
+1 Fierce Guardianship (SLD) 1823 *F*
+1 Angelo (TFIN) 19 *F*
+1 Junji, the Midnight Sky (NEO) 409 *F*
+1 Vampiric Tutor (SOA) 100
+1 Phage the Untouchable (10E) 166 *F*
+1 Worldly Tutor (DMR) 353 *F*
+1 Mystical Tutor (DMR) 289 *F*
+1 Enlightened Tutor (DMR) 263 *F*
+1 Gamble (SPG) 24 *F*
+1 Dark Ritual (MP2) 21 *F*
+1 Simian Spirit Guide (TSR) 190 *F*
+1 Blightsteel Colossus (2XM) 235 *F*
+1 Mana Drain (OTP) 11 *F*
+1 Reanimate (TMP) 151
+1 Entomb (ODY) 132
+1 Brainstorm (STA) 76
+1 Orim's Chant (MH3) 323 *F*
+1 Dark Depths (PUMA) U35 *F*
+1 Omniscience (WOT) 70 *F*
+1 Blood Moon (8ED) 178★ *F*
+1 Tsabo's Web (INV) 317
+1 Isochron Scepter (MRD) 188 *F*
+1 Sylvan Library (SPG) 155 *F*
+1 Sensei's Divining Top (2X2) 398 *F*
+1 Force of Will (SOA) 84
+1 Sapphire Medallion (MH3) 349 *F*
+1 Ruby Medallion (MH3) 348 *F*
+1 Pearl Medallion (MH3) 347 *F*
+1 Jet Medallion (MH3) 346 *F*
+1 Emerald Medallion (MH3) 345 *F*
+1 Ancient Silver Dragon (CLB) 366 *F*
+1 Ancient Brass Dragon (CLB) 367 *F*
+1 Ancient Gold Dragon (CLB) 365 *F*
+1 Ancient Bronze Dragon (CLB) 369 *F*
+1 Ancient Copper Dragon (CLB) 368 *F*
+1 Reprieve (SOA) 139 *F*
+1 Ad Nauseam (SOA) 90
+1 Akroma's Will (SOA) 66
+1 Angel's Grace (SOA) 132 *F*
+1 Culling the Weak (SOA) 157 *F*
+1 Flusterstorm (SOA) 83
+1 Living End (SOA) 95
+1 Pongify (SOA) 150 *F*
+1 Triumph of the Hordes (SOA) 124
+1 Veil of Summer (SOA) 125
+1 Counterbalance (MP2) 9 *F*
+1 Higure, the Still Wind (SLD) 1267 *F*
+1 Giver of Runes (MB2) 147 *F*
+1 Defense of the Heart (SLD) 2537 *F*
+1 Rhystic Study (WOT) 71
+1 Thoughtseize (OTP) 70 *F*
+1 Serra Angel (PMDA) 3 *F*
+1 Soul Collector (SCG) 74 *F*
+1 Massacre Girl (SLD) 1233 *F*
+1 Winter Orb (SLD) 2400 *F*
+1 Buried Alive (SLD) 1673 *F*
+1 Maskwood Nexus (SLD) 1904 *F*
+1 Ovinize (PLC) 57 *F*
+1 Deafening Silence (SPG) 120 *F*
+1 Phantasmal Image (SPG) 67 *F*
+1 Victimize (SPG) 23 *F*
+1 Yoshimaru, Ever Faithful (SLD) 794 *F*
+1 Relentless Rats (SLP) 10 *F*
+1 Bloodline Keeper // Lord of Lineage (SLD) 1157 *F*
+1 Jace, the Mind Sculptor (2XM) 334 *F*
+1 Saproling (SLD) 1139 *F*
+1 Thelon of Havenwood (TSP) 227 *F*
+1 Avacyn, Angel of Hope (INR) 482 *F*
+1 Emrakul, the Promised End (INR) 481 *F*
+1 Llanowar Elves (SLC) 12 *F*
+1 Protean Hulk (RVR) 435 *F*
+1 Savra, Queen of the Golgari (RVR) 440 *F*
+1 Utvara Hellkite (RVR) 431 *F*
+1 Tarmogoyf (P30A) 15 *F*
+1 Natural Order (EMA) 177 *F*
+1 Takenuma, Abandoned Mire (NEO) 416 *F*
+1 Grindstone (OTP) 79 *F*
+1 Glacial Chasm (V12) 7 *F*
+1 Vampire Nocturnus (M10) 118 *F*
+1 Show and Tell (MB2) 171 *F*
+1 Progenitus (CON) 121 *F*
+1 Massacre Wurm (M21) 316 *F*
+1 Rancor (F05) 1 *F*
+1 Telepathy (7ED) 102★ *F*
+1 Hypnotic Specter (P06) 1 *F*
+1 Coat of Arms (LCC) 108 *F*
+1 Academy Ruins (2XM) 369 *F*
+1 Sneak Attack (DMR) 331 *F*
+1 Stoneforge Mystic (2XM) 337 *F*
+1 Ugin, the Spirit Dragon (M21) 279 *F*
+1 Balefire Dragon (CMM) 697 *F*
+1 Grave Pact (CMM) 639 *F*
+1 Grand Abolisher (M12) 19 *F*
+1 Rankle, Master of Pranks (CMM) 519 *E*
+1 Smothering Tithe (2X2) 342 *F*
+1 Stifle (MP2) 18 *F*
+1 Allosaurus Shepherd (2X2) 365 *F*
+1 Cunning Wish (G07) 2 *F*
+1 Lotus Petal (P30M) 2 *E*
+1 Rise of the Dark Realms (FDN) 323 *F*
+1 An Offer You Can't Refuse (FDN) 311 *F*
+1 Twinflame Tyrant (FDN) 333 *F*
+1 Platinum Emperion (PUMA) U30 *F*
+1 Last March of the Ents (LTR) 418 *F*
+1 Wurmcoil Engine (BRR) 126 *F*
+1 Browbeat (JUD) 82 *F*
+1 Rakdos the Defiler (DIS) 129 *F*
+1 Lightning Angel (TSB) 94 *F*
+1 Desolation Angel (MP2) 40 *F*
+1 Reya Dawnbringer (10E) 35★ *F*
+1 Need for Speed (ODY) 209 *F*
+1 Land Tax (WOT) 66 *F*
+1 Painter's Servant (SPG) 147 *F*
+1 Noxious Revival (SPG) 73 *F*
+1 Liliana of the Veil (INR) 475 *F*
+1 Lightning Greaves (LCC) 114 *F*
+1 Swiftfoot Boots (FDN) 355 *F*
+1 Robe of Stars (SPG) 121 *F*
+1 Lava Spike (SLD) 2054 *F*
+1 Rite of Flame (SLD) 2209 *F*
+1 Ragavan, Nimble Pilferer (MH2) 315 *F*
+1 Dockside Extortionist (2X2) 360 *F*
+1 Doomsday (SLD) 1115 *E*
+1 Yawgmoth, Thran Physician (DMR) 431 *F*
+1 Archon of Cruelty (DSC) 371 *F*
+1 Hymn to Tourach (SLC) 35 *F*
+1 Fatal Push (SLD) 1819 *F*
+1 Anointed Procession (SLD) 1511 *F*
+1 Blind Obedience (SLD) 1030 *F*
+1 Farewell (NEO) 417 *E*
+1 Thalia, Guardian of Thraben (WMC) 2015 *F*
+1 Solitude (SPG) 49 *F*
+1 Balance (G04) 2 *F*
+1 Legolas's Quick Reflexes (LTC) 493 *F*
+1 Exploration (2XM) 351 *F*
+1 Chord of Calling (P30A) 13 *F*
+1 Green Sun's Zenith (SPG) 127 *F*
+1 Craterhoof Behemoth (TDM) 404 *F*
+1 Snapcaster Mage (INR) 478 *F*
+1 Time Warp (STA) 22 *F*
+1 Etali, Primal Storm (FDN) 329 *F*
+1 Mana Geyser (5DN) 75 *F*
+1 Marsh Flats (SPG) 110 *F*
+1 Prismatic Vista (ZNE) 27 *F*
+1 Windswept Heath (MH3) 360 *F*
+1 Verdant Catacombs (SPG) 113 *F*
+1 Flooded Strand (MH3) 353 *F*
+1 Scalding Tarn (SPG) 112 *F*
+1 Arid Mesa (SPG) 109 *F*
+1 Misty Rainforest (SPG) 111 *F*
+1 Polluted Delta (MH3) 356 *F*
+1 Wooded Foothills (MH3) 361 *F*
+1 Steam Vents (UNF) 283 *F*
+1 Hallowed Fountain (UNF) 277 *F*
+1 Watery Grave (UNF) 278 *F*
+1 Blood Crypt (UNF) 279 *F*
+1 Stomping Ground (UNF) 280 *F*
+1 Temple Garden (UNF) 281 *F*
+1 Godless Shrine (UNF) 282 *F*
+1 Overgrown Tomb (UNF) 284 *F*
+1 Breeding Pool (UNF) 286 *F*
+1 Sacred Foundry (UNF) 285 *F*
+1 Archaeomancer (SLD) 283 *F*
+1 Urza's Incubator (DMR) 453 *F*
+1 Beseech the Mirror (SLD) 2527 *F*
+1 Eiganjo, Seat of the Empire (NEO) 413 *F*
+1 Maha, Its Feathers Night (BLB) 289 *F*
+1 Dino DNA (REX) 20 *F*
+1 Indominus Rex, Alpha (REX) 14 *F*
+1 Don't Move (REX) 1 *F*
+1 Sylvan Safekeeper (SLD) 2109 *F*
+1 Phyrexian Obliterator (NPH) 68 *F*
+1 Old Gnawbone (AFR) 296 *F*
+1 Tormod's Crypt (TSB) 115 *F*
+1 Witch Enchanter // Witch-Blessed Meadow (SLD) 2655 *F*
+1 Spirit of the Hearth (SLD) 2654 *F*
+1 Serra Ascendant (SLD) 1125 *F*
+1 Mindcrank (SLD) 2456 *F*
+1 Mirri's Guile (MB2) 209 *F*
+1 Akroma's Memorial (FUT) 159 *F*

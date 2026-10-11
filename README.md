@@ -2,7 +2,7 @@
 
 Confronto automatico **Cardmarket (Trend)** vs **CardTrader Zero** (Inglese e Giapponese, condizione minima Slightly Played) per la lista carte di Manabox.
 
-- I prezzi si aggiornano da soli **ogni 2 ore** (GitHub Actions).
+- I prezzi si aggiornano da soli **ogni 4 ore** (GitHub Actions); le Scoperte ogni 4 ore sfalsate di 2 ore; messaggi Telegram alternati ogni 2 ore.
 - La pagina web è su GitHub Pages: `https://stefanoallegro11-code.github.io/mtg-prices/`
 - Per ogni carta: immagine della stampa esatta (Scryfall) accanto all'immagine del blueprint CardTrader abbinato, così vedi subito se la versione è quella giusta.
 
@@ -12,7 +12,7 @@ Confronto automatico **Cardmarket (Trend)** vs **CardTrader Zero** (Inglese e Gi
 |---|---|
 | `cards.txt` | La lista carte (export testo di Manabox). Modificabile dalla pagina o da GitHub. |
 | `scripts/update_prices.py` | Scarica i prezzi e abbina le versioni. |
-| `.github/workflows/update.yml` | Lancia lo script ogni 2 ore, quando cambia la lista e su richiesta. |
+| `.github/workflows/update.yml` | Lancia lo script ogni 4 ore, quando cambia la lista e su richiesta. |
 | `data/prices.json` | Risultati dell'ultimo aggiornamento. |
 | `data/history.json` | Storico giornaliero (60 giorni) per variazioni e grafici. |
 | `index.html` | La pagina web. |

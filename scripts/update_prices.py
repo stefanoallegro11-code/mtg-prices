@@ -628,7 +628,9 @@ def main():
         sum(1 for r in out if not r["bp"]),
         sum(1 for r in out if r["en"] or r["jp"])))
 
-    if alerts:
+    # Avvisi immediati per nuove occasioni: disattivati (c'e' il riepilogo ogni 4 ore).
+    # Per riattivarli: variabile TELEGRAM_NEW_DEAL_ALERTS=1 nel workflow.
+    if alerts and os.environ.get("TELEGRAM_NEW_DEAL_ALERTS") == "1":
         alerts.sort(key=lambda r: -r["deal_saving"])
         lines = ["<b>Nuove occasioni su CardTrader Zero</b>"]
         for r in alerts[:15]:

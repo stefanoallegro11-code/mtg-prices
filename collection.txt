@@ -1,0 +1,261 @@
+1 Cabal Coffers (LTC) 360 *F*
+1 Inkmoth Nexus (SLD) 45
+1 Darksteel Plate (SLD) 1572 *F*
+1 Command Tower (SLD) 806 *F*
+1 Questing Beast (SLD) 1263 *F*
+1 Utopia Sprawl (SLD) 409 *F*
+1 Ghostly Prison (SLD) 424 *F*
+1 Uril, the Miststalker (SLD) 1767 *F*
+1 Goldspan Dragon (SLD) 1780 *F*
+1 Wasteland (LTC) 376 *F*
+1 Ensnaring Bridge (LTC) 350 *F*
+1 Urborg (LTC) 519 *F*
+1 Kor Haven (LTC) 368 *F*
+1 Oboro, Palace in the Clouds (LTC) 371 *F*
+1 Shinka, the Bloodsoaked Keep (LTC) 374 *F*
+1 Karakas (LTC) 367 *F*
+1 The One Ring (LTR) 451 *F*
+1 Lightning Bolt (SLD) 1822 *F*
+1 Minamo, School at Water's Edge (LTC) 369 *F*
+1 Bloom Tender (SLD) 284 *F*
+1 Rings of Brighthearth (LTC) 352 *F*
+1 Crystalline Giant (IKO) 387 *F*
+1 The Great Henge (LTC) 348 *F*
+1 Indoraptor, the Perfect Hybrid (REX) 15
+1 Spitting Dilophosaurus (REX) 3 *F*
+1 Thorn of Amethyst (LTC) 356 *F*
+1 Castle Ardenvale (LTC) 361 *F*
+1 Hunting Velociraptor (REX) 4
+1 Swamp (REX) 23 *F*
+1 Plains (REX) 21 *F*
+1 Frodo, Sauron's Bane (LTR) 448 *F*
+1 Samwise the Stouthearted (LTR) 449 *F*
+1 Gollum, Patient Plotter (LTR) 450 *F*
+1 Ravenous Tyrannosaurus (REX) 18
+1 Westvale Abbey // Ormendahl, Profane Prince (SLD) 1159 *F*
+1 Pillar of the Paruns (LTC) 372 *F*
+1 Compy Swarm (REX) 9
+1 Mouth of Ronom (LTC) 370 *F*
+1 Thrill of Possibility (SLD) 1805 *F*
+1 Duress (SLD) 479 *F*
+1 Monster Manual // Zoological Study (SLD) 1782 *F*
+1 Aetherize (SLD) 1667 *F*
+1 Urborg, Tomb of Yawgmoth (LTC) 375 *F*
+1 Dreadbore (SLD) 141
+1 Aether Vial (SLD) 1640★ *F*
+1 Phyrexian Arena (FDN) 322 *F*
+1 Snow-Covered Mountain (SLD) 328 *F*
+1 Skullclamp (SLD) 1112
+1 Horizon Canopy (LTC) 366 *F*
+1 Homeward Path (LTC) 365 *F*
+1 Deserted Temple (LTC) 363 *F*
+1 Bojuka Bog (LTC) 358 *F*
+1 Sword of the Animist (LTC) 355 *F*
+1 Sword of Hearth and Home (LTC) 354 *F*
+1 Cloudstone Curio (LTC) 349 *F*
+1 Akroma, Angel of Wrath (TSB) 1 *F*
+1 Chalice of the Void (J19) 7 *F*
+1 Umezawa's Jitte (SLD) 1288 *F*
+1 Coffin Queen (SLD) 1704 *F*
+1 Final Fortune (SLD) 1956 *F*
+1 Basandra, Battle Seraph (CNS) 184 *F*
+1 Platinum Angel (SLD) 496 *F*
+1 Vraska, the Silencer (POTJ) 237s *F*
+1 Soul Collector (PSCG) 74 *F*
+1 Ian Malcolm, Chaotician (REX) 13
+1 Command Tower (REX) 26
+1 Captain Sisay (SLD) 1913 *F*
+1 Hammerheim (LTC) 518 *F*
+1 Reflecting Pool (LTC) 373 *F*
+1 Cavern of Souls (LTC) 362 *F*
+1 Murktide Regent (SLD) 1878 *F*
+1 The Ozolith (LTC) 351 *F*
+1 Gemstone Caverns (LTC) 364 *F*
+1 Ancient Tomb (LTC) 357 *F*
+1 Void Winnower (SCH) 32 *F*
+1 Decimate (SLD) 140
+1 Eternal Witness (SLD) 1522
+1 Griselbrand (SLD) 1620 *F*
+1 Nightscape Familiar (SLD) 1546
+1 Gemrazer (IKO) 376
+1 Pollywog Symbiote (IKO) 372 *F*
+1 Everquill Phoenix (IKO) 374 *F*
+1 Titanoth Rex (IKO) 377
+1 Yidaro, Wandering Monster (IKO) 375
+1 Zilortha, Strength Incarnate (IKO) 275
+1 Huntmaster Liger (IKO) 370
+1 Void Beckoner (IKO) 373 *F*
+1 Mysterious Egg (IKO) 385 *F*
+1 Brokkos, Apex of Forever (IKO) 378
+1 Snapdax, Apex of the Hunt (IKO) 381
+1 Gyruda, Doom of Depths (IKO) 384
+1 Ornithopter (SLD) 604 *F*
+1 Nuka-Cola Vending Machine (PIP) 358 *F*
+1 Nine Lives (SLD) 793 *F*
+1 Shadowspear (LTC) 353 *F*
+1 Blood Pet (7ED) 121★ *F*
+1 Yavimaya, Cradle of Growth (LTC) 377 *F*
+1 Squall, SeeD Mercenary (FIN) 402 *F*
+1 Dreams of Laguna (FIN) 50 *F*
+1 Island (FIN) 299 *F*
+1 Temporal Extortion (SLD) 1859 *F*
+1 Jumbo Cactuar (FIN) 343 *F*
+1 Cid, Timeless Artificer (FIN) 413 *F*
+1 Command Beacon (FCA) 64 *F*
+1 Triple Triad (FIN) 166 *F*
+1 Danitha Capashen, Paragon (FCA) 22 *F*
+1 Squall, SeeD Mercenary (PSS5) 2 *F*
+1 Death's Shadow (SCH) 40 *F*
+1 PuPu UFO (FIN) 266 *F*
+1 Blue, Loyal Raptor (REX) 8
+1 Lion Heart (FIN) 261 *F*
+1 Light Up the Stage (FCA) 39 *F*
+1 Balamb T-Rexaur (FIN) 173 *F*
+1 Summon: G.F. Cerberus (FIN) 368 *F*
+1 Summon: G.F. Ifrit (FIN) 369 *F*
+1 Balamb Garden, SeeD Academy // Balamb Garden, Airborne (FIN) 354 *F*
+1 Sorceress's Schemes (FIN) 159 *F*
+1 Lunatic Pandora (FIN) 262 *F*
+1 Memories Returning (FIN) 331 *F*
+1 Seifer Almasy (FIN) 389 *F*
+1 Teferi, Mage of Zhalfir (FCA) 32 *F*
+1 Memories Returning (FIN) 63 *F*
+1 Jumbo Cactuar (FIN) 191 *F*
+1 Triple Triad (FIN) 340 *F*
+1 Balamb Garden, SeeD Academy // Balamb Garden, Airborne (FIN) 272 *F*
+1 Summon: G.F. Cerberus (FIN) 162 *F*
+1 Malboro (FIN) 106 *F*
+1 Tonberry (FIN) 122 *F*
+1 Squall, SeeD Mercenary (FIN) 243 *F*
+1 Squall, SeeD Mercenary (FIN) 509
+1 Zell Dincht (FIN) 170 *F*
+1 Zell Dincht (FIN) 468
+1 Rinoa Heartilly (FIN) 502
+1 Rinoa Heartilly (FIN) 237 *F*
+1 Quistis Trepe (FIN) 66 *F*
+1 Quistis Trepe (FIN) 440
+1 Seifer Almasy (FIN) 466
+1 Seifer Almasy (FIN) 156 *F*
+1 Ultimecia, Time Sorceress // Ultimecia, Omnipotent (FIN) 247 *F*
+1 Ultimecia, Time Sorceress // Ultimecia, Omnipotent (FIN) 513
+1 Coeurl (FIN) 12 *F*
+1 Ultimecia, Temporal Threat (FIN) 556
+1 Ultimecia, Temporal Threat (FIN) 441
+1 Boseiju, Who Shelters All (LTC) 359 *F*
+1 Silence (SLD) 1816 *F*
+1 Parallel Lives (MAR) 36 *F*
+1 Mary Jane Watson (SPM) 229 *F*
+1 Skithiryx, the Blight Dragon (MAR) 22 *F*
+1 Goblin Bombardment (MAR) 23 *F*
+1 Norman Osborn // Green Goblin (SPM) 220 *F*
+1 Blasphemous Act (SLD) 1998 *F*
+1 Shoot the Sheriff (SLP) 43 *F*
+1 Swan Song (SLD) 1591 *F*
+1 Arcane Signet (SLD) 1492★ *F*
+1 Soul Warden (SLD) 1708 *F*
+1 High Market (EOS) 108 *F*
+1 Cryptolith Rite (INR) 316 *F*
+1 Avatar of Woe (MP2) 38 *F*
+1 Ponder (SLD) 1783 *F*
+1 Glimpse the Unthinkable (2X2) 378 *F*
+1 Akroma, Angel of Fury (PLC) 94 *F*
+1 Reliquary Tower (PF23) 3 *F*
+1 Swords to Plowshares (SLD) 364 *E*
+1 Tooth and Nail (MRD) 134 *F*
+1 Dryad Arbor (V12) 5 *F*
+1 Wrath of God (P07) 1 *F*
+1 Gitaxian Probe (F12) 12 *F*
+1 Whispersilk Cloak (LCC) 119 *F*
+1 Angel of Despair (GPT) 101 *F*
+1 Deadly Rollick (CMM) 695 *F*
+1 Cyclonic Rift (RVR) 419
+1 Mystic Remora (SLD) 406 *F*
+1 Toxic Deluge (2XM) 345 *F*
+1 Fabled Passage (SLD) 471 *F*
+1 Blood Artist (INR) 372 *F*
+1 Elves of Deep Shadow (SLD) 1710 *F*
+1 Platinum Angel (MRD) 228 *F*
+1 Elvish Spirit Guide (SLD) 423 *F*
+1 Mountain (SLD) 1514 *F*
+1 Birds of Paradise (RVR) 432 *F*
+1 Elvish Piper (9ED) 239★ *F*
+1 Oona, Queen of the Fae (SLD) 54 *F*
+1 Ellie and Alan, Paleontologists (REX) 10 *F*
+1 Lara Croft, Tomb Raider (SLD) 1501 *F*
+1 Necropotence (SLC) 1995
+1 Lim-Dûl's Vault (SLC) 1996 *F*
+1 Chrome Mox (SLC) 2003
+1 Glimpse of Nature (SLC) 2004
+1 Ponder (SLC) 2007
+1 Sun Titan (SLC) 2010 *F*
+1 Heritage Druid (SLC) 2008
+1 Emry, Lurker of the Loch (SLC) 2019
+1 Arclight Phoenix (SLC) 2018 *F*
+1 Thalia, Heretic Cathar (SLC) 2016
+1 Elspeth, Sun's Champion (SLC) 2013
+1 Deathrite Shaman (SLC) 2012
+1 Birthing Pod (SLC) 2011 *F*
+1 Shark Typhoon (SLC) 2020
+1 Lotus Field (SLC) 2023 *F*
+1 Nashi, Moon Sage's Scion (SLC) 2022 *F*
+1 Marwyn, the Nurturer (SLD) 1960 *F*
+1 Darksteel Mutation (CMM) 623 *F*
+1 Cavalier of Night (M20) 94 *F*
+1 Nethroi, Apex of Death (IKO) 380 *F*
+1 Vexing Devil (INR) 313 *F*
+1 Lord of the Pit (SLD) 893 *F*
+1 Snuff Out (SLD) 1792 *F*
+1 Secret Rendezvous (SLD) 1892 *F*
+1 Serenity (SLD) 1893 *F*
+1 Beseech the Queen (SLD) 2484 *F*
+1 Altar of Dementia (BRR) 66 *F*
+1 Garruk Relentless // Garruk, the Veil-Cursed (SLD) 2169 *F*
+1 Demonic Tutor (SLD) 1856 *F*
+1 Armageddon (SLD) 1854 *F*
+1 Ellie, Vengeful Hunter (SLD) 2203 *F*
+1 Abby, Merciless Soldier (SLD) 2202 *F*
+1 Lord of the Pit (SLD) 1857 *F*
+1 Northern Paladin (SLD) 1855 *F*
+1 Edea, Possessed Sorceress (FIC) 448 *F*
+1 Rinoa, Angel Wing (FIC) 450 *F*
+1 Squall, Gunblade Duelist (FIC) 453 *F*
+1 Seifer, Balamb Rival (FIC) 451 *F*
+1 Duelist's Flame (FIC) 452 *F*
+1 Fated Clash (FIC) 449 *F*
+1 Iron Maiden (SLD) 2185 *F*
+1 Sol Ring (SLD) 1905 *F*
+1 Giant Growth (SOA) 182 *F*
+1 Bloodletter of Aclazotz (SLD) 2502 *F*
+1 Virtue of Persistence // Locthwain Scorn (SCH) 35 *F*
+1 Ob Nixilis, the Fallen (SLC) 15 *F*
+1 Pacifism (ONS) 47 *F*
+1 Icy Manipulator (MRD) 186 *F*
+1 Mental Misstep (SLD) 2373 *F*
+1 Rat Colony (SLD) 36 *F*
+1 Reya Dawnbringer (10E) 35★ *F*
+1 Tinker (MB2) 176 *F*
+1 Bloodstained Mire (MH3) 352 *F*
+1 Hellkite Tyrant (RVR) 428 *F*
+1 Dismember (SPG) 41 *F*
+1 Rift Bolt (SLD) 2055 *F*
+1 Leonardo da Vinci (ACR) 118
+1 Beast Within (SLD) 323 *F*
+1 Simian Spirit Guide (TSR) 190 *F*
+1 Maelstrom Pulse (MP2) 29 *F*
+1 Putrefy (SLD) 2299 *F*
+1 Llanowar Elves (SLC) 12 *F*
+1 Temple Garden (UNF) 281 *F*
+1 An Offer You Can't Refuse (FDN) 311 *F*
+1 Instigator (MMQ) 140 *F*
+1 Lignify (SLD) 2192 *F*
+1 Rakdos the Defiler (DIS) 129 *F*
+1 Relentless Rats (SLP) 10 *F*
+1 Emerald Medallion (MH3) 345 *F*
+1 Watery Grave (UNF) 278 *F*
+1 Stardew Valley (SLD) 2801 *F*
+1 Pearl Medallion (MH3) 347 *F*
+1 Lightning Greaves (SLD) 2558 *F*
+1 Memnite (MB2) 228 *F*
+1 Splinter Twin (SPG) 167 *F*
+1 Command Tower (PIP) 360 *F*
+1 Expedition Map (SLD) 7053 *F*

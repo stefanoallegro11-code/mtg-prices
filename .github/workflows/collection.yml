@@ -1,0 +1,54 @@
+name: Valore collezione
+
+on:
+  schedule:
+    - cron: "35 3 * * *"       # una volta al giorno (5:35 in Italia con l'ora legale)
+  workflow_dispatch: {}
+  push:
+    branches: [main]
+    paths:
+      - collection.txt          # collezione modificata -> ricalcola subito
+      - scripts/collection.py
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cardtrader-api         # mai in contemporanea con gli altri controlli CardTrader
+  cancel-in-progress: false
+
+jobs:
+  collection:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Data per la cache
+        id: day
+        run: echo "day=$(date -u +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache indice CardTrader
+        uses: actions/cache@v4
+        with:
+          path: .cache
+          key: ct-index-${{ steps.day.outputs.day }}
+          restore-keys: ct-index-
+
+      - name: Calcola il valore della collezione
+        env:
+          CARDTRADER_TOKEN: ${{ secrets.CARDTRADER_TOKEN }}
+        run: python3 scripts/collection.py
+
+      - name: Salva i risultati
+        run: |
+          git config user.name "mtg-prices-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/collection.json || true
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Collezione aggiornata $(date -u +'%Y-%m-%d %H:%M') UTC"
+          for i in 1 2 3; do
+            git pull --rebase -X theirs origin main && git push && exit 0
+            sleep 5
+          done
+          exit 1

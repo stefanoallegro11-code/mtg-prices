@@ -103,6 +103,13 @@ select.chip{appearance:none;-webkit-appearance:none;padding-right:11px}
 .tab{flex:1;background:none;border:0;color:var(--muted);font-weight:600;font-size:14px;padding:9px 6px;border-radius:9px}
 .tab.on{background:linear-gradient(180deg,#e2c25a,#b8922a);color:#1a1405}
 .tag.cat{background:#1e2a44;color:#bfdbfe}
+.totals{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 12px}
+.tot{background:linear-gradient(180deg,var(--card2),var(--bg2));border:1px solid var(--line);border-radius:14px;padding:12px}
+.tot .lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.tot .big{font-family:Cinzel,serif;font-size:24px;color:var(--gold2);margin-top:2px}
+.tot .det{font-size:11px;color:var(--muted);margin-top:2px}
+.tot.wide{grid-column:1/-1}
+.value{font-weight:700;font-size:14px;color:var(--gold2)}
 .intro{font-size:12px;color:var(--muted);text-align:center;margin:-2px 0 8px}
 </style>
 </head>
@@ -121,8 +128,10 @@ select.chip{appearance:none;-webkit-appearance:none;padding-right:11px}
   <div class="tabs" id="tabs">
     <button class="tab" data-v="list">La mia lista</button>
     <button class="tab" data-v="disc">💎 Scoperte</button>
+    <button class="tab" data-v="coll">📦 Collezione</button>
   </div>
   <div class="intro" id="intro"></div>
+  <div id="totals"></div>
   <div id="banners"></div>
 
   <div class="toolbar">
@@ -145,7 +154,7 @@ select.chip{appearance:none;-webkit-appearance:none;padding-right:11px}
 
 <!-- Modifica lista -->
 <div class="modal" id="mList"><div class="sheet">
-  <h2>Lista carte</h2>
+  <h2 id="listTitle">Lista carte</h2>
   <p>Incolla qui l'esportazione testo di Manabox (es. <code>1 Lignify (SLD) 2192 *F*</code>). Al salvataggio i prezzi si aggiornano da soli in 5–10 minuti.</p>
   <textarea id="listText" spellcheck="false"></textarea>
   <div class="msg" id="listInfo"></div>
@@ -188,14 +197,16 @@ var TOK_KEY = 'mtg_gh_pat_v1', UI_KEY = 'mtg_ui_v1';
 function lsGet(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
 function lsSet(k,v){ try { if (v == null) localStorage.removeItem(k); else localStorage.setItem(k,v); } catch(e){} }
 
-var DATA = null, LIST = null, DISC = null, HIST = {}, filter = 'all', sortBy = 'saving', query = '';
-var VIEW = location.hash === '#scoperte' ? 'disc' : 'list';
+var DATA = null, LIST = null, DISC = null, COLL = null, HIST = {}, filter = 'all', sortBy = 'saving', query = '';
+function viewFromHash(){ return location.hash === '#scoperte' ? 'disc' : (location.hash === '#collezione' ? 'coll' : 'list'); }
+var VIEW = viewFromHash();
 var FILTERS = {
   list: [['all','Tutte'],['deal','Occasioni'],['new','Nuove'],['nomatch','Senza CardTrader'],['check','Da verificare']],
   disc: [['dall','Tutte'],['dnew','Nuove'],['cat:Secret Lair','Secret Lair'],['cat:Special Guests','Special Guests'],
          ['cat:Borderless','Borderless'],['cat:Showcase','Showcase'],['cat:Extended art','Extended art'],['cat:Full art','Full art'],['cat:Special art','Special art'],['cat:Retro frame','Retro frame'],['cat:Foil vintage','Foil vintage ≤ FUT']]
 };
-var lastFilter = { list: 'all', disc: 'dall' };
+FILTERS.coll = [['all','Tutte'],['cnoprice','Senza prezzo CT'],['cfoil','Solo foil'],['cnonfoil','Solo non foil'],['check','Da verificare']];
+var lastFilter = { list: 'all', disc: 'dall', coll: 'all' };
 // Fasce di prezzo Cardmarket (solo Scoperte), combinabili con gli altri filtri
 var PRICE_BANDS = [['','Tutti i prezzi'],['15-25','€15–25'],['26-35','€26–35'],['36-50','€36–50'],['50+','> €50']];
 var priceF = '';
@@ -233,11 +244,13 @@ function fetchJSON(path){
     .catch(function(){ return fetch(path + bust, { cache: 'no-store' }).then(function(r){ if (!r.ok) throw new Error(r.status); return r.json(); }); });
 }
 function load(){
-  return Promise.all([fetchJSON('data/prices.json'), fetchJSON('data/history.json').catch(function(){ return {}; }), fetchJSON('data/discoveries.json').catch(function(){ return null; })])
+  return Promise.all([fetchJSON('data/prices.json'), fetchJSON('data/history.json').catch(function(){ return {}; }), fetchJSON('data/discoveries.json').catch(function(){ return null; }), fetchJSON('data/collection.json').catch(function(){ return null; })])
     .then(function(res){
       LIST = res[0]; HIST = res[1] || {}; DISC = res[2];
       LIST.cards.forEach(applyRule); LIST.deals = LIST.cards.filter(function(c){ return c.deal; }).length;
       if (DISC) { DISC.cards.forEach(function(c){ c.disc = true; applyRule(c); }); DISC.deals = DISC.cards.filter(function(c){ return c.deal; }).length; }
+      COLL = res[3];
+      if (COLL) COLL.cards.forEach(function(c){ c.coll = true; applyRule(c); c.pick = c.ref_lang; });
       setView(VIEW, true);
     })
     .catch(function(e){ $('status').innerHTML = '<span class="pill err">Dati non ancora disponibili</span>'; $('list').innerHTML = '<div class="empty">Il primo aggiornamento non è ancora terminato. Riprova tra qualche minuto.</div>'; });
@@ -322,7 +335,9 @@ function renderStatus(){
   var hhmm = up.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
   var sameDay = up.toDateString() === new Date().toDateString();
   s.push('<span class="pill">Ultimo aggiornamento <b>' + (sameDay ? 'oggi' : up.toLocaleDateString('it-IT', { day: 'numeric', month: 'short' })) + ' alle ' + hhmm + '</b> (' + ago(DATA.updated) + ')</span>');
-  if (VIEW === 'disc') {
+  if (VIEW === 'coll') {
+    s.push('<span class="pill"><b>' + DATA.copies + '</b> carte (' + DATA.count + ' diverse)</span>');
+  } else if (VIEW === 'disc') {
     s.push('<span class="pill"><b style="color:var(--green)">' + DATA.count + '</b> scoperte</span>');
     s.push('<span class="pill">sconto ≥ <b>€' + (DATA.min_saving || 10) + '</b></span>');
   } else {
@@ -371,7 +386,13 @@ function cardHTML(c){
   } else if (c.error) {
     saveTxt = '<span class="muted" style="font-size:12px">' + esc(c.error) + '</span>';
   }
-  var varTxt = c.disc ? '' : v
+  if (c.coll) {
+    saveTxt = c.value != null
+      ? '<span class="value">Valore: ' + (c.qty > 1 ? c.qty + ' × €' + c.unit.toFixed(2) + ' = ' : '') + '€' + c.value.toFixed(2) + ' <span class="muted" style="font-weight:500">(' + (c.ref_lang || '').toUpperCase() + ')</span></span>' +
+        (c.cm_value != null ? ' <span class="muted" style="font-size:12px">Cardmarket: €' + c.cm_value.toFixed(2) + '</span>' : '')
+      : '<span class="muted" style="font-size:12px">' + esc(c.error || 'Nessun prezzo') + (c.cm_value != null ? ' · Cardmarket: €' + c.cm_value.toFixed(2) : '') + '</span>';
+  }
+  var varTxt = (c.disc || c.coll) ? '' : v
     ? '<div class="hist"><div class="htitle">Andamento negli ultimi ' + v.days + ' giorni</div>' +
         trendLine('Cardmarket', v.cm, v.cm0, v.cm1) +
         trendLine('CardTrader ' + v.ctLang, v.ct, v.ct0, v.ct1) +
@@ -385,7 +406,7 @@ function cardHTML(c){
     links += '<a href="' + esc(c.cm_uri + (c.cm_uri.indexOf('?') >= 0 ? '&' : '?') + 'sellerCountry=17' + (c.foil ? '&isFoil=Y' : '')) + '" target="_blank" rel="noopener">Venditori 🇮🇹</a>';
   }
 
-  return '<div class="item' + (c.deal ? ' deal' : '') + '">' +
+  return '<div class="item' + (c.deal && !c.coll ? ' deal' : '') + '">' +
     '<div class="top"><div class="imgs">' +
       '<div class="imgbox">' + sfImg + '<span>' + (c.disc ? 'Scryfall' : 'Manabox') + '</span></div>' +
       '<div class="imgbox">' + ctImg + '<span>CardTrader</span></div>' +
@@ -417,11 +438,14 @@ function render(){
     if (filter === 'nomatch') return !c.bp || (!c.en && !c.jp);
     if (filter === 'check') return needsCheck(c);
     if (filter === 'dnew') return !!c.new;
+    if (filter === 'cnoprice') return c.value == null;
+    if (filter === 'cfoil') return c.foil;
+    if (filter === 'cnonfoil') return !c.foil;
     if (filter.indexOf('cat:') === 0) return c.category === filter.slice(4);
     return true;
   });
   var key = {
-    saving: function(c){ return c.sortSaving == null ? -1e9 : c.sortSaving; },
+    saving: function(c){ if (c.coll) return c.value == null ? -1e9 : c.value; return c.sortSaving == null ? -1e9 : c.sortSaving; },
     pct: function(c){ return (c.sortSaving == null || !c.cm) ? -1e9 : c.sortSaving / c.cm; },
     cm: function(c){ return c.cm == null ? -1e9 : c.cm; },
     trend: function(c){ var v = variation(c.key); return v && v.cm != null ? Math.abs(v.cm) : -1e9; }
@@ -466,21 +490,34 @@ function setView(v, first){
   sortBy = 'saving'; $('sort').value = sortBy;
   Array.prototype.forEach.call(document.querySelectorAll('#tabs .tab'), function(t){ t.classList.toggle('on', t.getAttribute('data-v') === v); });
   $('btnList').style.display = v === 'disc' ? 'none' : '';
-  $('intro').textContent = v === 'disc'
+  $('btnList').textContent = v === 'coll' ? '✎ Modifica collezione' : '✎ Modifica lista';
+  $('totals').innerHTML = '';
+  $('intro').textContent = v === 'coll'
+    ? 'Valore della tua collezione: per ogni carta l\'offerta CardTrader Zero più bassa in inglese (giapponese solo se manca l\'inglese), condizione minima SP. Si aggiorna una volta al giorno e ogni volta che modifichi la collezione.'
+    : v === 'disc'
     ? 'Carte fuori dalla tua lista (Secret Lair, Special Guests, borderless, showcase, extended art, full art, special art, retro frame, foil fino a Visione Futura) con Cardmarket tra €' + ((DISC && DISC.min_cm) || 15) + ' e €' + ((DISC && DISC.max_cm) || 80) + ' e offerta CardTrader Zero in inglese almeno €' + ((DISC && DISC.min_saving) || 10) + ' più bassa.'
     : '';
-  try { history.replaceState(null, '', v === 'disc' ? '#scoperte' : location.pathname + location.search); } catch(e){}
-  DATA = v === 'disc' ? DISC : LIST;
+  try { history.replaceState(null, '', v === 'disc' ? '#scoperte' : (v === 'coll' ? '#collezione' : location.pathname + location.search)); } catch(e){}
+  DATA = v === 'disc' ? DISC : (v === 'coll' ? COLL : LIST);
+  if (v === 'coll' && COLL) {
+    $('totals').innerHTML =
+      '<div class="totals">' +
+        '<div class="tot"><div class="lbl">Totale CardTrader Zero</div><div class="big">€' + COLL.total_ct.toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '</div><div class="det">' + COLL.priced_copies + ' carte su ' + COLL.copies + ' con prezzo</div></div>' +
+        '<div class="tot"><div class="lbl">Totale Cardmarket (trend)</div><div class="big">€' + COLL.total_cm.toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '</div><div class="det">prezzo di tendenza</div></div>' +
+      '</div>';
+  }
   drawChips();
   if (!DATA) {
     if (LIST) { DATA = LIST; renderStatus(); DATA = null; }
-    $('list').innerHTML = '<div class="empty">Le scoperte non sono ancora pronte: la prima ricerca è in corso. Riprova tra una mezz\'ora.</div>';
+    $('list').innerHTML = v === 'coll'
+      ? '<div class="empty">La collezione non è ancora caricata. Premi "✎ Modifica collezione" e incolla l\'export di Manabox, oppure mandala a Claude.</div>'
+      : '<div class="empty">Le scoperte non sono ancora pronte: la prima ricerca è in corso. Riprova tra una mezz\'ora.</div>';
     return;
   }
   if (!first) window.scrollTo(0, 0);
   render();
 }
-window.addEventListener('hashchange', function(){ var v = location.hash === '#scoperte' ? 'disc' : 'list'; if (v !== VIEW && LIST) setView(v); });
+window.addEventListener('hashchange', function(){ var v = viewFromHash(); if (v !== VIEW && LIST) setView(v); });
 Array.prototype.forEach.call(document.querySelectorAll('#tabs .tab'), function(t){
   t.addEventListener('click', function(){ if (t.getAttribute('data-v') !== VIEW) setView(t.getAttribute('data-v')); });
 });
@@ -552,7 +589,7 @@ $('btnSaveTok').addEventListener('click', function(){
 
 // ---------- Lista ----------
 var LINE_RE = /^(\d+)\s+(.+?)\s+\(([A-Za-z0-9]+)\)\s+(\S+)/;
-var listSha = null;
+var listSha = null, listFile = 'cards.txt';
 function checkList(){
   var lines = $('listText').value.split('\n'), ok = 0, bad = [];
   lines.forEach(function(l, i){ l = l.trim(); if (!l || l.charAt(0) === '#') return; if (LINE_RE.test(l)) ok++; else bad.push(i + 1); });
@@ -565,13 +602,16 @@ $('btnList').addEventListener('click', function(){
   $('listText').value = 'Caricamento…';
   $('listInfo').textContent = '';
   openM('mList');
-  gh('/contents/cards.txt?ref=' + BRANCH).then(function(j){
+  listFile = VIEW === 'coll' ? 'collection.txt' : 'cards.txt';
+  $('listTitle').textContent = VIEW === 'coll' ? 'La tua collezione' : 'Lista carte';
+  gh('/contents/' + listFile + '?ref=' + BRANCH).then(function(j){
     listSha = j.sha;
     $('listText').value = unb64utf8(j.content);
     checkList();
   }).catch(function(e){
     listSha = null;
     $('listText').value = '';
+    if (e.status === 404) { $('listInfo').className = 'msg'; $('listInfo').textContent = 'Ancora vuota: incolla qui l\'export di Manabox.'; return; }
     $('listInfo').className = 'msg err';
     $('listInfo').textContent = 'Impossibile leggere la lista: ' + e.message;
   });
@@ -582,9 +622,9 @@ $('btnSaveList').addEventListener('click', function(){
   if (badN && !confirm(badN + ' righe non sono nel formato Manabox e verranno ignorate. Salvo lo stesso?')) return;
   var btn = this; btn.disabled = true;
   $('listInfo').className = 'msg'; $('listInfo').textContent = 'Salvataggio…';
-  var body = { message: 'Lista carte aggiornata dalla pagina', content: b64utf8(txt), branch: BRANCH };
+  var body = { message: (listFile === 'collection.txt' ? 'Collezione' : 'Lista carte') + ' aggiornata dalla pagina', content: b64utf8(txt), branch: BRANCH };
   if (listSha) body.sha = listSha;
-  gh('/contents/cards.txt', { method: 'PUT', body: body }).then(function(j){
+  gh('/contents/' + listFile, { method: 'PUT', body: body }).then(function(j){
     listSha = j.content && j.content.sha;
     $('listInfo').className = 'msg ok';
     $('listInfo').textContent = '✓ Lista salvata. Aggiornamento prezzi avviato (5–10 minuti).';
@@ -601,7 +641,7 @@ var runState = '', runFailed = false, watchT = null;
 $('btnRefresh').addEventListener('click', function(){
   if (needTok()) return;
   var btn = this; btn.disabled = true;
-  gh('/actions/workflows/' + (VIEW === 'disc' ? 'discover.yml' : 'update.yml') + '/dispatches', { method: 'POST', body: { ref: BRANCH } })
+  gh('/actions/workflows/' + (VIEW === 'disc' ? 'discover.yml' : (VIEW === 'coll' ? 'collection.yml' : 'update.yml')) + '/dispatches', { method: 'POST', body: { ref: BRANCH } })
     .then(function(){ runState = 'Aggiornamento avviato'; if (DATA) renderStatus(); watchRun(true); })
     .catch(function(e){ alert('Non riesco ad avviare l\'aggiornamento: ' + e.message + (e.status === 403 ? '\nIl token deve avere il permesso "Actions: Read and write".' : '')); })
     .then(function(){ setTimeout(function(){ btn.disabled = false; }, 4000); });

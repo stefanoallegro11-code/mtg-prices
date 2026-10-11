@@ -23,7 +23,7 @@ import update_prices as up  # noqa: E402
 
 MIN_CM = float(os.environ.get("DISCOVER_MIN_CM", "15"))
 MAX_CM = float(os.environ.get("DISCOVER_MAX_CM", "80"))   # prezzo Cardmarket massimo considerato
-MIN_SAVING = float(os.environ.get("DISCOVER_MIN_SAVING", "7"))  # sconto minimo in euro rispetto a Cardmarket
+MIN_SAVING = float(os.environ.get("DISCOVER_MIN_SAVING", "5"))  # sconto minimo in euro rispetto a Cardmarket
 SUSPICIOUS_PCT = 70  # sconto oltre il 70%: probabile prezzo Cardmarket poco affidabile
 OUT_FILE = os.path.join(up.DATA_DIR, "discoveries.json")
 

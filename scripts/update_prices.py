@@ -607,6 +607,11 @@ def main():
     write_json(PRICES_FILE, result, compact=True)
     write_json(HISTORY_FILE, hist, compact=True)
     log("Fatto: %d carte, %d occasioni, %ds" % (len(out), result["deals"], result["duration_s"]))
+    log("Riepilogo: %d con blueprint CardTrader, %d da verificare, %d senza versione CT, %d con offerte Zero" % (
+        sum(1 for r in out if r["bp"]),
+        sum(1 for r in out if r["bp"] and (r["match_score"] or 0) < 8),
+        sum(1 for r in out if not r["bp"]),
+        sum(1 for r in out if r["en"] or r["jp"])))
 
     if alerts:
         alerts.sort(key=lambda r: -r["saving"])

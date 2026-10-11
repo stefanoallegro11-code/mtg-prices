@@ -1,0 +1,25 @@
+name: Scoperte su Telegram
+
+on:
+  schedule:
+    - cron: "41 2-22/4 * * *"   # ogni 4 ore, 2 ore dopo il messaggio della tua lista
+  workflow_dispatch: {}
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/telegram-scoperte.yml
+
+permissions:
+  contents: read
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Invia le scoperte
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python3 scripts/telegram_digest.py scoperte

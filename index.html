@@ -137,6 +137,7 @@ select.chip{appearance:none;-webkit-appearance:none;padding-right:11px}
         <option value="name">A→Z Nome</option>
       </select>
     </div>
+    <div class="chips" id="priceChips" style="display:none"></div>
   </div>
 
   <div class="list" id="list"></div>
@@ -195,6 +196,18 @@ var FILTERS = {
          ['cat:Borderless','Borderless'],['cat:Showcase','Showcase'],['cat:Extended art','Extended art'],['cat:Full art','Full art'],['cat:Special art','Special art'],['cat:Retro frame','Retro frame'],['cat:Foil vintage','Foil vintage ≤ FUT']]
 };
 var lastFilter = { list: 'all', disc: 'dall' };
+// Fasce di prezzo Cardmarket (solo Scoperte), combinabili con gli altri filtri
+var PRICE_BANDS = [['','Tutti i prezzi'],['15-25','€15–25'],['26-35','€26–35'],['36-50','€36–50'],['50+','> €50']];
+var priceF = '';
+function inBand(cm, b){
+  if (!b) return true;
+  if (cm == null) return false;
+  if (b === '15-25') return cm < 26;
+  if (b === '26-35') return cm >= 26 && cm < 36;
+  if (b === '36-50') return cm >= 36 && cm <= 50;
+  if (b === '50+') return cm > 50;
+  return true;
+}
 try { var ui = JSON.parse(lsGet(UI_KEY) || '{}'); if (ui.f) lastFilter.list = ui.f; if (ui.fd && ui.fd !== 'd5') lastFilter.disc = ui.fd; } catch(e){}
 filter = lastFilter[VIEW];
 // Ordinamento: sempre dal più conveniente quando si apre la pagina o si cambia vista
@@ -381,10 +394,10 @@ function cardHTML(c){
       '<div class="meta">' + tags + '</div>' +
       (c.bp_exp ? '<div class="bpline">CT: ' + esc(c.bp_exp) + '</div>' : (c.set_name ? '<div class="bpline">' + esc(c.set_name) + '</div>' : '')) +
     '</div></div>' +
-    '<div class="prices">' +
+    '<div class="prices"' + (c.disc ? ' style="grid-template-columns:1fr 1fr"' : '') + '>' +
       '<div class="pbox"><div class="lbl">Cardmarket</div><div class="val">' + eur(c.cm) + '</div><div class="det">trend' + (c.foil ? ' foil' : '') + '</div></div>' +
       offerBox(c.en, 'CT Zero EN', c.pick === 'en') +
-      offerBox(c.jp, 'CT Zero JP', c.pick === 'jp') +
+      (c.disc ? '' : offerBox(c.jp, 'CT Zero JP', c.pick === 'jp')) +
     '</div>' +
     '<div class="foot">' + saveTxt + '</div>' + varTxt +
     (links ? '<div class="links">' + links + '</div>' : '') +
@@ -398,6 +411,7 @@ function render(){
   var q = query.trim().toLowerCase();
   rows = rows.filter(function(c){
     if (q && (c.name + ' ' + c.set + ' ' + (c.set_name || '')).toLowerCase().indexOf(q) < 0) return false;
+    if (VIEW === 'disc' && !inBand(c.cm, priceF)) return false;
     if (filter === 'deal') return c.deal;
     if (filter === 'new') return isNew(c);
     if (filter === 'nomatch') return !c.bp || (!c.en && !c.jp);
@@ -419,7 +433,23 @@ function render(){
 
 // ---------- Filtri ----------
 function saveUI(){ lastFilter[VIEW] = filter; lsSet(UI_KEY, JSON.stringify({ f: lastFilter.list, fd: lastFilter.disc })); }
+function drawPriceChips(){
+  var box = $('priceChips');
+  box.style.display = VIEW === 'disc' ? '' : 'none';
+  if (VIEW !== 'disc') return;
+  box.innerHTML = PRICE_BANDS.map(function(b){
+    var n = DISC ? DISC.cards.filter(function(c){ return inBand(c.cm, b[0]); }).length : 0;
+    return '<button class="chip' + (b[0] === priceF ? ' on' : '') + '" data-p="' + b[0] + '">' + b[1] + ' <span style="opacity:.7">(' + n + ')</span></button>';
+  }).join('');
+}
+$('priceChips').addEventListener('click', function(e){
+  var b = e.target.closest('button.chip'); if (!b) return;
+  priceF = b.getAttribute('data-p');
+  sortBy = 'saving'; $('sort').value = sortBy;
+  drawPriceChips(); render();
+});
 function drawChips(){
+  drawPriceChips();
   $('chipBox').innerHTML = FILTERS[VIEW].map(function(f){
     return '<button class="chip' + (f[0] === filter ? ' on' : '') + '" data-f="' + esc(f[0]) + '">' + esc(f[1]) + '</button>';
   }).join('');

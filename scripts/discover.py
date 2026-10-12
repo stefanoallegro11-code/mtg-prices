@@ -16,7 +16,7 @@ import os
 import sys
 import time
 import urllib.parse
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import update_prices as up  # noqa: E402
@@ -26,6 +26,7 @@ MAX_CM = float(os.environ.get("DISCOVER_MAX_CM", "80"))   # prezzo Cardmarket ma
 MIN_SAVING = float(os.environ.get("DISCOVER_MIN_SAVING", "5"))  # sconto minimo in euro rispetto a Cardmarket
 SUSPICIOUS_PCT = 70  # sconto oltre il 70%: probabile prezzo Cardmarket poco affidabile
 OUT_FILE = os.path.join(up.DATA_DIR, "discoveries.json")
+SEEN_FILE = os.path.join(up.DATA_DIR, "discoveries_seen.json")
 
 SPECIAL_SETS = ("sta", "mul", "brr", "wot", "otp", "big", "soa")
 SF_QUERY = ("game:paper is:foil ("
@@ -218,10 +219,21 @@ def main():
             log("  ...%d/%d espansioni, %d scoperte finora" % (n, len(by_exp), len(found)))
 
     found.sort(key=lambda r: -r["saving"])
-    prev = up.read_json(OUT_FILE, {})
-    prev_keys = {c["key"] for c in prev.get("cards", [])}
+    # Registro "prima volta vista": una scoperta resta NUOVA per 24 ore da quando compare.
+    # Se sparisce e ricompare entro 48 ore conserva la data originale.
+    now = datetime.now(timezone.utc)
+    seen = up.read_json(SEEN_FILE, {})
     for r in found:
-        r["new"] = r["key"] not in prev_keys if prev_keys else False
+        e = seen.get(r["key"])
+        if e and now - datetime.fromisoformat(e["last"]) <= timedelta(hours=48):
+            first = e["first"]
+        else:
+            first = now.isoformat()
+        seen[r["key"]] = {"first": first, "last": now.isoformat()}
+        r["first_seen"] = first
+        r["new"] = now - datetime.fromisoformat(first) < timedelta(hours=24)
+    seen = {k: v for k, v in seen.items() if now - datetime.fromisoformat(v["last"]) <= timedelta(days=3)}
+    up.write_json(SEEN_FILE, seen, compact=True)
 
     result = {
         "updated": datetime.now(timezone.utc).isoformat(),

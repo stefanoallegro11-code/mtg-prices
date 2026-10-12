@@ -46,6 +46,7 @@ select.chip{appearance:none;-webkit-appearance:none;padding-right:11px}
 @media(min-width:760px){.list{grid-template-columns:1fr 1fr}}
 .item{background:linear-gradient(180deg,var(--card),var(--bg2));border:1px solid var(--line);border-radius:14px;padding:12px;overflow:hidden}
 .item.deal{border-color:rgba(52,211,153,.45);box-shadow:0 0 0 1px rgba(52,211,153,.12) inset}
+.item.fresh{border-color:var(--gold);box-shadow:0 0 0 1px rgba(212,175,55,.35) inset,0 0 18px rgba(212,175,55,.18)}
 .top{display:flex;gap:12px}
 .imgs{display:flex;gap:6px;flex:none}
 .imgbox{width:74px;text-align:center}
@@ -355,7 +356,8 @@ function prepColl(D){
 function euroBig(v){ return '€' + v.toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
 
 // ---------- Render ----------
-function isNew(c){ if (c.disc) return !!c.new; return c.deal && c.deal_since && (Date.now() - new Date(c.deal_since).getTime()) < 36*3600000; }
+function discAge(c){ return c.first_seen ? (Date.now() - new Date(c.first_seen).getTime()) : null; }
+function isNew(c){ if (c.disc) { var a = discAge(c); return a != null ? a < 24*3600000 : !!c.new; } return c.deal && c.deal_since && (Date.now() - new Date(c.deal_since).getTime()) < 36*3600000; }
 function needsCheck(c){ return c.bp && (c.match_score == null || c.match_score < 8); }
 
 function renderStatus(){
@@ -397,7 +399,10 @@ function cardHTML(c){
   if (c.variant) tags += '<span class="tag">' + esc(c.variant) + '</span>';
   if (c.anomalous) tags += '<span class="tag warn" title="Offerta CardTrader più del doppio del prezzo Cardmarket">⚠ prezzo CT anomalo</span>';
   if (c.suspicious) tags += '<span class="tag warn" title="Sconto molto alto: il prezzo Cardmarket potrebbe essere poco affidabile">⚠ sconto sospetto</span>';
-  if (isNew(c)) tags += '<span class="tag new">NUOVA</span>';
+  if (isNew(c)) {
+    var ag = c.disc ? discAge(c) : null;
+    tags += '<span class="tag new">NUOVA' + (ag != null ? ' · ' + (ag < 3600000 ? 'da meno di 1 h' : 'da ' + Math.floor(ag / 3600000) + ' h') : '') + '</span>';
+  }
   if (c.bp) tags += needsCheck(c) ? '<span class="tag warn" title="' + esc(c.match) + '">⚠ verifica versione</span>' : '<span class="tag ok" title="' + esc(c.match) + '">✓ versione</span>';
   if (c.stale) tags += '<span class="tag warn">dato precedente</span>';
 
@@ -437,7 +442,7 @@ function cardHTML(c){
     links += '<a href="' + esc(c.cm_uri + (c.cm_uri.indexOf('?') >= 0 ? '&' : '?') + 'sellerCountry=17' + (c.foil ? '&isFoil=Y' : '')) + '" target="_blank" rel="noopener">Venditori 🇮🇹</a>';
   }
 
-  return '<div class="item' + (c.deal && !c.coll ? ' deal' : '') + '">' +
+  return '<div class="item' + (c.deal && !c.coll ? ' deal' : '') + (c.disc && isNew(c) ? ' fresh' : '') + '">' +
     '<div class="top"><div class="imgs">' +
       '<div class="imgbox">' + sfImg + '<span>' + (c.disc ? 'Scryfall' : 'Manabox') + '</span></div>' +
       '<div class="imgbox">' + ctImg + '<span>CardTrader</span></div>' +
@@ -468,7 +473,7 @@ function render(){
     if (filter === 'new') return isNew(c);
     if (filter === 'nomatch') return !c.bp || (!c.en && !c.jp);
     if (filter === 'check') return needsCheck(c);
-    if (filter === 'dnew') return !!c.new;
+    if (filter === 'dnew') return isNew(c);
     if (filter === 'cnoprice') return c.source !== 'ct';
     if (filter === 'canom') return c.anomalous;
     if (filter === 'cfoil') return c.foil;

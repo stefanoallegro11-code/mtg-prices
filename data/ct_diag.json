@@ -1,0 +1,26 @@
+{
+ "time": "2026-10-15T17:12:23.026983+00:00",
+ "token_present": true,
+ "token_len": 608,
+ "token_looks_jwt": true,
+ "checks": [
+  {
+   "path": "/info",
+   "status": 200,
+   "bytes": 117,
+   "body": "{\"shared_secret\":\"13755d3ee4e5b57c5ea303466365025e\",\"name\":\"TheZeben App 20260509161603\",\"id\":21312,\"user_id\":186372}"
+  },
+  {
+   "path": "/expansions",
+   "status": 200,
+   "bytes": 280377,
+   "body": null
+  },
+  {
+   "path": "/marketplace/products?blueprint_id=212875",
+   "status": 200,
+   "bytes": 13718,
+   "body": null
+  }
+ ]
+}

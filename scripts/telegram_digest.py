@@ -82,6 +82,8 @@ def main_list():
     ds = deals(data.get("cards", []))
     head = "🔥 <b>%d occasioni dalla tua lista</b>\nPrezzi delle %s\n🌐 <a href=\"%s\">Apri MTG Price Hunter</a>" % (
         len(ds), upd.strftime("%H:%M del %d/%m"), PAGE_URL)
+    if data.get("ct_error"):
+        head += "\n⚠️ " + html.escape(data["ct_error"]) + " Offerte CardTrader dell'aggiornamento precedente."
     lines = [card_line(i, c, c["cm"], lang, o["price"], sv, o.get("cond"))
              for i, (sv, c, o, lang) in enumerate(ds, 1)]
     n = send_list(head, lines, "Nessuna carta sotto il prezzo Cardmarket in questo momento.")

@@ -82,7 +82,13 @@ def http_json(url, headers=None, data=None, tries=4, timeout=60):
             last = e
             if e.code == 404:
                 return None
-            if e.code in (401, 403):
+            if e.code == 401:
+                raise
+            if e.code == 403:
+                # CardTrader a volte blocca per qualche minuto: aspetto e riprovo
+                if attempt < tries - 1:
+                    time.sleep(30 * (attempt + 1))
+                    continue
                 raise
             if e.code == 429 or e.code >= 500:
                 time.sleep(1.5 * (attempt + 1) + (3 if e.code == 429 else 0))
@@ -510,7 +516,8 @@ def main():
         try:
             idx = CTIndex(load_ct_index())
         except urllib.error.HTTPError as e:
-            ct_error = "CardTrader ha rifiutato il token (errore %d)." % e.code
+            ct_error = ("CardTrader ha rifiutato il token (errore 401)." if e.code == 401 else
+                        "CardTrader ha bloccato temporaneamente le richieste (errore %d)." % e.code)
         except Exception as e:
             ct_error = "CardTrader non raggiungibile: %s" % e
     if ct_error:
@@ -561,12 +568,19 @@ def main():
                 else:
                     row["error"] = "Versione non trovata su CardTrader"
             except urllib.error.HTTPError as e:
-                ct_error = "CardTrader ha rifiutato il token (errore %d)." % e.code
+                ct_error = ("CardTrader ha rifiutato il token (errore 401)." if e.code == 401 else
+                            "CardTrader ha bloccato temporaneamente le richieste (errore %d)." % e.code)
                 log("ATTENZIONE:", ct_error)
                 idx = None
 
         old = prev_by_key.get(card["key"]) or {}
-        if row["en"] is None and row["jp"] is None and row.get("bp") and old.get("bp") == row["bp"] and row.get("error") == "Offerte CardTrader non lette":
+        if ct_error and not row.get("bp") and old.get("bp"):
+            # CardTrader non raggiungibile in questo giro: tengo l'ultimo dato valido
+            for k in ("bp", "bp_name", "bp_exp", "ct_img", "match", "match_score", "en", "jp"):
+                row[k] = old.get(k)
+            row["stale"] = True
+            row.pop("error", None)
+        elif row["en"] is None and row["jp"] is None and row.get("bp") and old.get("bp") == row["bp"] and row.get("error") == "Offerte CardTrader non lette":
             # lettura fallita in questo giro: mostra l'ultimo dato valido
             row["en"], row["jp"] = old.get("en"), old.get("jp")
             row["stale"] = True

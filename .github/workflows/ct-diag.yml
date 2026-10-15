@@ -1,0 +1,30 @@
+name: Diagnostica CardTrader
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches: [main]
+    paths:
+      - scripts/ct_diag.py
+      - .github/workflows/ct-diag.yml
+
+permissions:
+  contents: write
+
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Controlla accesso CardTrader
+        env:
+          CARDTRADER_TOKEN: ${{ secrets.CARDTRADER_TOKEN }}
+        run: python3 scripts/ct_diag.py
+      - name: Salva risultato
+        run: |
+          git config user.name "mtg-prices-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/ct_diag.json
+          git commit -m "Diagnostica CardTrader" || exit 0
+          for i in 1 2 3; do git pull --rebase -X theirs origin main && git push && exit 0; sleep 5; done

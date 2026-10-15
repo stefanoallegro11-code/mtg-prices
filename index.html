@@ -389,6 +389,12 @@ function offerBox(o, lbl, best){
     '<div class="det">' + esc(o.cond || '') + ' ' + flag(o.country) + (o.offers > 1 ? ' · ' + o.offers + ' off.' : '') + '</div></div>';
 }
 
+// Link Cardmarket pulito: solo l'ID prodotto, senza parametri di tracciamento (evita i blocchi anti-bot)
+function cleanCm(u){
+  if (!u) return null;
+  var m = String(u).match(/idProduct=(\d+)/);
+  return m ? 'https://www.cardmarket.com/it/Magic/Products?idProduct=' + m[1] : String(u).split('?')[0];
+}
 function cardHTML(c){
   var v = variation(c.key);
   var best = c.ct_best;
@@ -437,9 +443,9 @@ function cardHTML(c){
 
   var links = '';
   if (c.bp) links += '<a href="https://www.cardtrader.com/it/cards/' + c.bp + '" target="_blank" rel="noopener">CardTrader →</a>';
-  if (c.cm_uri) {
-    links += '<a href="' + esc(c.cm_uri) + '" target="_blank" rel="noopener">Cardmarket →</a>';
-    links += '<a href="' + esc(c.cm_uri + (c.cm_uri.indexOf('?') >= 0 ? '&' : '?') + 'sellerCountry=17' + (c.foil ? '&isFoil=Y' : '')) + '" target="_blank" rel="noopener">Venditori 🇮🇹</a>';
+  var cmLink = cleanCm(c.cm_uri);
+  if (cmLink) {
+    links += '<a href="' + esc(cmLink) + '" target="_blank" rel="noopener noreferrer">Cardmarket →</a>';
   }
 
   return '<div class="item' + (c.deal && !c.coll ? ' deal' : '') + (c.disc && isNew(c) ? ' fresh' : '') + '">' +

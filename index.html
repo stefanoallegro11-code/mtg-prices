@@ -389,11 +389,11 @@ function offerBox(o, lbl, best){
     '<div class="det">' + esc(o.cond || '') + ' ' + flag(o.country) + (o.offers > 1 ? ' · ' + o.offers + ' off.' : '') + '</div></div>';
 }
 
-// Link Cardmarket pulito: solo l'ID prodotto, senza parametri di tracciamento (evita i blocchi anti-bot)
-function cleanCm(u){
-  if (!u) return null;
-  var m = String(u).match(/idProduct=(\d+)/);
-  return m ? 'https://www.cardmarket.com/it/Magic/Products?idProduct=' + m[1] : String(u).split('?')[0];
+// Link Cardmarket: pagina di ricerca normale del sito (come se cercassi a mano il nome).
+// I link diretti per ID prodotto vengono bloccati dal sistema anti-bot di Cardmarket.
+function cmSearch(c){
+  var name = String(c.name || '').split(' // ')[0];
+  return 'https://www.cardmarket.com/it/Magic/Products/Search?searchString=' + encodeURIComponent(name);
 }
 function cardHTML(c){
   var v = variation(c.key);
@@ -443,7 +443,7 @@ function cardHTML(c){
 
   var links = '';
   if (c.bp) links += '<a href="https://www.cardtrader.com/it/cards/' + c.bp + '" target="_blank" rel="noopener">CardTrader →</a>';
-  var cmLink = cleanCm(c.cm_uri);
+  var cmLink = c.name ? cmSearch(c) : null;
   if (cmLink) {
     links += '<a href="' + esc(cmLink) + '" target="_blank" rel="noopener noreferrer">Cardmarket →</a>';
   }

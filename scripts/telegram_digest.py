@@ -11,6 +11,8 @@ import html
 import json
 import os
 import sys
+import time
+import urllib.error
 import urllib.request
 from datetime import datetime, timezone
 from zoneinfo import ZoneInfo
@@ -24,15 +26,30 @@ MAX_LEN = 3800  # limite Telegram 4096 caratteri per messaggio
 
 
 def send(text):
-    req = urllib.request.Request(
-        "https://api.telegram.org/bot%s/sendMessage" % TG_TOKEN,
-        data=json.dumps({"chat_id": TG_CHAT, "text": text, "parse_mode": "HTML",
-                         "disable_web_page_preview": True}).encode(),
-        headers={"Content-Type": "application/json"})
-    with urllib.request.urlopen(req, timeout=30) as r:
-        res = json.loads(r.read().decode())
-    if not res.get("ok"):
-        raise RuntimeError(res)
+    """Invia un messaggio; se Telegram non risponde o da' errore temporaneo, riprova fino a 4 volte."""
+    last = None
+    for attempt in range(4):
+        try:
+            req = urllib.request.Request(
+                "https://api.telegram.org/bot%s/sendMessage" % TG_TOKEN,
+                data=json.dumps({"chat_id": TG_CHAT, "text": text, "parse_mode": "HTML",
+                                 "disable_web_page_preview": True}).encode(),
+                headers={"Content-Type": "application/json"})
+            with urllib.request.urlopen(req, timeout=30) as r:
+                res = json.loads(r.read().decode())
+            if res.get("ok"):
+                time.sleep(1)  # piccola pausa tra un messaggio e l'altro
+                return
+            last = res
+        except urllib.error.HTTPError as e:
+            body = e.read().decode("utf-8", "replace")[:300]
+            last = "HTTP %d %s" % (e.code, body)
+            if e.code == 400:  # messaggio non valido: inutile riprovare
+                break
+        except Exception as e:
+            last = e
+        time.sleep(10 * (attempt + 1))
+    raise RuntimeError(last)
 
 
 def deals(cards):

@@ -1,0 +1,73 @@
+{
+ "time": "2026-10-20T06:41:15.612611+00:00",
+ "checks": [
+  {
+   "path": "/info",
+   "auth": 403,
+   "err_auth": {
+    "server": "cloudflare",
+    "cf": true,
+    "ctype": "text/html; charset=UTF-8",
+    "body": "<!DOCTYPE html><html lang=\"en-US\"><head><title>Just a moment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\"><meta name=\"robots\" content=\"noindex,nofollow\"><meta name=\"viewport\" content=\"width=device-width,initial-scal"
+   },
+   "noauth": 403,
+   "err_noauth": {
+    "server": "cloudflare",
+    "cf": true,
+    "ctype": "text/html; charset=UTF-8",
+    "body": "<!DOCTYPE html><html lang=\"en-US\"><head><title>Just a moment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\"><meta name=\"robots\" content=\"noindex,nofollow\"><meta name=\"viewport\" content=\"width=device-width,initial-scal"
+   }
+  },
+  {
+   "path": "/expansions",
+   "auth": 403,
+   "err_auth": {
+    "server": "cloudflare",
+    "cf": true,
+    "ctype": "text/html; charset=UTF-8",
+    "body": "<!DOCTYPE html><html lang=\"en-US\"><head><title>Just a moment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\"><meta name=\"robots\" content=\"noindex,nofollow\"><meta name=\"viewport\" content=\"width=device-width,initial-scal"
+   },
+   "noauth": 403,
+   "err_noauth": {
+    "server": "cloudflare",
+    "cf": true,
+    "ctype": "text/html; charset=UTF-8",
+    "body": "<!DOCTYPE html><html lang=\"en-US\"><head><title>Just a moment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\"><meta name=\"robots\" content=\"noindex,nofollow\"><meta name=\"viewport\" content=\"width=device-width,initial-scal"
+   }
+  },
+  {
+   "path": "/marketplace/products",
+   "auth": 403,
+   "err_auth": {
+    "server": "cloudflare",
+    "cf": true,
+    "ctype": "text/html; charset=UTF-8",
+    "body": "<!DOCTYPE html><html lang=\"en-US\"><head><title>Just a moment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\"><meta name=\"robots\" content=\"noindex,nofollow\"><meta name=\"viewport\" content=\"width=device-width,initial-scal"
+   },
+   "noauth": 403,
+   "err_noauth": {
+    "server": "cloudflare",
+    "cf": true,
+    "ctype": "text/html; charset=UTF-8",
+    "body": "<!DOCTYPE html><html lang=\"en-US\"><head><title>Just a moment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\"><meta name=\"robots\" content=\"noindex,nofollow\"><meta name=\"viewport\" content=\"width=device-width,initial-scal"
+   }
+  },
+  {
+   "path": "/marketplace/products",
+   "auth": 403,
+   "err_auth": {
+    "server": "cloudflare",
+    "cf": true,
+    "ctype": "text/html; charset=UTF-8",
+    "body": "<!DOCTYPE html><html lang=\"en-US\"><head><title>Just a moment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\"><meta name=\"robots\" content=\"noindex,nofollow\"><meta name=\"viewport\" content=\"width=device-width,initial-scal"
+   },
+   "noauth": 403,
+   "err_noauth": {
+    "server": "cloudflare",
+    "cf": true,
+    "ctype": "text/html; charset=UTF-8",
+    "body": "<!DOCTYPE html><html lang=\"en-US\"><head><title>Just a moment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\"><meta name=\"robots\" content=\"noindex,nofollow\"><meta name=\"viewport\" content=\"width=device-width,initial-scal"
+   }
+  }
+ ]
+}

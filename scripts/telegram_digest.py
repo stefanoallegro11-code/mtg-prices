@@ -26,16 +26,16 @@ MAX_LEN = 3800  # limite Telegram 4096 caratteri per messaggio
 
 
 def send(text):
-    """Invia un messaggio; se Telegram non risponde o da' errore temporaneo, riprova fino a 4 volte."""
+    """Invia un messaggio; se Telegram non risponde o da' errore temporaneo, riprova fino a 6 volte (circa 10 minuti)."""
     last = None
-    for attempt in range(4):
+    for attempt in range(6):
         try:
             req = urllib.request.Request(
                 "https://api.telegram.org/bot%s/sendMessage" % TG_TOKEN,
                 data=json.dumps({"chat_id": TG_CHAT, "text": text, "parse_mode": "HTML",
                                  "disable_web_page_preview": True}).encode(),
                 headers={"Content-Type": "application/json"})
-            with urllib.request.urlopen(req, timeout=30) as r:
+            with urllib.request.urlopen(req, timeout=45) as r:
                 res = json.loads(r.read().decode())
             if res.get("ok"):
                 time.sleep(1)  # piccola pausa tra un messaggio e l'altro
@@ -48,7 +48,7 @@ def send(text):
                 break
         except Exception as e:
             last = e
-        time.sleep(10 * (attempt + 1))
+        time.sleep(20 * (attempt + 1))
     raise RuntimeError(last)
 
 

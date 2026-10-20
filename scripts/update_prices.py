@@ -85,10 +85,10 @@ def http_json(url, headers=None, data=None, tries=4, timeout=60):
             if e.code == 401:
                 raise
             if e.code == 403:
-                # CardTrader a volte blocca per qualche minuto: aspetto e riprovo
-                if attempt < tries - 1:
-                    time.sleep(30 * (attempt + 1))
-                    continue
+                # Blocco anti-bot (Cloudflare) di CardTrader: insistere peggiora le cose.
+                # Fermo subito tutte le richieste a CardTrader per questo giro.
+                if CT_API in url:
+                    CT_STATE["blocked"] = True
                 raise
             if e.code == 429 or e.code >= 500:
                 time.sleep(1.5 * (attempt + 1) + (3 if e.code == 429 else 0))
@@ -101,7 +101,16 @@ def http_json(url, headers=None, data=None, tries=4, timeout=60):
     return None
 
 
+CT_STATE = {"blocked": False}
+
+
+class CTBlocked(urllib.error.HTTPError):
+    pass
+
+
 def ct_get(path):
+    if CT_STATE["blocked"]:
+        raise CTBlocked(CT_API + path, 403, "CardTrader bloccato in questo giro", None, None)
     return http_json(CT_API + path, headers={"Authorization": "Bearer " + CT_TOKEN})
 
 

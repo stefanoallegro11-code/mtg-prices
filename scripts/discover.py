@@ -15,6 +15,7 @@ Scrive data/discoveries.json.
 import os
 import sys
 import time
+import urllib.error
 import urllib.parse
 from datetime import datetime, timedelta, timezone
 
@@ -252,4 +253,10 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except urllib.error.HTTPError as e:
+        if e.code in (401, 403):
+            log("CardTrader ha bloccato le richieste (errore %d): tengo i dati precedenti delle scoperte." % e.code)
+            sys.exit(0)
+        raise

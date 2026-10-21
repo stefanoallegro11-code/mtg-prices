@@ -2,7 +2,7 @@ name: Aggiorna prezzi
 
 on:
   schedule:
-    - cron: "5 * * * *"   # ogni ora, controllo completo (inglese + giapponese)
+    - cron: "5 3-23/4 * * *"   # ogni 4 ore, controllo completo, prima del messaggio Telegram della tua lista
   workflow_dispatch: {}       # pulsante "Run workflow" / "Aggiorna ora" dalla pagina
   push:
     branches: [main]

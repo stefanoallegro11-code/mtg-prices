@@ -27,6 +27,9 @@ MAX_CM = float(os.environ.get("DISCOVER_MAX_CM", "80"))   # prezzo Cardmarket ma
 MIN_SAVING = float(os.environ.get("DISCOVER_MIN_SAVING", "5"))  # sconto minimo in euro rispetto a Cardmarket
 SUSPICIOUS_PCT = 70  # sconto oltre il 70%: probabile prezzo Cardmarket poco affidabile
 OUT_FILE = os.path.join(up.DATA_DIR, "discoveries.json")
+WATCH_FILE = os.path.join(up.DATA_DIR, "discoveries_watch.json")
+WATCH_MARGIN = 10   # tengo d'occhio anche le carte fino a €10 sotto la soglia di sconto
+WATCH_MAX = 500     # massimo carte ricontrollate ogni ora
 SEEN_FILE = os.path.join(up.DATA_DIR, "discoveries_seen.json")
 
 SPECIAL_SETS = ("sta", "mul", "brr", "wot", "otp", "big", "soa")
@@ -227,7 +230,7 @@ def main():
                 continue
             cm = round(float(d["prices"]["eur_foil"]), 2)
             sv = round(cm - ref["price"], 2)
-            if sv < MIN_SAVING:
+            if sv < MIN_SAVING - WATCH_MARGIN:
                 continue
             pct = round(sv / cm * 100)
             e = idx.exps.get(str(bp.get("e"))) or {}
@@ -252,6 +255,18 @@ def main():
         if n % 25 == 0:
             log("  ...%d/%d espansioni, %d scoperte finora" % (n, len(by_exp), len(found)))
 
+    # Lista "da tenere d'occhio": scoperte + quasi-scoperte, ricontrollate ogni ora
+    watch = sorted(found, key=lambda r: -r["saving"])[:WATCH_MAX]
+    up.write_json(WATCH_FILE, {"updated": datetime.now(timezone.utc).isoformat(), "cards": watch}, compact=True)
+    found = [r for r in found if r["saving"] >= MIN_SAVING]
+    finish(found, started, {
+        "min_cm": MIN_CM, "max_cm": MAX_CM, "scryfall": SF_STATS,
+        "candidates": len(cands), "matched": matched, "expansions": len(by_exp),
+        "failed_requests": failed_exp, "mode": "completa", "full_scan": datetime.now(timezone.utc).isoformat(),
+    })
+
+
+def finish(found, started, extra):
     found.sort(key=lambda r: -r["saving"])
     total_found = len(found)
     found = found[:MAX_RESULTS]
@@ -271,25 +286,55 @@ def main():
     seen = {k: v for k, v in seen.items() if now - datetime.fromisoformat(v["last"]) <= timedelta(days=3)}
     up.write_json(SEEN_FILE, seen, compact=True)
 
-    result = {
+    result = dict(extra)
+    result.update({
         "updated": datetime.now(timezone.utc).isoformat(),
         "duration_s": int((datetime.now(timezone.utc) - started).total_seconds()),
-        "min_cm": MIN_CM, "max_cm": MAX_CM,
-        "scryfall": SF_STATS,
-        "candidates": len(cands), "matched": matched, "expansions": len(by_exp),
-        "failed_requests": failed_exp,
         "count": len(found), "total_found": total_found, "max_results": MAX_RESULTS,
         "min_saving": MIN_SAVING,
         "cards": found,
-    }
+    })
     up.write_json(OUT_FILE, result, compact=True)
-    log("Fatto: %d scoperte (sconto >= €%g), %d richieste fallite, %ds" % (
-        len(found), MIN_SAVING, failed_exp, result["duration_s"]))
+    log("Fatto (%s): %d scoperte (sconto >= €%g), %ds" % (
+        result.get("mode"), len(found), MIN_SAVING, result["duration_s"]))
+
+
+def refresh():
+    """Giro orario leggero: ricontrolla in inglese solo le carte della lista "da tenere d'occhio"."""
+    started = datetime.now(timezone.utc)
+    w = up.read_json(WATCH_FILE, {})
+    rows = w.get("cards") or []
+    if not rows:
+        log("Nessuna lista da tenere d'occhio: faccio la ricerca completa")
+        return main()
+    log("Ricontrollo %d carte (scoperte e quasi-scoperte)" % len(rows))
+    for i, r in enumerate(rows, 1):
+        o, ok = up.best_offer(r["bp"], True, "en")
+        if not ok:
+            continue
+        r["en"] = o
+        if o:
+            r["saving"] = round(r["cm"] - o["price"], 2)
+            r["pct"] = round(r["saving"] / r["cm"] * 100)
+            r["suspicious"] = r["pct"] > SUSPICIOUS_PCT
+        else:
+            r["saving"] = -999
+        if i % 100 == 0:
+            log("  ...%d/%d" % (i, len(rows)))
+    up.write_json(WATCH_FILE, {"updated": datetime.now(timezone.utc).isoformat(), "cards": rows}, compact=True)
+    prev = up.read_json(OUT_FILE, {})
+    extra = {k: prev.get(k) for k in ("min_cm", "max_cm", "scryfall", "candidates", "matched", "expansions", "full_scan")}
+    extra.update({"failed_requests": 0, "mode": "orario"})
+    found = [dict(r) for r in rows if r.get("en") and r["saving"] >= MIN_SAVING]
+    finish(found, started, extra)
 
 
 if __name__ == "__main__":
     try:
-        main()
+        if os.environ.get("DISCOVER_MODE", "full") == "refresh":
+            refresh()
+        else:
+            main()
     except urllib.error.HTTPError as e:
         if e.code in (401, 403):
             log("CardTrader ha bloccato le richieste (errore %d): tengo i dati precedenti delle scoperte." % e.code)

@@ -40,6 +40,9 @@ TCG_API = "https://tcgtracking.com/tcgapi/v1/1"
 UA = "mtg-prices/1.0 (personal price tracker)"
 
 CT_TOKEN = os.environ.get("CARDTRADER_TOKEN", "").strip()
+# Giro completo (inglese + giapponese per tutte le carte) ogni 4 ore e quando lanciato a mano;
+# negli altri giri orari il giapponese si controlla solo dove serve.
+FULL_RUN = os.environ.get("FULL_RUN", "true").lower() == "true" or datetime.now(timezone.utc).hour % 4 == 3
 TG_TOKEN = os.environ.get("TELEGRAM_TOKEN", "").strip()
 TG_CHAT = os.environ.get("TELEGRAM_CHAT_ID", "").strip()
 
@@ -570,6 +573,14 @@ def main():
                     row["match"] = ", ".join(why)
                     row["match_score"] = sc
                     for lang in LANGS:
+                        if lang == "jp" and not FULL_RUN:
+                            # Giro leggero: il giapponese serve solo se manca l'inglese
+                            # o l'inglese non e' sotto Cardmarket; altrimenti tengo l'ultimo valore.
+                            en_o = row.get("en")
+                            if en_o and cm is not None and en_o["price"] < cm:
+                                old_r = prev_by_key.get(card["key"]) or {}
+                                row["jp"] = old_r.get("jp") if old_r.get("bp") == bp["id"] else None
+                                continue
                         offer, ok = best_offer(bp["id"], card["foil"], lang)
                         row[lang] = offer
                         if not ok:

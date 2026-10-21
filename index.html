@@ -203,7 +203,7 @@ function viewFromHash(){ return location.hash === '#scoperte' ? 'disc' : (locati
 var VIEW = viewFromHash();
 var FILTERS = {
   list: [['all','Tutte'],['deal','Occasioni'],['new','Nuove'],['nomatch','Senza CardTrader'],['check','Da verificare']],
-  disc: [['dall','Tutte'],['dnew','Nuove'],['cat:Secret Lair','Secret Lair'],['cat:Special Guests','Special Guests'],
+  disc: [['dall','Tutte'],['dnew','Nuove'],['cat:Secret Lair','Secret Lair'],['cat:Special Guests','Special Guests'],['cat:Masterpiece','Masterpiece'],['cat:Promo','Promo'],['cat:Foil speciale','Foil speciali'],
          ['cat:Borderless','Borderless'],['cat:Showcase','Showcase'],['cat:Extended art','Extended art'],['cat:Full art','Full art'],['cat:Special art','Special art'],['cat:Retro frame','Retro frame'],['cat:Foil vintage','Foil vintage ≤ FUT']]
 };
 FILTERS.coll = [['all','Tutte'],['canom','⚠ Prezzo anomalo'],['cnoprice','Senza prezzo CT'],['cfoil','Solo foil'],['cnonfoil','Solo non foil'],['check','Da verificare']];
@@ -369,7 +369,7 @@ function renderStatus(){
   if (VIEW === 'coll') {
     s.push('<span class="pill"><b>' + DATA.copies + '</b> carte (' + DATA.count + ' diverse)</span>');
   } else if (VIEW === 'disc') {
-    s.push('<span class="pill"><b style="color:var(--green)">' + DATA.count + '</b> scoperte</span>');
+    s.push('<span class="pill"><b style="color:var(--green)">' + DATA.count + '</b> scoperte' + (DATA.total_found > DATA.count ? ' (le migliori su ' + DATA.total_found + ')' : '') + '</span>');
     s.push('<span class="pill">sconto ≥ <b>€' + (DATA.min_saving || 10) + '</b></span>');
   } else {
     s.push('<span class="pill"><b>' + DATA.count + '</b> carte</span>');
@@ -538,7 +538,7 @@ function setView(v, first){
   $('intro').textContent = v === 'coll'
     ? 'Valore della tua collezione: per ogni carta l\'offerta CardTrader Zero più bassa in inglese (giapponese solo se manca l\'inglese), condizione minima SP. Si aggiorna una volta al giorno e ogni volta che modifichi la collezione.'
     : v === 'disc'
-    ? 'Carte fuori dalla tua lista (Secret Lair, Special Guests, borderless, showcase, extended art, full art, special art, retro frame, foil fino a Visione Futura) con Cardmarket tra €' + ((DISC && DISC.min_cm) || 15) + ' e €' + ((DISC && DISC.max_cm) || 80) + ' e offerta CardTrader Zero in inglese almeno €' + ((DISC && DISC.min_saving) || 10) + ' più bassa.'
+    ? 'Carte fuori dalla tua lista (Secret Lair, Special Guests, Masterpiece, promo, foil speciali, borderless, showcase, extended art, full art, special art, retro frame, foil fino a Visione Futura) con Cardmarket tra €' + ((DISC && DISC.min_cm) || 15) + ' e €' + ((DISC && DISC.max_cm) || 80) + ' e offerta CardTrader Zero in inglese almeno €' + ((DISC && DISC.min_saving) || 10) + ' più bassa.'
     : '';
   try { history.replaceState(null, '', v === 'disc' ? '#scoperte' : (v === 'coll' ? '#collezione' : location.pathname + location.search)); } catch(e){}
   DATA = v === 'disc' ? DISC : (v === 'coll' ? COLL : LIST);

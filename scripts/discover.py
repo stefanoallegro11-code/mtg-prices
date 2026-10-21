@@ -30,21 +30,45 @@ OUT_FILE = os.path.join(up.DATA_DIR, "discoveries.json")
 SEEN_FILE = os.path.join(up.DATA_DIR, "discoveries_seen.json")
 
 SPECIAL_SETS = ("sta", "mul", "brr", "wot", "otp", "big", "soa")
+MASTERPIECE_SETS = ("exp", "mps", "mp2", "med", "zne")
+SPECIAL_FOILS = ("galaxyfoil", "surgefoil", "texturedfoil", "serialized", "doublerainbow", "confettifoil",
+                 "neonink", "halofoil", "oilslick", "stepandcompleat", "gilded", "raisedfoil", "fracturefoil",
+                 "rainbowfoil", "ripplefoil", "manafoil", "firstplacefoil", "dragonscalefoil", "singularityfoil",
+                 "cosmicfoil", "chocobotrackfoil", "invisibleink")
 SF_QUERY = ("game:paper is:foil ("
             "set:sld or set:slc or set:slu or set:slp or set:psld or set:spg "
-            "or is:fullart or border:borderless or frame:showcase or frame:extendedart "
-            "or is:boosterfun or is:textless or is:alternate or (frame:1997 date>=2018) "
-            "or " + " or ".join("set:" + x for x in SPECIAL_SETS) + " "
+            "or is:fullart or border:borderless or frame:showcase or frame:extendedart or frame:inverted "
+            "or is:boosterfun or is:textless or is:alternate or is:masterpiece or is:promo "
+            "or (frame:1997 date>=2018) or ((frame:1993 or frame:1997) date>fut) "
+            "or " + " or ".join("set:" + x for x in SPECIAL_SETS + MASTERPIECE_SETS) + " "
             "or date<=fut)")
+# Scryfall rifiuta l'intera ricerca se una parola chiave non esiste: le foil speciali le aggiungo
+# solo dopo averle verificate una per una (vedi valid_special_foils).
+MAX_RESULTS = int(os.environ.get("DISCOVER_MAX_RESULTS", "400"))
 LANGS = ("en",)  # scoperte: solo offerte in inglese
 
 log = up.log
 SF_STATS = {"incomplete": False}
 
 
+def valid_special_foils():
+    ok = []
+    for k in SPECIAL_FOILS:
+        res = up.http_json(up.SF_API + "/cards/search?" + urllib.parse.urlencode({"q": "is:" + k, "unique": "prints"}), tries=2)
+        if res and res.get("object") == "list":
+            ok.append(k)
+        time.sleep(0.12)
+    log("Foil speciali riconosciute da Scryfall: %s" % ", ".join(ok))
+    return ok
+
+
 def scryfall_candidates():
+    foils = valid_special_foils()
+    q = SF_QUERY
+    if foils:
+        q = q[:-1] + " or " + " or ".join("is:" + k for k in foils) + ")"
     url = up.SF_API + "/cards/search?" + urllib.parse.urlencode(
-        {"q": SF_QUERY, "unique": "prints", "order": "eur"})
+        {"q": q, "unique": "prints", "order": "eur"})
     out, pages, total = [], 0, None
     while url:
         res = None
@@ -86,13 +110,21 @@ def own_keys():
 
 def category(d):
     s = d.get("set", "")
+    fe = d.get("frame_effects") or []
+    pt = set(d.get("promo_types") or [])
     if s in ("sld", "slc", "slu", "slp", "psld"):
         return "Secret Lair"
     if s == "spg":
         return "Special Guests"
-    fe = d.get("frame_effects") or []
-    if d.get("released_at", "9999") <= "2007-05-04" and not (
-            d.get("full_art") or d.get("border_color") == "borderless" or "showcase" in fe or "extendedart" in fe):
+    if s in MASTERPIECE_SETS or d.get("set_type") == "masterpiece":
+        return "Masterpiece"
+    if pt & set(SPECIAL_FOILS):
+        return "Foil speciale"
+    if d.get("released_at", "9999") <= "2007-05-04" and not d.get("promo"):
+        return "Foil vintage"
+    if d.get("promo") or d.get("set_type") == "promo":
+        return "Promo"
+    if d.get("released_at", "9999") <= "2007-05-04":
         return "Foil vintage"
     if d.get("border_color") == "borderless":
         return "Borderless"
@@ -102,9 +134,7 @@ def category(d):
         return "Extended art"
     if d.get("full_art"):
         return "Full art"
-    if d.get("released_at", "9999") <= "2007-05-04":
-        return "Foil vintage"
-    if d.get("frame") == "1997":
+    if d.get("frame") in ("1997", "1993"):
         return "Retro frame"
     return "Special art"
 
@@ -139,7 +169,7 @@ def pick_blueprint(d, idx):
 def expansion_products(exp_id, lang):
     q = urllib.parse.urlencode({"expansion_id": exp_id, "language": lang, "foil": "true"})
     raw = up.ct_get("/marketplace/products?" + q)
-    time.sleep(0.6)
+    time.sleep(1.0)
     if raw is None:
         return None
     if isinstance(raw, list):  # formato inatteso: raggruppa per blueprint
@@ -220,6 +250,8 @@ def main():
             log("  ...%d/%d espansioni, %d scoperte finora" % (n, len(by_exp), len(found)))
 
     found.sort(key=lambda r: -r["saving"])
+    total_found = len(found)
+    found = found[:MAX_RESULTS]
     # Registro "prima volta vista": una scoperta resta NUOVA per 24 ore da quando compare.
     # Se sparisce e ricompare entro 48 ore conserva la data originale.
     now = datetime.now(timezone.utc)
@@ -243,7 +275,7 @@ def main():
         "scryfall": SF_STATS,
         "candidates": len(cands), "matched": matched, "expansions": len(by_exp),
         "failed_requests": failed_exp,
-        "count": len(found),
+        "count": len(found), "total_found": total_found, "max_results": MAX_RESULTS,
         "min_saving": MIN_SAVING,
         "cards": found,
     }

@@ -2,7 +2,7 @@ name: Scoperte
 
 on:
   schedule:
-    - cron: "5 1-21/4 * * *"   # ogni 4 ore, finisce prima del messaggio Telegram delle scoperte
+    - cron: "5 1 * * *"   # una volta al giorno di notte (3:05 in Italia con l'ora legale): meno richieste a CardTrader
   workflow_dispatch: {}
   push:
     branches: [main]

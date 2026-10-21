@@ -202,8 +202,8 @@ var DATA = null, LIST = null, DISC = null, COLL = null, HIST = {}, filter = 'all
 function viewFromHash(){ return location.hash === '#scoperte' ? 'disc' : (location.hash === '#collezione' ? 'coll' : 'list'); }
 var VIEW = viewFromHash();
 var FILTERS = {
-  list: [['all','Tutte'],['deal','Occasioni'],['new','Nuove'],['nomatch','Senza CardTrader'],['check','Da verificare']],
-  disc: [['dall','Tutte'],['dnew','Nuove'],['cat:Secret Lair','Secret Lair'],['cat:Special Guests','Special Guests'],['cat:Masterpiece','Masterpiece'],['cat:Promo','Promo'],['cat:Foil speciale','Foil speciali'],
+  list: [['all','Tutte'],['deal','Occasioni'],['new','🆕 Nuove (24 h)'],['nomatch','Senza CardTrader'],['check','Da verificare']],
+  disc: [['dall','Tutte'],['dnew','🆕 Nuove (24 h)'],['cat:Secret Lair','Secret Lair'],['cat:Special Guests','Special Guests'],['cat:Masterpiece','Masterpiece'],['cat:Promo','Promo'],['cat:Foil speciale','Foil speciali'],
          ['cat:Borderless','Borderless'],['cat:Showcase','Showcase'],['cat:Extended art','Extended art'],['cat:Full art','Full art'],['cat:Special art','Special art'],['cat:Retro frame','Retro frame'],['cat:Foil vintage','Foil vintage ≤ FUT']]
 };
 FILTERS.coll = [['all','Tutte'],['canom','⚠ Prezzo anomalo'],['cnoprice','Senza prezzo CT'],['cfoil','Solo foil'],['cnonfoil','Solo non foil'],['check','Da verificare']];
@@ -357,7 +357,7 @@ function euroBig(v){ return '€' + v.toLocaleString('it-IT', { minimumFractionD
 
 // ---------- Render ----------
 function discAge(c){ return c.first_seen ? (Date.now() - new Date(c.first_seen).getTime()) : null; }
-function isNew(c){ if (c.disc) { var a = discAge(c); return a != null ? a < 24*3600000 : !!c.new; } return c.deal && c.deal_since && (Date.now() - new Date(c.deal_since).getTime()) < 36*3600000; }
+function isNew(c){ if (c.disc) { var a = discAge(c); return a != null ? a < 24*3600000 : !!c.new; } return c.deal && c.deal_since && (Date.now() - new Date(c.deal_since).getTime()) < 24*3600000; }
 function needsCheck(c){ return c.bp && (c.match_score == null || c.match_score < 8); }
 
 function renderStatus(){
@@ -518,7 +518,9 @@ $('priceChips').addEventListener('click', function(e){
 function drawChips(){
   drawPriceChips();
   $('chipBox').innerHTML = FILTERS[VIEW].map(function(f){
-    return '<button class="chip' + (f[0] === filter ? ' on' : '') + '" data-f="' + esc(f[0]) + '">' + esc(f[1]) + '</button>';
+    var n = '';
+    if ((f[0] === 'new' || f[0] === 'dnew') && DATA && DATA.cards) n = ' <span style="opacity:.75">(' + DATA.cards.filter(isNew).length + ')</span>';
+    return '<button class="chip' + (f[0] === filter ? ' on' : '') + '" data-f="' + esc(f[0]) + '">' + esc(f[1]) + n + '</button>';
   }).join('');
 }
 $('chipBox').addEventListener('click', function(e){

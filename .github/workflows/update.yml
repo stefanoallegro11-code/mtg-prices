@@ -2,7 +2,7 @@ name: Aggiorna prezzi
 
 on:
   schedule:
-    - cron: "5 * * * *"   # ogni ora; giro completo (EN+JP) ogni 4 ore, negli altri JP solo dove serve
+    - cron: "5 * * * *"   # ogni ora, controllo completo (inglese + giapponese)
   workflow_dispatch: {}       # pulsante "Run workflow" / "Aggiorna ora" dalla pagina
   push:
     branches: [main]
@@ -39,7 +39,7 @@ jobs:
       - name: Aggiorna i prezzi
         env:
           CARDTRADER_TOKEN: ${{ secrets.CARDTRADER_TOKEN }}
-          FULL_RUN: ${{ github.event_name != 'schedule' }}
+          FULL_RUN: "true"
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python3 scripts/update_prices.py

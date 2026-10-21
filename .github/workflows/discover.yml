@@ -2,12 +2,13 @@ name: Scoperte
 
 on:
   schedule:
-    - cron: "35 * * * *"   # ogni ora: ricontrollo leggero; alle 01 UTC (3:35 in Italia, ora legale) ricerca completa
+    - cron: "35 * * * *"   # ogni ora, ricerca completa
   workflow_dispatch: {}
   push:
     branches: [main]
     paths:
       - scripts/discover.py
+      - .github/trigger/discover   # file "interruttore" per rilanciare a mano
 
 permissions:
   contents: write
@@ -37,11 +38,7 @@ jobs:
       - name: Cerca scoperte
         env:
           CARDTRADER_TOKEN: ${{ secrets.CARDTRADER_TOKEN }}
-        run: |
-          if [ "${{ github.event_name }}" = "schedule" ] && [ "$(date -u +%H)" != "01" ]; then
-            export DISCOVER_MODE=refresh
-          fi
-          python3 scripts/discover.py
+        run: python3 scripts/discover.py
 
       - name: Salva i risultati
         run: |

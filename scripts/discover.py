@@ -87,6 +87,9 @@ def scryfall_candidates():
                 eur = float((d.get("prices") or {}).get("eur_foil") or 0)
             except ValueError:
                 eur = 0
+            # Esclusi: promo prerelease con la data stampata (arte normale + data)
+            if "prerelease" in (d.get("promo_types") or []):
+                continue
             if MIN_CM <= eur <= MAX_CM:
                 out.append(d)
         pages += 1

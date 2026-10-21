@@ -2,7 +2,7 @@ name: Scoperte
 
 on:
   schedule:
-    - cron: "35 * * * *"   # ogni ora, ricerca completa
+    - cron: "35 1-21/4 * * *"   # ricerca completa ogni 4 ore, prima del messaggio Telegram delle scoperte
   workflow_dispatch: {}
   push:
     branches: [main]

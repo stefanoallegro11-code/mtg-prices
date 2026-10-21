@@ -9,6 +9,7 @@ on:
     paths:
       - cards.txt             # lista modificata -> aggiorna subito
       - scripts/update_prices.py
+      - .github/trigger/update   # file "interruttore": modificandolo si rilancia a mano
 
 permissions:
   contents: write

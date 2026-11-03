@@ -141,6 +141,7 @@ def fetch_orders():
         if new == 0:
             break
         page += 1
+    DBG["pages"] = page
     return orders
 
 
@@ -167,6 +168,9 @@ def main():
             skipped_orders += 1
             continue
         currencies.add(str(o.get("currency") or o.get("price_currency") or "EUR"))
+        DBG.setdefault("states", {})
+        st_key = "%s|%s" % (o.get("state"), "cancelled" if o.get("cancelled_at") else "")
+        DBG["states"][st_key] = DBG["states"].get(st_key, 0) + 1
         DBG.setdefault("order_as", {})
         oa = str(o.get("order_as"))
         DBG["order_as"][oa] = DBG["order_as"].get(oa, 0) + 1

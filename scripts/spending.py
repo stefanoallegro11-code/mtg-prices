@@ -48,7 +48,8 @@ def cents_of(v):
 
 
 def item_price(it):
-    for key in ("price", "unit_price", "price_per_unit"):
+    # Lato acquirente: buyer_price (in /orders compaiono anche le vendite, con seller_price)
+    for key in ("buyer_price", "price", "unit_price", "price_per_unit"):
         if key in it:
             p = cents_of(it[key])
             if p is not None:
@@ -166,9 +167,16 @@ def main():
             skipped_orders += 1
             continue
         currencies.add(str(o.get("currency") or o.get("price_currency") or "EUR"))
+        DBG.setdefault("order_as", {})
+        oa = str(o.get("order_as"))
+        DBG["order_as"][oa] = DBG["order_as"].get(oa, 0) + 1
         for it in item_list(o):
             if DBG["item_keys"] is None:
                 DBG["item_keys"] = sorted(it.keys())
+            if it.get("deleted_at"):
+                continue
+            if "buyer_price" not in it:  # articolo venduto da me, non acquistato
+                continue
             bp = item_bp(it)
             price = item_price(it)
             qty = item_qty(it)

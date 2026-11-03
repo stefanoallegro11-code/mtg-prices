@@ -79,8 +79,8 @@ def item_bp(it):
 
 
 def item_foil(it):
-    props = it.get("properties_hash") or (it.get("product") or {}).get("properties_hash") or {}
-    return bool(props.get("mtg_foil"))
+    props = it.get("properties") or it.get("properties_hash") or {}
+    return str(props.get("mtg_foil")).lower() in ("true", "1")
 
 
 def item_qty(it):
@@ -102,15 +102,31 @@ def item_name(it):
     return None
 
 
+ORDER_PATHS = ["/orders/bought", "/orders", "/orders/buyer"]
+
+
 def fetch_orders():
-    """Scarica tutti gli ordini d'acquisto, pagina per pagina."""
-    orders, seen = [], set()
-    for page in range(1, MAX_PAGES + 1):
-        raw = up.ct_get("/orders/bought?page=%d" % page)
+    """Scarica gli ordini d'acquisto. Prova i percorsi noti finche' uno risponde."""
+    base = None
+    for p in ORDER_PATHS:
+        raw = up.ct_get(p + "?page=1")
         time.sleep(1.0)
-        if raw is None:
+        DBG.setdefault("tried", []).append("%s -> %s" % (p, "none" if raw is None else type(raw).__name__))
+        if raw is not None:
+            base = p
+            first = raw
             break
-        batch = raw.get("orders", raw) if isinstance(raw, dict) else raw
+    if base is None:
+        return []
+    DBG["path"] = base
+    orders, seen = [], set()
+    page = 1
+    while page <= MAX_PAGES:
+        batch = first if page == 1 else up.ct_get("%s?page=%d" % (base, page))
+        time.sleep(1.0)
+        if page > 1 and batch is None:
+            break
+        batch = batch.get("orders", batch) if isinstance(batch, dict) else batch
         if not isinstance(batch, list) or not batch:
             break
         new = 0
@@ -123,6 +139,7 @@ def fetch_orders():
             new += 1
         if new == 0:
             break
+        page += 1
     return orders
 
 
@@ -145,7 +162,7 @@ def main():
 
     for o in orders:
         status = str(o.get("state") or o.get("status") or "").lower()
-        if any(x in status for x in CANCELLED):
+        if o.get("cancelled_at") or any(x in status for x in CANCELLED):
             skipped_orders += 1
             continue
         currencies.add(str(o.get("currency") or o.get("price_currency") or "EUR"))

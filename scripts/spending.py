@@ -170,12 +170,13 @@ def main():
         DBG.setdefault("order_as", {})
         oa = str(o.get("order_as"))
         DBG["order_as"][oa] = DBG["order_as"].get(oa, 0) + 1
+        if oa == "seller":  # ordine di una mia vendita: non e' una spesa
+            skipped_orders += 1
+            continue
         for it in item_list(o):
             if DBG["item_keys"] is None:
                 DBG["item_keys"] = sorted(it.keys())
             if it.get("deleted_at"):
-                continue
-            if "buyer_price" not in it:  # articolo venduto da me, non acquistato
                 continue
             bp = item_bp(it)
             price = item_price(it)

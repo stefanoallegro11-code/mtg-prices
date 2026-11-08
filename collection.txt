@@ -42,7 +42,7 @@
 1 Aetherize (SLD) 1667 *F*
 1 Urborg, Tomb of Yawgmoth (LTC) 375 *F*
 1 Dreadbore (SLD) 141
-1 Aether Vial (SLD) 1640★ *F*
+1 Aether Vial (SLD) 1640‚òÖ *F*
 1 Phyrexian Arena (FDN) 322 *F*
 1 Snow-Covered Mountain (SLD) 328 *F*
 1 Skullclamp (SLD) 1112
@@ -93,7 +93,7 @@
 1 Nuka-Cola Vending Machine (PIP) 358 *F*
 1 Nine Lives (SLD) 793 *F*
 1 Shadowspear (LTC) 353 *F*
-1 Blood Pet (7ED) 121★ *F*
+1 Blood Pet (7ED) 121‚òÖ *F*
 1 Yavimaya, Cradle of Growth (LTC) 377 *F*
 1 Squall, SeeD Mercenary (FIN) 402 *F*
 1 Dreams of Laguna (FIN) 50 *F*
@@ -151,7 +151,7 @@
 1 Blasphemous Act (SLD) 1998 *F*
 1 Shoot the Sheriff (SLP) 43 *F*
 1 Swan Song (SLD) 1591 *F*
-1 Arcane Signet (SLD) 1492★ *F*
+1 Arcane Signet (SLD) 1492‚òÖ *F*
 1 Soul Warden (SLD) 1708 *F*
 1 High Market (EOS) 108 *F*
 1 Cryptolith Rite (INR) 316 *F*
@@ -178,12 +178,12 @@
 1 Elvish Spirit Guide (SLD) 423 *F*
 1 Mountain (SLD) 1514 *F*
 1 Birds of Paradise (RVR) 432 *F*
-1 Elvish Piper (9ED) 239★ *F*
+1 Elvish Piper (9ED) 239‚òÖ *F*
 1 Oona, Queen of the Fae (SLD) 54 *F*
 1 Ellie and Alan, Paleontologists (REX) 10 *F*
 1 Lara Croft, Tomb Raider (SLD) 1501 *F*
 1 Necropotence (SLC) 1995
-1 Lim-Dûl's Vault (SLC) 1996 *F*
+1 Lim-D√ªl's Vault (SLC) 1996 *F*
 1 Chrome Mox (SLC) 2003
 1 Glimpse of Nature (SLC) 2004
 1 Ponder (SLC) 2007
@@ -232,7 +232,7 @@
 1 Icy Manipulator (MRD) 186 *F*
 1 Mental Misstep (SLD) 2373 *F*
 1 Rat Colony (SLD) 36 *F*
-1 Reya Dawnbringer (10E) 35★ *F*
+1 Reya Dawnbringer (10E) 35‚òÖ *F*
 1 Tinker (MB2) 176 *F*
 1 Bloodstained Mire (MH3) 352 *F*
 1 Hellkite Tyrant (RVR) 428 *F*
@@ -254,8 +254,13 @@
 1 Watery Grave (UNF) 278 *F*
 1 Stardew Valley (SLD) 2801 *F*
 1 Pearl Medallion (MH3) 347 *F*
-1 Lightning Greaves (SLD) 2558 *F*
-1 Memnite (MB2) 228 *F*
 1 Splinter Twin (SPG) 167 *F*
 1 Command Tower (PIP) 360 *F*
 1 Expedition Map (SLD) 7053 *F*
+1 Archangel of Thune (SLD) 2430 *F*
+1 Godless Shrine (RVR) 401 *F*
+1 Mutavault (EOS) 73 *F*
+1 Root Maze (SPG) 168 *F*
+1 Brazen Borrower // Petty Theft (ELD) 281 *F*
+1 Baleful Strix (BLC) 86 *F*
+1 Lightning Greaves (SLD) 2558 *F*

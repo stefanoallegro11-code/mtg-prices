@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-08T22:41:27.696674Z",
+ "updated": "2026-11-08T22:52:10.289682+00:00",
  "note": "Prezzi pagati per copia su CardTrader (o dichiarati a mano). Chiave: nome, set, foil.",
  "entries": [
   {
@@ -1579,6 +1579,24 @@
    "set": "iko",
    "foil": true,
    "price": 0.7
+  },
+  {
+   "name": "Ponder",
+   "set": "slc",
+   "foil": false,
+   "price": 7.0
+  },
+  {
+   "name": "Lord of the Pit",
+   "set": "sld",
+   "foil": true,
+   "price": 0.1
+  },
+  {
+   "name": "Lord of the Pit",
+   "set": "sld",
+   "foil": true,
+   "price": 0.1
   }
  ]
 }

@@ -8,6 +8,7 @@ on:
     branches: [main]
     paths:
       - collection.txt          # collezione modificata -> ricalcola subito
+      - data/paid.json          # prezzi pagati modificati -> ricalcola subito
       - scripts/collection.py
 
 permissions:

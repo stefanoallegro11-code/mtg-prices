@@ -1,0 +1,1584 @@
+{
+ "updated": "2026-11-08T22:41:27.696674Z",
+ "note": "Prezzi pagati per copia su CardTrader (o dichiarati a mano). Chiave: nome, set, foil.",
+ "entries": [
+  {
+   "name": "Abby, Merciless Soldier",
+   "set": "sld",
+   "foil": true,
+   "price": 6.83
+  },
+  {
+   "name": "Aether Vial",
+   "set": "sld",
+   "foil": true,
+   "price": 16.29
+  },
+  {
+   "name": "Akroma, Angel of Fury",
+   "set": "plc",
+   "foil": true,
+   "price": 10.17
+  },
+  {
+   "name": "Altar of Dementia",
+   "set": "brr",
+   "foil": true,
+   "price": 23.95
+  },
+  {
+   "name": "An Offer You Can't Refuse",
+   "set": "fdn",
+   "foil": true,
+   "price": 2.68
+  },
+  {
+   "name": "Ancient Tomb",
+   "set": "ltc",
+   "foil": true,
+   "price": 128.77
+  },
+  {
+   "name": "Angel of Despair",
+   "set": "gpt",
+   "foil": true,
+   "price": 7.14
+  },
+  {
+   "name": "Avatar of Woe",
+   "set": "mp2",
+   "foil": true,
+   "price": 23.37
+  },
+  {
+   "name": "Balamb Garden, SeeD Academy // Balamb Garden, Airborne",
+   "set": "fin",
+   "foil": true,
+   "price": 0.73
+  },
+  {
+   "name": "Balamb Garden, SeeD Academy // Balamb Garden, Airborne",
+   "set": "fin",
+   "foil": true,
+   "price": 2.64
+  },
+  {
+   "name": "Balamb T-Rexaur",
+   "set": "fin",
+   "foil": true,
+   "price": 0.19
+  },
+  {
+   "name": "Basandra, Battle Seraph",
+   "set": "cns",
+   "foil": true,
+   "price": 15.75
+  },
+  {
+   "name": "Beast Within",
+   "set": "sld",
+   "foil": true,
+   "price": 23.72
+  },
+  {
+   "name": "Beseech the Queen",
+   "set": "sld",
+   "foil": true,
+   "price": 11.44
+  },
+  {
+   "name": "Birds of Paradise",
+   "set": "rvr",
+   "foil": true,
+   "price": 20.9
+  },
+  {
+   "name": "Blasphemous Act",
+   "set": "sld",
+   "foil": true,
+   "price": 23.67
+  },
+  {
+   "name": "Blood Artist",
+   "set": "inr",
+   "foil": true,
+   "price": 7.29
+  },
+  {
+   "name": "Bloodletter of Aclazotz",
+   "set": "sld",
+   "foil": true,
+   "price": 28.07
+  },
+  {
+   "name": "Bloodstained Mire",
+   "set": "mh3",
+   "foil": true,
+   "price": 27.4
+  },
+  {
+   "name": "Bloom Tender",
+   "set": "sld",
+   "foil": true,
+   "price": 45.62
+  },
+  {
+   "name": "Boseiju, Who Shelters All",
+   "set": "ltc",
+   "foil": true,
+   "price": 12.09
+  },
+  {
+   "name": "Brokkos, Apex of Forever",
+   "set": "iko",
+   "foil": false,
+   "price": 12.11
+  },
+  {
+   "name": "Captain Sisay",
+   "set": "sld",
+   "foil": true,
+   "price": 13.59
+  },
+  {
+   "name": "Castle Ardenvale",
+   "set": "ltc",
+   "foil": true,
+   "price": 5.16
+  },
+  {
+   "name": "Cavalier of Night",
+   "set": "m20",
+   "foil": true,
+   "price": 6.34
+  },
+  {
+   "name": "Cavern of Souls",
+   "set": "ltc",
+   "foil": true,
+   "price": 59.0
+  },
+  {
+   "name": "Chalice of the Void",
+   "set": "j19",
+   "foil": true,
+   "price": 55.37
+  },
+  {
+   "name": "Cid, Timeless Artificer",
+   "set": "fin",
+   "foil": true,
+   "price": 8.95
+  },
+  {
+   "name": "Cloudstone Curio",
+   "set": "ltc",
+   "foil": true,
+   "price": 6.84
+  },
+  {
+   "name": "Coffin Queen",
+   "set": "sld",
+   "foil": true,
+   "price": 7.11
+  },
+  {
+   "name": "Command Beacon",
+   "set": "fca",
+   "foil": true,
+   "price": 19.83
+  },
+  {
+   "name": "Command Tower",
+   "set": "rex",
+   "foil": false,
+   "price": 1.0
+  },
+  {
+   "name": "Command Tower",
+   "set": "sld",
+   "foil": true,
+   "price": 13.55
+  },
+  {
+   "name": "Compy Swarm",
+   "set": "rex",
+   "foil": false,
+   "price": 5.16
+  },
+  {
+   "name": "Cryptolith Rite",
+   "set": "inr",
+   "foil": true,
+   "price": 3.08
+  },
+  {
+   "name": "Crystalline Giant",
+   "set": "iko",
+   "foil": true,
+   "price": 13.11
+  },
+  {
+   "name": "Cyclonic Rift",
+   "set": "rvr",
+   "foil": false,
+   "price": 50.61
+  },
+  {
+   "name": "Danitha Capashen, Paragon",
+   "set": "fca",
+   "foil": true,
+   "price": 1.95
+  },
+  {
+   "name": "Darksteel Mutation",
+   "set": "cmm",
+   "foil": true,
+   "price": 2.69
+  },
+  {
+   "name": "Darksteel Plate",
+   "set": "sld",
+   "foil": true,
+   "price": 13.35
+  },
+  {
+   "name": "Deadly Rollick",
+   "set": "cmm",
+   "foil": true,
+   "price": 31.76
+  },
+  {
+   "name": "Death's Shadow",
+   "set": "sch",
+   "foil": true,
+   "price": 45.63
+  },
+  {
+   "name": "Deserted Temple",
+   "set": "ltc",
+   "foil": true,
+   "price": 6.31
+  },
+  {
+   "name": "Dismember",
+   "set": "spg",
+   "foil": true,
+   "price": 14.21
+  },
+  {
+   "name": "Dreadbore",
+   "set": "sld",
+   "foil": false,
+   "price": 4.1
+  },
+  {
+   "name": "Dreams of Laguna",
+   "set": "fin",
+   "foil": true,
+   "price": 0.19
+  },
+  {
+   "name": "Dryad Arbor",
+   "set": "v12",
+   "foil": true,
+   "price": 15.16
+  },
+  {
+   "name": "Duelist's Flame",
+   "set": "fic",
+   "foil": true,
+   "price": 3.05
+  },
+  {
+   "name": "Duress",
+   "set": "sld",
+   "foil": true,
+   "price": 5.98
+  },
+  {
+   "name": "Edea, Possessed Sorceress",
+   "set": "fic",
+   "foil": true,
+   "price": 7.55
+  },
+  {
+   "name": "Ellie and Alan, Paleontologists",
+   "set": "rex",
+   "foil": true,
+   "price": 4.03
+  },
+  {
+   "name": "Ellie, Vengeful Hunter",
+   "set": "sld",
+   "foil": true,
+   "price": 9.69
+  },
+  {
+   "name": "Elves of Deep Shadow",
+   "set": "sld",
+   "foil": true,
+   "price": 14.25
+  },
+  {
+   "name": "Elvish Piper",
+   "set": "9ed",
+   "foil": true,
+   "price": 15.04
+  },
+  {
+   "name": "Elvish Spirit Guide",
+   "set": "sld",
+   "foil": true,
+   "price": 22.45
+  },
+  {
+   "name": "Emerald Medallion",
+   "set": "mh3",
+   "foil": true,
+   "price": 2.46
+  },
+  {
+   "name": "Ensnaring Bridge",
+   "set": "ltc",
+   "foil": true,
+   "price": 12.2
+  },
+  {
+   "name": "Fabled Passage",
+   "set": "sld",
+   "foil": true,
+   "price": 30.3
+  },
+  {
+   "name": "Fated Clash",
+   "set": "fic",
+   "foil": true,
+   "price": 5.24
+  },
+  {
+   "name": "Final Fortune",
+   "set": "sld",
+   "foil": true,
+   "price": 15.47
+  },
+  {
+   "name": "Frodo, Sauron's Bane",
+   "set": "ltr",
+   "foil": true,
+   "price": 0.66
+  },
+  {
+   "name": "Garruk Relentless // Garruk, the Veil-Cursed",
+   "set": "sld",
+   "foil": true,
+   "price": 4.49
+  },
+  {
+   "name": "Gemstone Caverns",
+   "set": "ltc",
+   "foil": true,
+   "price": 70.62
+  },
+  {
+   "name": "Ghostly Prison",
+   "set": "sld",
+   "foil": true,
+   "price": 12.17
+  },
+  {
+   "name": "Giant Growth",
+   "set": "soa",
+   "foil": true,
+   "price": 9.01
+  },
+  {
+   "name": "Gitaxian Probe",
+   "set": "f12",
+   "foil": true,
+   "price": 11.16
+  },
+  {
+   "name": "Glimpse the Unthinkable",
+   "set": "2x2",
+   "foil": true,
+   "price": 3.61
+  },
+  {
+   "name": "Goblin Bombardment",
+   "set": "mar",
+   "foil": true,
+   "price": 8.98
+  },
+  {
+   "name": "Goldspan Dragon",
+   "set": "sld",
+   "foil": true,
+   "price": 33.84
+  },
+  {
+   "name": "Gollum, Patient Plotter",
+   "set": "ltr",
+   "foil": true,
+   "price": 0.5
+  },
+  {
+   "name": "Gyruda, Doom of Depths",
+   "set": "iko",
+   "foil": false,
+   "price": 3.67
+  },
+  {
+   "name": "Hammerheim",
+   "set": "ltc",
+   "foil": true,
+   "price": 14.71
+  },
+  {
+   "name": "Hellkite Tyrant",
+   "set": "rvr",
+   "foil": true,
+   "price": 25.82
+  },
+  {
+   "name": "Homeward Path",
+   "set": "ltc",
+   "foil": true,
+   "price": 15.14
+  },
+  {
+   "name": "Horizon Canopy",
+   "set": "ltc",
+   "foil": true,
+   "price": 7.64
+  },
+  {
+   "name": "Icy Manipulator",
+   "set": "mrd",
+   "foil": true,
+   "price": 1.35
+  },
+  {
+   "name": "Inkmoth Nexus",
+   "set": "sld",
+   "foil": false,
+   "price": 15.2
+  },
+  {
+   "name": "Iron Maiden",
+   "set": "sld",
+   "foil": true,
+   "price": 7.05
+  },
+  {
+   "name": "Island",
+   "set": "fin",
+   "foil": true,
+   "price": 0.55
+  },
+  {
+   "name": "Jumbo Cactuar",
+   "set": "fin",
+   "foil": true,
+   "price": 3.55
+  },
+  {
+   "name": "Jumbo Cactuar",
+   "set": "fin",
+   "foil": true,
+   "price": 11.2
+  },
+  {
+   "name": "Kor Haven",
+   "set": "ltc",
+   "foil": true,
+   "price": 10.1
+  },
+  {
+   "name": "Lara Croft, Tomb Raider",
+   "set": "sld",
+   "foil": true,
+   "price": 36.52
+  },
+  {
+   "name": "Light Up the Stage",
+   "set": "fca",
+   "foil": true,
+   "price": 2.09
+  },
+  {
+   "name": "Lightning Bolt",
+   "set": "sld",
+   "foil": true,
+   "price": 8.33
+  },
+  {
+   "name": "Lion Heart",
+   "set": "fin",
+   "foil": true,
+   "price": 0.19
+  },
+  {
+   "name": "Lunatic Pandora",
+   "set": "fin",
+   "foil": true,
+   "price": 0.19
+  },
+  {
+   "name": "Malboro",
+   "set": "fin",
+   "foil": true,
+   "price": 0.24
+  },
+  {
+   "name": "Marwyn, the Nurturer",
+   "set": "sld",
+   "foil": true,
+   "price": 6.04
+  },
+  {
+   "name": "Mary Jane Watson",
+   "set": "spm",
+   "foil": true,
+   "price": 0.97
+  },
+  {
+   "name": "Memories Returning",
+   "set": "fin",
+   "foil": true,
+   "price": 0.89
+  },
+  {
+   "name": "Memories Returning",
+   "set": "fin",
+   "foil": true,
+   "price": 2.64
+  },
+  {
+   "name": "Mental Misstep",
+   "set": "sld",
+   "foil": true,
+   "price": 17.52
+  },
+  {
+   "name": "Minamo, School at Water's Edge",
+   "set": "ltc",
+   "foil": true,
+   "price": 43.63
+  },
+  {
+   "name": "Mountain",
+   "set": "sld",
+   "foil": true,
+   "price": 3.1
+  },
+  {
+   "name": "Mouth of Ronom",
+   "set": "ltc",
+   "foil": true,
+   "price": 1.26
+  },
+  {
+   "name": "Murktide Regent",
+   "set": "sld",
+   "foil": true,
+   "price": 17.25
+  },
+  {
+   "name": "Mysterious Egg",
+   "set": "iko",
+   "foil": true,
+   "price": 0.77
+  },
+  {
+   "name": "Mystic Remora",
+   "set": "sld",
+   "foil": true,
+   "price": 60.41
+  },
+  {
+   "name": "Nine Lives",
+   "set": "sld",
+   "foil": true,
+   "price": 7.12
+  },
+  {
+   "name": "Norman Osborn // Green Goblin",
+   "set": "spm",
+   "foil": true,
+   "price": 30.37
+  },
+  {
+   "name": "Nuka-Cola Vending Machine",
+   "set": "pip",
+   "foil": true,
+   "price": 27.27
+  },
+  {
+   "name": "Ob Nixilis, the Fallen",
+   "set": "slc",
+   "foil": true,
+   "price": 6.84
+  },
+  {
+   "name": "Oboro, Palace in the Clouds",
+   "set": "ltc",
+   "foil": true,
+   "price": 15.72
+  },
+  {
+   "name": "Oona, Queen of the Fae",
+   "set": "sld",
+   "foil": true,
+   "price": 6.91
+  },
+  {
+   "name": "Pacifism",
+   "set": "ons",
+   "foil": true,
+   "price": 4.61
+  },
+  {
+   "name": "Parallel Lives",
+   "set": "mar",
+   "foil": true,
+   "price": 21.85
+  },
+  {
+   "name": "Phyrexian Arena",
+   "set": "fdn",
+   "foil": true,
+   "price": 4.91
+  },
+  {
+   "name": "Pillar of the Paruns",
+   "set": "ltc",
+   "foil": true,
+   "price": 2.03
+  },
+  {
+   "name": "Platinum Angel",
+   "set": "mrd",
+   "foil": true,
+   "price": 32.39
+  },
+  {
+   "name": "Ponder",
+   "set": "sld",
+   "foil": true,
+   "price": 24.28
+  },
+  {
+   "name": "PuPu UFO",
+   "set": "fin",
+   "foil": true,
+   "price": 0.38
+  },
+  {
+   "name": "Questing Beast",
+   "set": "sld",
+   "foil": true,
+   "price": 19.76
+  },
+  {
+   "name": "Quistis Trepe",
+   "set": "fin",
+   "foil": false,
+   "price": 1.7
+  },
+  {
+   "name": "Quistis Trepe",
+   "set": "fin",
+   "foil": true,
+   "price": 0.16
+  },
+  {
+   "name": "Rat Colony",
+   "set": "sld",
+   "foil": true,
+   "price": 10.13
+  },
+  {
+   "name": "Reflecting Pool",
+   "set": "ltc",
+   "foil": true,
+   "price": 22.53
+  },
+  {
+   "name": "Reliquary Tower",
+   "set": "pf23",
+   "foil": true,
+   "price": 14.2
+  },
+  {
+   "name": "Rift Bolt",
+   "set": "sld",
+   "foil": true,
+   "price": 4.32
+  },
+  {
+   "name": "Rings of Brighthearth",
+   "set": "ltc",
+   "foil": true,
+   "price": 5.88
+  },
+  {
+   "name": "Rinoa Heartilly",
+   "set": "fin",
+   "foil": false,
+   "price": 0.59
+  },
+  {
+   "name": "Rinoa Heartilly",
+   "set": "fin",
+   "foil": true,
+   "price": 0.18
+  },
+  {
+   "name": "Rinoa, Angel Wing",
+   "set": "fic",
+   "foil": true,
+   "price": 6.05
+  },
+  {
+   "name": "Samwise the Stouthearted",
+   "set": "ltr",
+   "foil": true,
+   "price": 0.8
+  },
+  {
+   "name": "Secret Rendezvous",
+   "set": "sld",
+   "foil": true,
+   "price": 11.9
+  },
+  {
+   "name": "Seifer Almasy",
+   "set": "fin",
+   "foil": false,
+   "price": 2.58
+  },
+  {
+   "name": "Seifer Almasy",
+   "set": "fin",
+   "foil": true,
+   "price": 0.6
+  },
+  {
+   "name": "Seifer Almasy",
+   "set": "fin",
+   "foil": true,
+   "price": 3.33
+  },
+  {
+   "name": "Seifer, Balamb Rival",
+   "set": "fic",
+   "foil": true,
+   "price": 1.2
+  },
+  {
+   "name": "Serenity",
+   "set": "sld",
+   "foil": true,
+   "price": 8.69
+  },
+  {
+   "name": "Shinka, the Bloodsoaked Keep",
+   "set": "ltc",
+   "foil": true,
+   "price": 15.15
+  },
+  {
+   "name": "Shoot the Sheriff",
+   "set": "slp",
+   "foil": true,
+   "price": 8.1
+  },
+  {
+   "name": "Silence",
+   "set": "sld",
+   "foil": true,
+   "price": 16.75
+  },
+  {
+   "name": "Skithiryx, the Blight Dragon",
+   "set": "mar",
+   "foil": true,
+   "price": 27.39
+  },
+  {
+   "name": "Skullclamp",
+   "set": "sld",
+   "foil": false,
+   "price": 34.95
+  },
+  {
+   "name": "Snapdax, Apex of the Hunt",
+   "set": "iko",
+   "foil": false,
+   "price": 3.09
+  },
+  {
+   "name": "Snuff Out",
+   "set": "sld",
+   "foil": true,
+   "price": 13.1
+  },
+  {
+   "name": "Sol Ring",
+   "set": "sld",
+   "foil": true,
+   "price": 30.15
+  },
+  {
+   "name": "Sorceress's Schemes",
+   "set": "fin",
+   "foil": true,
+   "price": 0.29
+  },
+  {
+   "name": "Soul Warden",
+   "set": "sld",
+   "foil": true,
+   "price": 14.16
+  },
+  {
+   "name": "Squall, Gunblade Duelist",
+   "set": "fic",
+   "foil": true,
+   "price": 2.96
+  },
+  {
+   "name": "Squall, SeeD Mercenary",
+   "set": "fin",
+   "foil": false,
+   "price": 3.28
+  },
+  {
+   "name": "Squall, SeeD Mercenary",
+   "set": "fin",
+   "foil": true,
+   "price": 1.59
+  },
+  {
+   "name": "Squall, SeeD Mercenary",
+   "set": "fin",
+   "foil": true,
+   "price": 9.04
+  },
+  {
+   "name": "Squall, SeeD Mercenary",
+   "set": "pss5",
+   "foil": true,
+   "price": 25.4
+  },
+  {
+   "name": "Summon: G.F. Cerberus",
+   "set": "fin",
+   "foil": true,
+   "price": 0.85
+  },
+  {
+   "name": "Summon: G.F. Cerberus",
+   "set": "fin",
+   "foil": true,
+   "price": 1.65
+  },
+  {
+   "name": "Summon: G.F. Ifrit",
+   "set": "fin",
+   "foil": true,
+   "price": 0.59
+  },
+  {
+   "name": "Swan Song",
+   "set": "sld",
+   "foil": true,
+   "price": 28.12
+  },
+  {
+   "name": "Sword of Hearth and Home",
+   "set": "ltc",
+   "foil": true,
+   "price": 15.19
+  },
+  {
+   "name": "Sword of the Animist",
+   "set": "ltc",
+   "foil": true,
+   "price": 14.2
+  },
+  {
+   "name": "Swords to Plowshares",
+   "set": "sld",
+   "foil": true,
+   "price": 32.66
+  },
+  {
+   "name": "Teferi, Mage of Zhalfir",
+   "set": "fca",
+   "foil": true,
+   "price": 17.51
+  },
+  {
+   "name": "Temporal Extortion",
+   "set": "sld",
+   "foil": true,
+   "price": 13.18
+  },
+  {
+   "name": "The One Ring",
+   "set": "ltr",
+   "foil": true,
+   "price": 79.64
+  },
+  {
+   "name": "The Ozolith",
+   "set": "ltc",
+   "foil": true,
+   "price": 40.42
+  },
+  {
+   "name": "Thorn of Amethyst",
+   "set": "ltc",
+   "foil": true,
+   "price": 2.06
+  },
+  {
+   "name": "Tinker",
+   "set": "mb2",
+   "foil": true,
+   "price": 11.9
+  },
+  {
+   "name": "Tonberry",
+   "set": "fin",
+   "foil": true,
+   "price": 0.18
+  },
+  {
+   "name": "Tooth and Nail",
+   "set": "mrd",
+   "foil": true,
+   "price": 19.14
+  },
+  {
+   "name": "Toxic Deluge",
+   "set": "2xm",
+   "foil": true,
+   "price": 26.14
+  },
+  {
+   "name": "Triple Triad",
+   "set": "fin",
+   "foil": true,
+   "price": 1.05
+  },
+  {
+   "name": "Triple Triad",
+   "set": "fin",
+   "foil": true,
+   "price": 3.06
+  },
+  {
+   "name": "Ultimecia, Temporal Threat",
+   "set": "fin",
+   "foil": false,
+   "price": 6.79
+  },
+  {
+   "name": "Ultimecia, Time Sorceress // Ultimecia, Omnipotent",
+   "set": "fin",
+   "foil": false,
+   "price": 2.21
+  },
+  {
+   "name": "Ultimecia, Time Sorceress // Ultimecia, Omnipotent",
+   "set": "fin",
+   "foil": true,
+   "price": 0.21
+  },
+  {
+   "name": "Umezawa's Jitte",
+   "set": "sld",
+   "foil": true,
+   "price": 10.14
+  },
+  {
+   "name": "Urborg",
+   "set": "ltc",
+   "foil": true,
+   "price": 15.0
+  },
+  {
+   "name": "Vexing Devil",
+   "set": "inr",
+   "foil": true,
+   "price": 0.95
+  },
+  {
+   "name": "Virtue of Persistence // Locthwain Scorn",
+   "set": "sch",
+   "foil": true,
+   "price": 15.2
+  },
+  {
+   "name": "Whispersilk Cloak",
+   "set": "lcc",
+   "foil": true,
+   "price": 7.74
+  },
+  {
+   "name": "Wrath of God",
+   "set": "p07",
+   "foil": true,
+   "price": 9.11
+  },
+  {
+   "name": "Zell Dincht",
+   "set": "fin",
+   "foil": false,
+   "price": 2.64
+  },
+  {
+   "name": "Zell Dincht",
+   "set": "fin",
+   "foil": true,
+   "price": 1.4
+  },
+  {
+   "name": "Platinum Angel",
+   "set": "sld",
+   "foil": true,
+   "price": 8.0
+  },
+  {
+   "name": "Bojuka Bog",
+   "set": "ltc",
+   "foil": true,
+   "price": 25.0
+  },
+  {
+   "name": "Arcane Signet",
+   "set": "sld",
+   "foil": true,
+   "price": 60.0
+  },
+  {
+   "name": "Archangel of Thune",
+   "set": "sld",
+   "foil": true,
+   "price": 33.0
+  },
+  {
+   "name": "Cabal Coffers",
+   "set": "ltc",
+   "foil": true,
+   "price": 30.0
+  },
+  {
+   "name": "Command Tower",
+   "set": "pip",
+   "foil": true,
+   "price": 12.0
+  },
+  {
+   "name": "Expedition Map",
+   "set": "sld",
+   "foil": true,
+   "price": 8.0
+  },
+  {
+   "name": "Instigator",
+   "set": "mmq",
+   "foil": true,
+   "price": 7.0
+  },
+  {
+   "name": "Lignify",
+   "set": "sld",
+   "foil": true,
+   "price": 8.0
+  },
+  {
+   "name": "Llanowar Elves",
+   "set": "slc",
+   "foil": true,
+   "price": 18.0
+  },
+  {
+   "name": "Maelstrom Pulse",
+   "set": "mp2",
+   "foil": true,
+   "price": 15.0
+  },
+  {
+   "name": "Mutavault",
+   "set": "eos",
+   "foil": true,
+   "price": 14.0
+  },
+  {
+   "name": "Yavimaya, Cradle of Growth",
+   "set": "ltc",
+   "foil": true,
+   "price": 30.0
+  },
+  {
+   "name": "Vraska, the Silencer",
+   "set": "potj",
+   "foil": true,
+   "price": 7.0
+  },
+  {
+   "name": "Uril, the Miststalker",
+   "set": "sld",
+   "foil": true,
+   "price": 5.0
+  },
+  {
+   "name": "Thrill of Possibility",
+   "set": "sld",
+   "foil": true,
+   "price": 6.0
+  },
+  {
+   "name": "Shark Typhoon",
+   "set": "slc",
+   "foil": false,
+   "price": 2.5
+  },
+  {
+   "name": "Root Maze",
+   "set": "spg",
+   "foil": true,
+   "price": 5.5
+  },
+  {
+   "name": "Relentless Rats",
+   "set": "slp",
+   "foil": true,
+   "price": 13.0
+  },
+  {
+   "name": "Reya Dawnbringer",
+   "set": "10e",
+   "foil": true,
+   "price": 5.0
+  },
+  {
+   "name": "Shadowspear",
+   "set": "ltc",
+   "foil": true,
+   "price": 40.0
+  },
+  {
+   "name": "Aetherize",
+   "set": "sld",
+   "foil": true,
+   "price": 7.0
+  },
+  {
+   "name": "Akroma, Angel of Wrath",
+   "set": "tsb",
+   "foil": true,
+   "price": 25.0
+  },
+  {
+   "name": "Arclight Phoenix",
+   "set": "slc",
+   "foil": true,
+   "price": 2.3
+  },
+  {
+   "name": "Armageddon",
+   "set": "sld",
+   "foil": true,
+   "price": 20.0
+  },
+  {
+   "name": "Blood Pet",
+   "set": "7ed",
+   "foil": true,
+   "price": 25.0
+  },
+  {
+   "name": "Blue, Loyal Raptor",
+   "set": "rex",
+   "foil": false,
+   "price": 3.0
+  },
+  {
+   "name": "Chrome Mox",
+   "set": "slc",
+   "foil": false,
+   "price": 65.0
+  },
+  {
+   "name": "Demonic Tutor",
+   "set": "sld",
+   "foil": true,
+   "price": 100.0
+  },
+  {
+   "name": "Godless Shrine",
+   "set": "rvr",
+   "foil": true,
+   "price": 50.0
+  },
+  {
+   "name": "Hunting Velociraptor",
+   "set": "rex",
+   "foil": false,
+   "price": 23.0
+  },
+  {
+   "name": "Leonardo da Vinci",
+   "set": "acr",
+   "foil": false,
+   "price": 5.0
+  },
+  {
+   "name": "Simian Spirit Guide",
+   "set": "tsr",
+   "foil": true,
+   "price": 18.0
+  },
+  {
+   "name": "Snow-Covered Mountain",
+   "set": "sld",
+   "foil": true,
+   "price": 5.0
+  },
+  {
+   "name": "Soul Collector",
+   "set": "pscg",
+   "foil": true,
+   "price": 1.0
+  },
+  {
+   "name": "Spitting Dilophosaurus",
+   "set": "rex",
+   "foil": true,
+   "price": 10.0
+  },
+  {
+   "name": "Splinter Twin",
+   "set": "spg",
+   "foil": true,
+   "price": 11.0
+  },
+  {
+   "name": "Stardew Valley",
+   "set": "sld",
+   "foil": true,
+   "price": 24.0
+  },
+  {
+   "name": "Swamp",
+   "set": "rex",
+   "foil": true,
+   "price": 5.0
+  },
+  {
+   "name": "Temple Garden",
+   "set": "unf",
+   "foil": true,
+   "price": 20.0
+  },
+  {
+   "name": "The Great Henge",
+   "set": "ltc",
+   "foil": true,
+   "price": 70.0
+  },
+  {
+   "name": "Urborg, Tomb of Yawgmoth",
+   "set": "ltc",
+   "foil": true,
+   "price": 70.0
+  },
+  {
+   "name": "Wasteland",
+   "set": "ltc",
+   "foil": true,
+   "price": 25.0
+  },
+  {
+   "name": "Watery Grave",
+   "set": "unf",
+   "foil": true,
+   "price": 32.0
+  },
+  {
+   "name": "Baleful Strix",
+   "set": "blc",
+   "foil": true,
+   "price": 25.0
+  },
+  {
+   "name": "Birthing Pod",
+   "set": "slc",
+   "foil": true,
+   "price": 10.0
+  },
+  {
+   "name": "Coeurl",
+   "set": "fin",
+   "foil": true,
+   "price": 0.1
+  },
+  {
+   "name": "Deathrite Shaman",
+   "set": "slc",
+   "foil": false,
+   "price": 8.0
+  },
+  {
+   "name": "Decimate",
+   "set": "sld",
+   "foil": false,
+   "price": 2.5
+  },
+  {
+   "name": "Elspeth, Sun's Champion",
+   "set": "slc",
+   "foil": false,
+   "price": 2.0
+  },
+  {
+   "name": "Emry, Lurker of the Loch",
+   "set": "slc",
+   "foil": false,
+   "price": 2.5
+  },
+  {
+   "name": "Eternal Witness",
+   "set": "sld",
+   "foil": false,
+   "price": 3.5
+  },
+  {
+   "name": "Everquill Phoenix",
+   "set": "iko",
+   "foil": true,
+   "price": 1.5
+  },
+  {
+   "name": "Gemrazer",
+   "set": "iko",
+   "foil": false,
+   "price": 0.5
+  },
+  {
+   "name": "Glimpse of Nature",
+   "set": "slc",
+   "foil": false,
+   "price": 4.0
+  },
+  {
+   "name": "Griselbrand",
+   "set": "sld",
+   "foil": true,
+   "price": 6.0
+  },
+  {
+   "name": "Heritage Druid",
+   "set": "slc",
+   "foil": false,
+   "price": 3.0
+  },
+  {
+   "name": "High Market",
+   "set": "eos",
+   "foil": true,
+   "price": 8.0
+  },
+  {
+   "name": "Rakdos the Defiler",
+   "set": "dis",
+   "foil": true,
+   "price": 13.0
+  },
+  {
+   "name": "Plains",
+   "set": "rex",
+   "foil": true,
+   "price": 5.0
+  },
+  {
+   "name": "Pearl Medallion",
+   "set": "mh3",
+   "foil": true,
+   "price": 15.0
+  },
+  {
+   "name": "Ornithopter",
+   "set": "sld",
+   "foil": true,
+   "price": 20.0
+  },
+  {
+   "name": "Putrefy",
+   "set": "sld",
+   "foil": true,
+   "price": 3.2
+  },
+  {
+   "name": "Brazen Borrower // Petty Theft",
+   "set": "eld",
+   "foil": true,
+   "price": 17.0
+  },
+  {
+   "name": "Huntmaster Liger",
+   "set": "iko",
+   "foil": false,
+   "price": 0.1
+  },
+  {
+   "name": "Ian Malcolm, Chaotician",
+   "set": "rex",
+   "foil": false,
+   "price": 2.0
+  },
+  {
+   "name": "Indoraptor, the Perfect Hybrid",
+   "set": "rex",
+   "foil": false,
+   "price": 6.0
+  },
+  {
+   "name": "Karakas",
+   "set": "ltc",
+   "foil": true,
+   "price": 15.0
+  },
+  {
+   "name": "Lightning Greaves",
+   "set": "sld",
+   "foil": true,
+   "price": 11.0
+  },
+  {
+   "name": "Lim-D√ªl's Vault",
+   "set": "slc",
+   "foil": true,
+   "price": 9.6
+  },
+  {
+   "name": "Lotus Field",
+   "set": "slc",
+   "foil": true,
+   "price": 12.5
+  },
+  {
+   "name": "Monster Manual // Zoological Study",
+   "set": "sld",
+   "foil": true,
+   "price": 6.0
+  },
+  {
+   "name": "Nashi, Moon Sage's Scion",
+   "set": "slc",
+   "foil": true,
+   "price": 2.5
+  },
+  {
+   "name": "Necropotence",
+   "set": "slc",
+   "foil": false,
+   "price": 13.0
+  },
+  {
+   "name": "Ravenous Tyrannosaurus",
+   "set": "rex",
+   "foil": false,
+   "price": 17.0
+  },
+  {
+   "name": "Sun Titan",
+   "set": "slc",
+   "foil": true,
+   "price": 5.0
+  },
+  {
+   "name": "Thalia, Heretic Cathar",
+   "set": "slc",
+   "foil": false,
+   "price": 2.0
+  },
+  {
+   "name": "Titanoth Rex",
+   "set": "iko",
+   "foil": false,
+   "price": 2.5
+  },
+  {
+   "name": "Ultimecia, Temporal Threat",
+   "set": "fin",
+   "foil": false,
+   "price": 0.3
+  },
+  {
+   "name": "Utopia Sprawl",
+   "set": "sld",
+   "foil": true,
+   "price": 10.0
+  },
+  {
+   "name": "Void Beckoner",
+   "set": "iko",
+   "foil": true,
+   "price": 1.5
+  },
+  {
+   "name": "Void Winnower",
+   "set": "sch",
+   "foil": true,
+   "price": 32.0
+  },
+  {
+   "name": "Westvale Abbey // Ormendahl, Profane Prince",
+   "set": "sld",
+   "foil": true,
+   "price": 11.0
+  },
+  {
+   "name": "Yidaro, Wandering Monster",
+   "set": "iko",
+   "foil": false,
+   "price": 7.0
+  },
+  {
+   "name": "Zilortha, Strength Incarnate",
+   "set": "iko",
+   "foil": false,
+   "price": 5.0
+  },
+  {
+   "name": "Nethroi, Apex of Death",
+   "set": "iko",
+   "foil": true,
+   "price": 15.0
+  },
+  {
+   "name": "Nightscape Familiar",
+   "set": "sld",
+   "foil": false,
+   "price": 4.0
+  },
+  {
+   "name": "Northern Paladin",
+   "set": "sld",
+   "foil": true,
+   "price": 0.1
+  },
+  {
+   "name": "Pollywog Symbiote",
+   "set": "iko",
+   "foil": true,
+   "price": 0.7
+  }
+ ]
+}

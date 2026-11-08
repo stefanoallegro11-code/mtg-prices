@@ -10,8 +10,10 @@ Scrive data/collection.json.
 """
 
 import os
+import re
 import sys
 import time
+import unicodedata
 import urllib.error
 import urllib.parse
 from datetime import datetime, timezone
@@ -21,6 +23,13 @@ import update_prices as up  # noqa: E402
 
 COLL_FILE = os.path.join(up.ROOT, "collection.txt")
 OUT_FILE = os.path.join(up.DATA_DIR, "collection.json")
+PAID_FILE = os.path.join(up.DATA_DIR, "paid.json")
+
+
+def paid_key(name, set_, foil):
+    """Chiave per abbinare un prezzo pagato alla carta: nome senza accenti/simboli, set, foil."""
+    n = re.sub(r"[^a-z0-9]", "", unicodedata.normalize("NFKD", name or "").encode("ascii", "ignore").decode().lower())
+    return (n, (set_ or "").lower(), bool(foil))
 log = up.log
 
 
@@ -140,8 +149,27 @@ def main():
         if r["bp"] and not ref and not r.get("error"):
             r["error"] = "Nessuna offerta CardTrader Zero (SP o meglio)"
 
+    # Prezzi pagati (data/paid.json): abbinati per nome, set e foil, una voce per copia
+    paid_entries = (up.read_json(PAID_FILE, {}) or {}).get("entries", [])
+    pidx = {}
+    for e in paid_entries:
+        pidx.setdefault(paid_key(e["name"], e["set"], e["foil"]), []).append(e)
+    paid_total = 0.0
+    for r in rows:
+        lst = pidx.get(paid_key(r["name"], r["set"], r["foil"]))
+        r["paid"] = None
+        if lst:
+            e = lst.pop(0)
+            r["paid"] = e["price"]
+            r["paid_value"] = round(e["price"] * r["qty"], 2)
+            paid_total += r["paid_value"]
+    paid_unmatched = [e["name"] for lst in pidx.values() for e in lst]
     rows.sort(key=lambda r: -(r["value"] or 0))
     result = {
+        "paid_total": round(paid_total, 2),
+        "paid_copies": sum(r["qty"] for r in rows if r["paid"] is not None),
+        "paid_missing": sum(r["qty"] for r in rows if r["paid"] is None),
+        "paid_unmatched": paid_unmatched,
         "updated": datetime.now(timezone.utc).isoformat(),
         "duration_s": int((datetime.now(timezone.utc) - started).total_seconds()),
         "count": len(rows),

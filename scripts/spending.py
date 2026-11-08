@@ -27,6 +27,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import update_prices as up  # noqa: E402
 
 OUT_FILE = os.path.join(up.DATA_DIR, "spending.json")
+ITEMS_FILE = os.path.join(up.DATA_DIR, "spending_items.json")
+ITEMS = []  # un record per copia acquistata: ordine, blueprint, Scryfall id, prezzo
 COLL_FILE = os.path.join(up.DATA_DIR, "collection.json")
 MAX_PAGES = 200
 CANCELLED = ("cancel", "refund", "annull", "rimbors")
@@ -196,6 +198,12 @@ def main():
             agg["spent"] += price * qty
             total_spent += price * qty
             items_count += qty
+            ITEMS.append({
+                "order": str(o.get("id")), "paid_at": o.get("paid_at"),
+                "bp": bp, "scryfall_id": it.get("scryfall_id"), "name": it.get("name") or item_name(it),
+                "expansion": it.get("expansion"), "set_code": (it.get("expansion") or "")[:0],
+                "foil": foil, "qty": qty, "price": price,
+            })
 
     # Incrocio con la collezione: quante copie possiedi ora per ogni blueprint/foil
     owned = defaultdict(int)
@@ -240,6 +248,7 @@ def main():
         "cards": rows,
     }
     up.write_json(OUT_FILE, result, compact=True)
+    up.write_json(ITEMS_FILE, ITEMS, compact=True)
     up.log("Speso su CardTrader: €%.2f su %d copie; per le carte ancora in collezione: €%.2f (%d copie)" % (
         total_spent, items_count, spent_owned, owned_copies))
 

@@ -62,6 +62,7 @@ def main():
             "collector": card["collector"], "foil": card["foil"], "coll": True,
             "cm": cm,
             "cm_uri": ((sf or {}).get("purchase_uris") or {}).get("cardmarket"),
+            "scryfall_id": (sf or {}).get("id"),
             "sf_img": up.sf_image(sf) or up.sf_image(alt),
             "set_name": (sf or {}).get("set_name"),
             "variant": ", ".join(filter(None, [

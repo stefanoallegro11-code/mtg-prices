@@ -2,20 +2,36 @@ name: Occasioni su Telegram
 
 on:
   schedule:
-    - cron: "41 */4 * * *"   # ogni 4 ore (in Italia: 2:41, 6:41, 10:41, 14:41, 18:41, 22:41 con l'ora legale)
-  workflow_dispatch: {}       # "Run workflow" per mandare il messaggio subito
+    - cron: "11 */2 * * *"   # ogni 2 ore, 6 minuti dopo la ricerca (solo le occasioni nuove)
+  workflow_dispatch: {}       # "Run workflow" per controllare subito
 
 permissions:
-  contents: read
+  contents: write
+
+concurrency:
+  group: telegram-state
+  cancel-in-progress: false
 
 jobs:
   digest:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - name: Invia riepilogo occasioni
+      - name: Invia le occasioni nuove
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python3 scripts/telegram_digest.py
+      - name: Salva lo stato
+        run: |
+          git config user.name "mtg-prices-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/telegram_state.json || true
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Stato Telegram aggiornato $(date -u +'%Y-%m-%d %H:%M') UTC"
+          for i in 1 2 3; do
+            git pull --rebase -X theirs origin main && git push && exit 0
+            sleep 5
+          done
+          exit 1

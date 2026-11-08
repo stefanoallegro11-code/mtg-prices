@@ -22,9 +22,9 @@ from datetime import datetime, timedelta, timezone
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import update_prices as up  # noqa: E402
 
-MIN_CM = float(os.environ.get("DISCOVER_MIN_CM", "15"))
-MAX_CM = float(os.environ.get("DISCOVER_MAX_CM", "80"))   # prezzo Cardmarket massimo considerato
-MIN_SAVING = float(os.environ.get("DISCOVER_MIN_SAVING", "5"))  # sconto minimo in euro rispetto a Cardmarket
+MIN_CM = float(os.environ.get("DISCOVER_MIN_CM", "10"))
+MAX_CM = float(os.environ.get("DISCOVER_MAX_CM", "110"))   # prezzo Cardmarket massimo considerato
+MIN_SAVING = float(os.environ.get("DISCOVER_MIN_SAVING", "4"))  # sconto minimo in euro rispetto a Cardmarket
 SUSPICIOUS_PCT = 70  # sconto oltre il 70%: probabile prezzo Cardmarket poco affidabile
 OUT_FILE = os.path.join(up.DATA_DIR, "discoveries.json")
 WATCH_FILE = os.path.join(up.DATA_DIR, "discoveries_watch.json")
@@ -47,7 +47,7 @@ SF_QUERY = ("game:paper is:foil ("
             "or date<=fut)")
 # Scryfall rifiuta l'intera ricerca se una parola chiave non esiste: le foil speciali le aggiungo
 # solo dopo averle verificate una per una (vedi valid_special_foils).
-MAX_RESULTS = int(os.environ.get("DISCOVER_MAX_RESULTS", "400"))
+MAX_RESULTS = int(os.environ.get("DISCOVER_MAX_RESULTS", "800"))
 LANGS = ("en",)  # scoperte: solo offerte in inglese
 
 log = up.log

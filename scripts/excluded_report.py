@@ -81,6 +81,11 @@ def main():
             "reason": reason(d),
         })
     rows.sort(key=lambda r: (r["reason"], -r["foil_eur"]))
+    by_reason, by_set = {}, {}
+    for r in rows:
+        by_reason[r["reason"]] = by_reason.get(r["reason"], 0) + 1
+        by_set[r["set"]] = by_set.get(r["set"], 0) + 1
+    top_sets = sorted(by_set.items(), key=lambda kv: -kv[1])[:80]
     result = {
         "updated": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "broad_query": BROAD_Q,
@@ -88,6 +93,8 @@ def main():
         "total_broad": len(broad),
         "excluded": len(rows),
         "truncated": pages >= MAX_PAGES,
+        "by_reason": dict(sorted(by_reason.items(), key=lambda kv: -kv[1])),
+        "top_sets": top_sets,
         "cards": rows,
     }
     up.write_json(OUT_FILE, result, compact=True)

@@ -209,12 +209,12 @@ var FILTERS = {
 FILTERS.coll = [['all','Tutte'],['canom','⚠ Prezzo anomalo'],['cnoprice','Senza prezzo CT'],['cfoil','Solo foil'],['cnonfoil','Solo non foil'],['check','Da verificare']];
 var lastFilter = { list: 'all', disc: 'dall', coll: 'all' };
 // Fasce di prezzo Cardmarket (solo Scoperte), combinabili con gli altri filtri
-var PRICE_BANDS = [['','Tutti i prezzi'],['15-25','€15–25'],['26-35','€26–35'],['36-50','€36–50'],['50+','> €50']];
+var PRICE_BANDS = [['','Tutti i prezzi'],['10-25','€10–25'],['26-35','€26–35'],['36-50','€36–50'],['50+','> €50']];
 var priceF = '';
 function inBand(cm, b){
   if (!b) return true;
   if (cm == null) return false;
-  if (b === '15-25') return cm < 26;
+  if (b === '10-25') return cm < 26;
   if (b === '26-35') return cm >= 26 && cm < 36;
   if (b === '36-50') return cm >= 36 && cm <= 50;
   if (b === '50+') return cm > 50;
@@ -540,7 +540,7 @@ function setView(v, first){
   $('intro').textContent = v === 'coll'
     ? 'Valore della tua collezione: per ogni carta l\'offerta CardTrader Zero più bassa in inglese (giapponese solo se manca l\'inglese), condizione minima SP. Si aggiorna una volta al giorno e ogni volta che modifichi la collezione.'
     : v === 'disc'
-    ? 'Carte fuori dalla tua lista (Secret Lair, Special Guests, Masterpiece, promo, foil speciali, borderless, showcase, extended art, full art, special art, retro frame, foil fino a Visione Futura) con Cardmarket tra €' + ((DISC && DISC.min_cm) || 15) + ' e €' + ((DISC && DISC.max_cm) || 80) + ' e offerta CardTrader Zero in inglese almeno €' + ((DISC && DISC.min_saving) || 10) + ' più bassa.'
+    ? 'Carte fuori dalla tua lista (Secret Lair, Special Guests, Masterpiece, promo, foil speciali, borderless, showcase, extended art, full art, special art, retro frame, foil fino a Visione Futura) con Cardmarket tra €' + ((DISC && DISC.min_cm) || 15) + ' e €' + ((DISC && DISC.max_cm) || 110) + ' e offerta CardTrader Zero in inglese almeno €' + ((DISC && DISC.min_saving) || 4) + ' più bassa.'
     : '';
   try { history.replaceState(null, '', v === 'disc' ? '#scoperte' : (v === 'coll' ? '#collezione' : location.pathname + location.search)); } catch(e){}
   DATA = v === 'disc' ? DISC : (v === 'coll' ? COLL : LIST);

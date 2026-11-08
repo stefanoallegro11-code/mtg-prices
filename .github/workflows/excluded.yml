@@ -1,0 +1,30 @@
+name: Foil escluse dalle Scoperte
+
+on:
+  workflow_dispatch: {}        # solo a mano
+
+permissions:
+  contents: write
+
+jobs:
+  excluded:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Elenco delle foil fuori dalle Scoperte
+        run: python3 scripts/excluded_report.py
+
+      - name: Salva il risultato
+        run: |
+          git config user.name "mtg-prices-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/excluded.json || true
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Elenco foil escluse aggiornato $(date -u +'%Y-%m-%d %H:%M') UTC"
+          for i in 1 2 3; do
+            git pull --rebase -X theirs origin main && git push && exit 0
+            sleep 5
+          done
+          exit 1

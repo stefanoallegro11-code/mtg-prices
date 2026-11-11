@@ -2,7 +2,7 @@ name: Occasioni su Telegram
 
 on:
   schedule:
-    - cron: "11 */2 * * *"   # ogni 2 ore, 6 minuti dopo la ricerca (solo le occasioni nuove)
+    - cron: "11 */4 * * *"   # ogni 4 ore, 6 minuti dopo la ricerca (solo le occasioni nuove)
   workflow_dispatch: {}       # "Run workflow" per controllare subito
 
 permissions:

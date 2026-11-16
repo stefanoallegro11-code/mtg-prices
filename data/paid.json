@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-08T22:52:10.289682+00:00",
+ "updated": "2026-11-16T18:49:40.531248+00:00",
  "note": "Prezzi pagati per copia su CardTrader (o dichiarati a mano). Chiave: nome, set, foil.",
  "entries": [
   {
@@ -1597,6 +1597,30 @@
    "set": "sld",
    "foil": true,
    "price": 0.1
+  },
+  {
+   "name": "Regrowth",
+   "set": "sld",
+   "foil": true,
+   "price": 2.0
+  },
+  {
+   "name": "Life from the Loam",
+   "set": "rvr",
+   "foil": true,
+   "price": 13.0
+  },
+  {
+   "name": "Path to Exile",
+   "set": "sld",
+   "foil": true,
+   "price": 16.0
+  },
+  {
+   "name": "Blood Celebrant",
+   "set": "lgn",
+   "foil": true,
+   "price": 10.0
   }
  ]
 }

@@ -9,6 +9,7 @@ on:
     paths:
       - collection.txt          # collezione modificata -> ricalcola subito
       - data/paid.json          # prezzi pagati modificati -> ricalcola subito
+      - data/other.json         # altre carte modificate -> ricalcola subito
       - scripts/collection.py
 
 permissions:

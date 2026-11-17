@@ -24,6 +24,7 @@ import update_prices as up  # noqa: E402
 COLL_FILE = os.path.join(up.ROOT, "collection.txt")
 OUT_FILE = os.path.join(up.DATA_DIR, "collection.json")
 PAID_FILE = os.path.join(up.DATA_DIR, "paid.json")
+OTHER_FILE = os.path.join(up.DATA_DIR, "other.json")
 
 
 def paid_key(name, set_, foil):
@@ -165,7 +166,22 @@ def main():
             paid_total += r["paid_value"]
     paid_unmatched = [e["name"] for lst in pidx.values() for e in lst]
     rows.sort(key=lambda r: -(r["value"] or 0))
+
+    # Altre carte (data/other.json): Pokémon, Lorcana, Riftbound e Leonardo da Vinci.
+    # Valori e prezzi pagati inseriti a mano; non entrano nei totali MTG.
+    other_cards = (up.read_json(OTHER_FILE, {}) or {}).get("entries", [])
+    other_value = round(sum(float(e.get("value") or 0) for e in other_cards), 2)
+    other_paid = round(sum(float(e.get("paid") or 0) for e in other_cards), 2)
+    other = {
+        "count": len(other_cards),
+        "value_total": other_value,
+        "paid_total": other_paid,
+        "cards": other_cards,
+    }
     result = {
+        "other": other,
+        "paid_total_mtg": round(paid_total, 2),
+        "paid_total_all": round(paid_total + other_paid, 2),
         "paid_total": round(paid_total, 2),
         "paid_copies": sum(r["qty"] for r in rows if r["paid"] is not None),
         "paid_missing": sum(r["qty"] for r in rows if r["paid"] is None),

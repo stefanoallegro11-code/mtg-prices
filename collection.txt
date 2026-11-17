@@ -238,7 +238,6 @@
 1 Hellkite Tyrant (RVR) 428 *F*
 1 Dismember (SPG) 41 *F*
 1 Rift Bolt (SLD) 2055 *F*
-1 Leonardo da Vinci (ACR) 118
 1 Beast Within (SLD) 323 *F*
 1 Simian Spirit Guide (TSR) 190 *F*
 1 Maelstrom Pulse (MP2) 29 *F*

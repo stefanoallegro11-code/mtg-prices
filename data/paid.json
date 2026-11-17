@@ -1233,12 +1233,6 @@
    "price": 23.0
   },
   {
-   "name": "Leonardo da Vinci",
-   "set": "acr",
-   "foil": false,
-   "price": 5.0
-  },
-  {
    "name": "Simian Spirit Guide",
    "set": "tsr",
    "foil": true,
@@ -1461,10 +1455,10 @@
    "price": 11.0
   },
   {
-   "name": "Lim-D√ªl's Vault",
+   "name": "Lim-Dûl's Vault",
    "set": "slc",
    "foil": true,
-   "price": 9.6
+   "price": 8
   },
   {
    "name": "Lotus Field",

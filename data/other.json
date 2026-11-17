@@ -1,0 +1,15 @@
+{
+ "updated": "2026-11-17T11:06:00+01:00",
+ "note": "Valutazioni inserite dall'utente (non da scraping). Sezione separata dalla collezione MTG.",
+ "entries": [
+  {"name": "Charizard", "set": "Base Set Unlimited", "lang": "ENG", "grade": "BGS 8.5", "foil": true, "price": 1300, "source": "utente"},
+  {"name": "Blastoise", "set": "Base Set Unlimited", "lang": "ITA", "grade": "BGS 9", "foil": true, "price": 900, "source": "utente"},
+  {"name": "Venusaur", "set": "Base Set Unlimited", "lang": "ITA", "grade": "BGS 9", "foil": true, "price": 800, "source": "utente"},
+  {"name": "Charizard", "set": "Base Set Unlimited", "lang": "ITA", "grade": null, "condition": "Poor (fascia alta)", "foil": true, "price": 200, "source": "utente"},
+  {"name": "Dark Charizard", "set": "Team Rocket 1a Edizione", "lang": "non indicata", "grade": null, "condition": "Excellent", "foil": true, "price": 650, "source": "utente"},
+  {"name": "Bambi - Little Prince", "set": "Reign of Jafar #209 Enchanted", "lang": "ENG", "grade": null, "condition": "Near Mint", "foil": true, "price": 230, "source": "utente"},
+  {"name": "Jinx - Loose Cannon", "set": "Riftbound Origins #251 promo", "lang": "ENG", "grade": null, "condition": "non gradata", "foil": false, "price": 70, "source": "utente"},
+  {"name": "Leona - Radiant Dawn", "set": "Riftbound Origins #261 promo", "lang": "ENG", "grade": null, "condition": "non gradata", "foil": false, "price": 20, "source": "utente"},
+  {"name": "Leonardo da Vinci", "set": "MTG Assassin's Creed #118", "lang": "ENG", "grade": null, "condition": "full art, non foil", "foil": false, "price": 150, "source": "utente", "note": "MTG, non Pokémon/Lorcana/Riftbound"}
+ ]
+}
